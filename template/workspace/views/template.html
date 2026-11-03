@@ -1,0 +1,764 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Brief</title>
+<style>__CSS__</style>
+</head>
+<body>
+<div x-data="brief" x-cloak @keydown.escape.window="close()">
+
+<!-- Masthead: what day, what matters -->
+<header class="wrap masthead">
+  <div class="mh-top">
+    <div>
+      <div class="eyebrow" x-text="kicker"></div>
+      <h1 x-text="d.title"></h1>
+      <p class="headline" x-show="d.headline"><template x-for="r in rich(d.headline)"><span :class="r.b && 'bold'" x-text="r.t"></span></template></p>
+      <p class="meta" x-show="d.last_review"><span x-text="'Last review: ' + d.last_review?.adopted + ' adopted, ' + d.last_review?.open + ' open'"></span> <a class="ext" x-show="reviewHref(d.last_review?.link)" :href="reviewHref(d.last_review?.link)">Open</a></p>
+      <div class="src-chips" x-show="!daily && srcChips.length">
+        <template x-for="c in srcChips"><span class="chip" :class="!c.ok && 'fail'" x-text="c.name + ' · ' + c.text"></span></template>
+      </div>
+    </div>
+    <div class="mh-actions">
+      <button class="btn btn-quiet" @click="toggleTheme()" x-text="dark ? 'Light' : 'Dark'"></button>
+      <button class="btn btn-quiet btn-copy" :class="copied.refresh && 'is-copied'" @click="refresh('refresh')" title="Copies a prompt: Claude reads what is new and rebuilds this page"><span x-text="lbl('refresh', 'Refresh with Claude')"></span></button>
+    </div>
+  </div>
+
+  <!-- Daily: start here and the next meeting -->
+  <div class="lead" x-show="daily">
+    <div class="card start">
+      <div class="start-top"><span class="eyebrow" x-text="startHere.calm ? 'Calm' : 'Start here'"></span><span class="eyebrow" x-show="startHere.until" x-text="startHere.until"></span></div>
+      <h2 x-text="startHere.title"></h2>
+      <p x-show="startHere.why || startHere.minutes" x-text="[startHere.why, startHere.minutes ? 'About ' + startHere.minutes + ' minutes.' : ''].filter(Boolean).join(' ')"></p>
+    </div>
+    <div class="card nextmeet" x-show="nextMeeting">
+      <div class="nextmeet-top"><span class="eyebrow">Next meeting</span><span class="signal" :class="tone(nextMeeting?.tag_kind)" x-show="nextMeeting?.tag" x-text="nextMeeting?.tag"></span></div>
+      <h2><span class="t" x-text="time12(nextMeeting?.start)"></span> <span x-text="nextMeeting?.title"></span></h2>
+      <p x-show="meetSummary(nextMeeting)" x-text="meetSummary(nextMeeting)"></p>
+      <div class="btns">
+        <a class="btn btn-quiet sm" x-show="joinLink(nextMeeting)" :href="joinLink(nextMeeting)" target="_blank" rel="noopener"><span class="ext">Join Meet</span></a>
+        <button class="btn btn-quiet sm" @click="openPanel('meeting', nextMeeting)">Open prep</button>
+      </div>
+    </div>
+  </div>
+  <div class="tiles-m" x-show="daily">
+    <template x-for="n in tiles" :key="n.id"><a :href="'#' + n.id" :class="n.urgent && 'urgent'"><b x-text="n.n"></b><span x-text="n.label"></span></a></template>
+  </div>
+</header>
+
+<!-- Section index, source status on the right -->
+<nav class="tabs" aria-label="Sections">
+  <div class="wrap tabs-in">
+    <template x-for="n in navLinks" :key="n.id"><a :href="'#' + n.id"><span x-text="n.label"></span><span class="num" :class="n.urgent && 'urgent'" x-show="n.n !== undefined" x-text="n.n"></span></a></template>
+    <span class="tab-status" x-show="daily && srcFailed.length" x-text="srcFailed.length + (srcFailed.length === 1 ? ' source failed' : ' sources failed')"></span>
+  </div>
+</nav>
+
+<!-- ============ DAILY ============ -->
+<template x-if="daily">
+<div class="wrap grid">
+<main>
+  <template x-for="b in blocks" :key="b.id">
+  <div>
+    <!-- Context: top of mind -->
+    <template x-if="b.id === 'tom'">
+      <section id="tom">
+        <div class="sh"><span class="eyebrow">Context</span><h2>Top of mind</h2><span class="num" x-text="(d.top_of_mind || []).length"></span></div>
+        <p class="rule">Standing initiatives and where each one stands.</p>
+        <div class="toprows">
+          <template x-for="t in topRows" :key="t.title">
+            <button type="button" class="toprow" @click="openPanel('tom', t)" :aria-label="'Details: ' + t.title">
+              <span class="swatch" :data-d="dd(t.domain)"></span>
+              <span class="tt"><b x-text="t.title"></b></span>
+              <span class="note" x-text="t.note || ''"></span>
+              <span class="domain" :data-d="dd(t.domain)" x-show="t.domain" x-text="t.domain"></span><span class="miss" x-show="!t.domain">no domain</span>
+              <span class="rt" x-text="topRight(t)"></span>
+            </button>
+          </template>
+          <div class="tomfoot" x-show="tomHidden.length"><button class="linkbtn" @click="toggleOpen('tom')" x-text="open.tom ? 'Show fewer' : 'Show ' + tomHidden.length + ' more: ' + tomHidden.map(t => t.title).join(', ')"></button></div>
+        </div>
+      </section>
+    </template>
+
+    <template x-if="b.s">
+      <section :id="b.s.id">
+        <div class="sh">
+          <span class="eyebrow" x-text="eyebrow(b.s)"></span>
+          <h2 x-text="b.s.title"></h2><span class="num" x-text="count(b.s)"></span>
+          <div class="seg" x-show="b.s.id === 'replies'" style="margin-left:auto" role="group" aria-label="Filter">
+            <template x-for="k in ['all', 'reply', 'review']" :key="k"><button type="button" :aria-pressed="filter === k" @click="filter = k" x-text="k.charAt(0).toUpperCase() + k.slice(1) + ' ' + kindCount(k)"></button></template>
+          </div>
+        </div>
+        <p class="rule" x-show="b.s.note" x-text="b.s.note"></p>
+
+        <!-- Plan: board tables -->
+        <template x-if="layout(b.s) === 'board'">
+          <div class="tablewrap">
+            <table class="board">
+              <thead><tr>
+                <th class="c-check"><span class="sr">Done</span></th>
+                <th class="c-title"><button @click="sortBy('title')" x-text="'Task' + sortMark('title')"></button></th>
+                <th class="c-prio"><button @click="sortBy('priority')" x-text="'Prio' + sortMark('priority')"></button></th>
+                <th class="c-size"><button @click="sortBy('size')" x-text="'Size' + sortMark('size')"></button></th>
+                <th class="c-status"><button @click="sortBy('status')" x-text="'Status' + sortMark('status')"></button></th>
+                <th class="c-dom"><button @click="sortBy('domain')" x-text="'Domain' + sortMark('domain')"></button></th>
+                <th class="c-src"><button @click="sortBy('source')" x-text="'From' + sortMark('source')"></button></th>
+              </tr></thead>
+              <tbody>
+                <template x-for="t in shownTasks(b.s)" :key="t.id">
+                  <tr :class="{changed: changed(t), dropped: eff(t).drop, done: eff(t).status === 'Done'}" @click="openPanel('task', t)">
+                    <td class="c-check" @click.stop><label class="hit"><input type="checkbox" :checked="eff(t).status === 'Done'" @change="setDone(t, $event.target.checked)" :aria-label="'Mark done: ' + t.title"></label></td>
+                    <td class="c-title">
+                      <button @click.stop="openPanel('task', t)" x-text="t.title"></button>
+                      <span class="team" x-show="topicOf(t)" :data-t="topicOf(t)?.t"><b x-text="topicOf(t)?.t"></b><span x-text="topicOf(t)?.n"></span></span>
+                      <div class="chg" x-show="changed(t)"><span x-text="'Changed here: ' + changeText(t)"></span><button type="button" class="linkbtn" @click.stop="undo(t)">Undo</button></div>
+                    </td>
+                    <td class="c-prio">
+                      <select class="prio" :class="'prio-' + eff(t).priority" @click.stop @change="setPriority(t, $event.target.value)" :aria-label="'Priority: ' + t.title">
+                        <template x-for="p in PRIOS"><option :value="p" :selected="eff(t).priority === p" x-text="p"></option></template>
+                      </select>
+                      <span class="miss" x-show="!t.priority">no priority</span>
+                    </td>
+                    <td class="c-size"><span class="size" x-text="t.size || ''"></span></td>
+                    <td class="c-status"><span class="status" :class="statusClass(eff(t).status)" x-text="eff(t).status"></span></td>
+                    <td class="c-dom"><span class="domain" :data-d="dd(t.domain)" x-show="t.domain" x-text="t.domain"></span><span class="miss" x-show="!t.domain">no domain</span></td>
+                    <td class="c-src"><span class="src" x-show="t.source" :title="label(t.source)">
+                      <span class="logo xs"><template x-if="icons[t.source]"><img :src="icons[t.source]" alt=""></template><template x-if="!icons[t.source]"><span x-text="abbr(t.source)"></span></template></span>
+                      <span x-text="label(t.source)"></span></span></td>
+                  </tr>
+                </template>
+                <tr x-show="!tasks(b.s.list).length"><td colspan="7" class="empty" x-text="b.s.empty || 'Nothing here.'"></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </template>
+
+        <!-- Act and Read: one card per item -->
+        <template x-if="layout(b.s) === 'cards'">
+          <div class="list">
+            <div class="empty card" x-show="!pool(b.s).length" x-text="b.s.empty || 'Nothing here.'"></div>
+            <template x-for="it in shown(b.s)" :key="ik(b.s, it)">
+              <article class="item" :class="it.urgent && it.tag && 'has-strip'" tabindex="0" role="button" :aria-label="'Details: ' + it.title"
+                       @click="openPanel('item', it)" @keydown.enter.self="openPanel('item', it)">
+                <div class="strip" x-show="it.urgent && it.tag">
+                  <span class="signal urgent" x-text="it.tag + (isStart(it) ? ' · Start here' : '')"></span>
+                  <span class="when" x-show="it.when" x-text="it.when"></span>
+                </div>
+                <div class="logo" :title="label(it.source)"><template x-if="icons[it.source]"><img :src="icons[it.source]" :alt="label(it.source)"></template><template x-if="!icons[it.source]"><span x-text="abbr(it.source)"></span></template></div>
+                <div class="item-body">
+                  <div class="item-head">
+                    <div>
+                      <div class="item-title" x-text="it.title"></div>
+                      <div class="meta" x-show="whereWho(it)" x-text="whereWho(it)"></div>
+                      <div class="also" x-show="alsoTask(it)"><button type="button" class="linkbtn" @click.stop="openPanel('task', alsoTask(it))">Also in This week</button></div>
+                    </div>
+                    <div class="item-side" x-show="!(it.urgent && it.tag)">
+                      <span class="signal" :class="it.tag_kind" x-show="it.tag" x-text="it.tag"></span>
+                      <span class="when" x-show="it.when" x-text="it.when"></span>
+                    </div>
+                  </div>
+<div class="atoms" x-show="labelled(b.s)">
+<template x-if="pr(it)"><span class="prio-demo" :class="'prio-' + pr(it)" x-text="pr(it)"></span></template><template x-if="!pr(it)"><span class="miss">no priority</span></template>
+<template x-if="dom(it)"><span class="domain" :data-d="dd(dom(it))" x-text="dom(it)"></span></template><template x-if="!dom(it)"><span class="miss">no domain</span></template>
+<template x-if="topicOf(it)"><span class="team" :data-t="topicOf(it).t"><b x-text="topicOf(it).t"></b><span x-text="topicOf(it).n"></span></span></template>
+</div>
+                  <blockquote class="quote" x-show="it.context" x-text="it.context"></blockquote>
+                  <div class="item-next" x-show="it.action"><span class="next" x-text="it.action"></span></div>
+                  <div class="suggest" x-show="it.rec" @click.stop>
+                    <div class="suggest-h"><span>Claude suggests</span><span x-show="it.rec?.source" x-text="'Source: ' + it.rec?.source"></span></div>
+                    <p x-text="it.rec?.text"></p>
+                    <div class="btns">
+                      <button class="btn btn-quiet sm" @click.stop="decide(it, false, ik(b.s, it) + ':no')" x-text="lbl(ik(b.s, it) + ':no', 'Decide differently')"></button>
+                      <button class="btn btn-claude sm" :class="copied[ik(b.s, it) + ':yes'] && 'is-copied'" @click.stop="decide(it, true, ik(b.s, it) + ':yes')"><span x-text="lbl(ik(b.s, it) + ':yes', 'Send decision to Claude')"></span></button>
+                    </div>
+                  </div>
+                  <div class="item-foot end" x-show="it.action || url(it.link)">
+                    <span class="item-acts">
+                      <a class="ext" x-show="url(it.link)" :href="url(it.link)" target="_blank" rel="noopener" @click.stop x-text="'Open in ' + label(it.source)"></a>
+                      <button class="btn btn-claude tint" :class="copied[ik(b.s, it)] && 'is-copied'" x-show="it.action" @click.stop="doIt(it, ik(b.s, it))"><span x-text="lbl(ik(b.s, it), 'Ask Claude')"></span></button>
+                    </span>
+                  </div>
+                </div>
+              </article>
+            </template>
+          </div>
+        </template>
+
+        <!-- Respond and Follow up: compact rows -->
+        <template x-if="layout(b.s) === 'rows'">
+          <div class="rows">
+            <div class="empty" x-show="!pool(b.s).length" x-text="b.s.empty || 'Nothing here.'"></div>
+            <template x-for="it in shown(b.s)" :key="ik(b.s, it)">
+              <div class="row" tabindex="0" role="button" :aria-label="'Details: ' + it.title" @click="openPanel('item', it)" @keydown.enter.self="openPanel('item', it)">
+                <div class="logo" :title="label(it.source)"><template x-if="icons[it.source]"><img :src="icons[it.source]" :alt="label(it.source)"></template><template x-if="!icons[it.source]"><span x-text="abbr(it.source)"></span></template></div>
+                <div class="rb">
+                  <div class="r1"><b x-text="rowLines(b.s, it).b"></b> <span :class="it.what_kind === 'warn' && 'warn'" x-text="rowLines(b.s, it).what"></span><span class="meta" x-show="rowLines(b.s, it).rest" x-text="' · ' + rowLines(b.s, it).rest"></span></div>
+                  <div class="r2" x-text="rowLines(b.s, it).sub"></div>
+                </div>
+<div class="atoms ra">
+<template x-if="pr(it)"><span class="prio-demo" :class="'prio-' + pr(it)" x-text="pr(it)"></span></template><template x-if="!pr(it)"><span class="miss">no priority</span></template>
+<template x-if="dom(it)"><span class="domain" :data-d="dd(dom(it))" x-text="dom(it)"></span></template><template x-if="!dom(it)"><span class="miss">no domain</span></template>
+<template x-if="topicOf(it)"><span class="team" :data-t="topicOf(it).t"><b x-text="topicOf(it).t"></b><span x-text="topicOf(it).n"></span></span></template>
+</div>
+                <span class="when" x-text="it.when || ''"></span>
+                <div class="acts2">
+                  <button class="btn btn-quiet" x-show="b.s.id === 'waiting'" :class="copied[ik(b.s, it) + ':drop'] && 'is-copied'" @click.stop="dropIt(it, ik(b.s, it) + ':drop')" x-text="lbl(ik(b.s, it) + ':drop', 'Drop')"></button>
+                  <button class="btn btn-claude tint" :class="copied[ik(b.s, it)] && 'is-copied'" @click.stop="doIt(it, ik(b.s, it))" :aria-label="'Ask Claude: ' + it.title"><span class="bt" x-text="lbl(ik(b.s, it), 'Ask Claude')"></span></button>
+                </div>
+              </div>
+            </template>
+          </div>
+        </template>
+
+        <!-- Recap: no container -->
+        <template x-if="layout(b.s) === 'recap'">
+          <div class="recap">
+            <div class="empty" x-show="!pool(b.s).length" x-text="b.s.empty || 'Nothing here.'"></div>
+            <template x-for="it in shown(b.s)" :key="ik(b.s, it)">
+              <div class="rc" tabindex="0" role="button" :aria-label="'Details: ' + it.title" @click="openPanel('item', it)" @keydown.enter.self="openPanel('item', it)">
+                <div class="logo xs" :title="label(it.source)"><template x-if="icons[it.source]"><img :src="icons[it.source]" :alt="label(it.source)"></template><template x-if="!icons[it.source]"><span x-text="abbr(it.source)"></span></template></div>
+                <div>
+                  <div class="rc-t"><b x-text="it.title"></b> <span class="meta" x-show="meta(it)" x-text="' · ' + meta(it)"></span></div>
+                  <div class="rc-s" x-show="it.context" x-text="it.context"></div>
+                  <span class="next" x-show="it.action" x-text="it.action"></span>
+                </div>
+                <span class="signal" :class="it.tag_kind" x-show="it.tag" x-text="it.tag"></span>
+              </div>
+            </template>
+          </div>
+        </template>
+
+        <div class="more" x-show="hidden(b.s) > 0 || canCollapse(b.s)">
+          <span x-text="'Showing ' + (total(b.s) - hidden(b.s)) + ' of ' + total(b.s)"></span>
+          <button type="button" class="linkbtn" @click="toggleOpen(b.s.id)" x-text="open[b.s.id] ? 'Show fewer' : 'Show ' + hidden(b.s) + ' more'"></button>
+        </div>
+      </section>
+    </template>
+  </div>
+  </template>
+
+  <!-- Claude asks -->
+  <section id="questions" x-show="(d.questions || []).length">
+    <div class="sh"><span class="eyebrow">Claude asks · not urgent</span></div>
+    <template x-for="(q, i) in d.questions || []" :key="i">
+      <div class="ask">
+        <div><b x-text="q.term"></b> <span x-text="q.understanding"></span></div>
+        <button class="btn btn-quiet btn-copy" :class="copied['q' + i] && 'is-copied'" @click="askTerm(q, 'q' + i)"><span x-text="lbl('q' + i, 'Answer')"></span></button>
+      </div>
+    </template>
+  </section>
+</main>
+
+<!-- Time: the day on a timeline, sources, legend -->
+<aside class="rail">
+  <section id="meetings" style="margin-top:0" x-show="(d.meetings || []).length">
+    <div class="sh"><h2 x-text="d.meetings_title || 'Today'"></h2><span class="num" x-text="(d.meetings || []).length"></span></div>
+    <ol class="timeline">
+      <template x-for="(m, i) in d.meetings || []" :key="i">
+        <li><button class="meet" :class="meetState(m)" @click="openPanel('meeting', m)" :aria-label="'Meeting details: ' + m.title">
+          <span class="t" x-text="time12(m.start)"></span>
+          <span class="mbody"><span class="mtitle" x-text="m.title"></span><span class="meta" x-text="names(m.who)"></span>
+            <span class="signal" :class="m.tag_kind" x-show="m.tag" x-text="m.tag"></span></span>
+        </button></li>
+      </template>
+    </ol>
+  </section>
+
+  <div class="srcbox" x-show="(d.sources || []).length">
+    <div class="eyebrow">Sources</div>
+    <template x-for="g in srcGroups" :key="g.at"><div class="srcrow"><span x-text="g.names"></span><span class="mono" x-text="g.at"></span></div></template>
+    <template x-for="s in srcFailed" :key="s.name">
+      <div><div class="srcrow fail"><span x-text="s.name + ' failed'"></span><span class="mono" x-text="s.read_at"></span></div><p class="srcnote" x-show="s.note" x-text="s.note"></p></div>
+    </template>
+  </div>
+
+  <details class="legend">
+    <summary>How to read this page</summary>
+    <dl>
+      <dt><span class="prio-demo prio-P0">P0</span><span class="prio-demo prio-P1">P1</span><span class="prio-demo prio-P2">P2</span><span class="prio-demo prio-P3">P3</span></dt><dd>Priority. Weight drops with importance.</dd>
+      <dt><span class="signal urgent">Red</span></dt><dd>Act now: blocking, overdue.</dd>
+      <dt><span class="signal warn">Amber</span></dt><dd>Decide or due soon.</dd>
+      <dt><span class="status s-todo"></span><span class="status s-doing"></span><span class="status s-waiting"></span><span class="status s-done"></span></dt><dd>Not started, in progress, waiting, done.</dd>
+      <dt><span class="domain">Domain</span></dt><dd>Where the work belongs.</dd>
+      <dt><span class="quote-demo">Quote</span></dt><dd>Someone else's words, with a rule.</dd>
+      <dt><span class="claude-demo"></span></dt><dd>Indigo is Claude: copies a prompt or waits for Claude.</dd>
+    </dl>
+  </details>
+  <footer>Built by routines/brief.md. Click anything for details.</footer>
+</aside>
+</div>
+</template>
+
+<!-- ============ WEEKLY ============ -->
+<template x-if="weekly">
+<div class="wrap wk">
+
+  <!-- Look back: last week in summary -->
+  <section id="lastweek" x-show="d.last_week">
+    <div class="sh"><span class="eyebrow" x-text="'Look back' + (d.last_week?.range ? ' · ' + d.last_week.range : '')"></span><h2>Last week in summary</h2></div>
+    <div class="lw">
+      <div class="card lw-main">
+        <p class="sumtext"><template x-for="r in rich(d.last_week?.summary)"><span :class="r.b && 'bold'" x-text="r.t"></span></template></p>
+        <div class="trio">
+          <template x-for="g in [['Went well', 'went_well'], ['Slipped', 'slipped'], ['Decided', 'decided']]" :key="g[1]">
+            <div><div class="eyebrow" x-text="g[0]"></div><ul><template x-for="x in d.last_week?.[g[1]] || []"><li x-text="x"></li></template></ul></div>
+          </template>
+        </div>
+      </div>
+      <div class="tiles2">
+        <template x-for="t in lwTiles" :key="t.l">
+          <div class="card tile"><div class="v" :class="t.t"><span x-text="t.v"></span> <small x-show="t.of !== undefined" x-text="'/ ' + t.of"></small></div><div class="l" x-text="t.l"></div></div>
+        </template>
+        <div class="card lever" x-show="d.last_week?.lever"><template x-for="r in rich(d.last_week?.lever)"><span :class="r.b && 'bold'" x-text="r.t"></span></template></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Plan: capacity, follows the answers below -->
+  <section id="capacity" x-show="d.capacity">
+    <div class="sh"><span class="eyebrow">Plan · your hours</span><h2>Capacity</h2></div>
+    <p class="rule">Updates as you accept or change the proposals below.</p>
+    <div class="card cap">
+      <div class="cap-eq">
+        <div><span x-text="cap.fmt(cap.avail)"></span><small>available</small></div><span class="op">-</span>
+        <div><span x-text="cap.fmt(cap.meet)"></span><small><span class="sq m"></span>meetings</small></div><span class="op">-</span>
+        <div><span x-text="cap.fmt(cap.planned)"></span><small><span class="sq p"></span>planned tasks</small></div><span class="op">=</span>
+        <div><span :class="cap.verdict.c" x-text="cap.fmt(cap.free)"></span><small><span class="sq f"></span>free</small></div>
+        <div class="cap-verdict"><b :class="cap.verdict.c" x-text="cap.verdict.t"></b><span x-text="'Goal: keep ' + cap.fmt(cap.goal) + ' free for unplanned work'"></span></div>
+      </div>
+      <div class="bar" role="img" :aria-label="'Meetings ' + cap.fmt(cap.meet) + ', planned ' + cap.fmt(cap.planned) + ', free ' + cap.fmt(cap.free)">
+        <i class="b-meet" :style="'width:' + cap.wMeet + '%'"></i><i class="b-plan" :style="'width:' + cap.wPlan + '%'"></i><i class="b-over" :style="'width:' + cap.wOver + '%'"></i>
+        <div class="goal" :style="'left:' + cap.goalAt + '%'"><span>GOAL</span></div>
+      </div>
+      <div class="cap-foot" x-text="'Without the moves out of this week: ' + cap.fmt(cap.base) + ' planned, ' + (cap.baseFree >= 0 ? cap.fmt(cap.baseFree) + ' free' : cap.fmt(-cap.baseFree) + ' over') + '.' + (cap.next ? ' Next to move: ' + cap.next : '')"></div>
+    </div>
+  </section>
+
+  <section x-show="props.length" style="margin:0">
+    <div class="card startc">
+      <div>
+        <div class="eyebrow">Start here</div>
+        <h2 x-text="d.start_here?.title || ('Confirm this week\'s plan: ' + props.length + ' proposals')"></h2>
+        <p x-text="d.start_here?.why || 'Accept or change each line, then send it to Claude.'"></p>
+      </div>
+      <a class="btn btn-quiet" href="#plan">Go to the plan</a>
+    </div>
+  </section>
+
+  <section id="plan" x-show="props.length">
+    <div class="sh"><span class="eyebrow">Decide</span><h2>Plan this week</h2><span class="num" x-text="props.length + ' proposals'"></span></div>
+    <p class="rule">One proposal per board item and Inbox item. Change flips a line in or out of the plan; the capacity above follows.</p>
+    <div class="ptable">
+      <div class="prow head"><span>Proposal</span><span>Task and reason</span><span>Prio</span><span class="pdom">Domain</span><span>Effort</span><span>Your call</span></div>
+      <template x-for="p in props" :key="p.pid">
+        <div class="prow" :class="{out: !inPlan(p) && p.k !== 'done', answered: answers[p.pid]}">
+          <span class="ptag" :class="'k-' + p.k" x-text="p.k === 'next' ? 'Next week' : p.k"></span>
+          <div class="pt"><div class="ptitle"><span x-text="p.title"></span> <span class="team" x-show="topicOf(p)" :data-t="topicOf(p)?.t"><b x-text="topicOf(p)?.t"></b><span x-text="topicOf(p)?.n"></span></span></div><div class="pwhy" x-text="p.why"></div></div>
+          <span class="pprio"><span class="prio-demo" :class="'prio-' + p.priority" x-show="p.priority" x-text="p.priority"></span><span class="miss" x-show="!p.priority">none</span></span>
+          <span class="pdom"><span class="domain" :data-d="dd(p.domain)" x-show="p.domain" x-text="p.domain"></span><span class="miss" x-show="!p.domain">no domain</span></span>
+          <span class="peffort"><span x-text="effort(p) ? cap.fmt(effort(p)) : '-'"></span><small x-text="inPlan(p) ? 'in plan' : p.k === 'done' ? 'done' : 'out'"></small></span>
+          <div class="pcall">
+            <button class="btn btn-quiet" :aria-pressed="answers[p.pid] === 'change'" @click="answer(p, 'change')" :aria-label="'Change: ' + p.title">Change</button>
+            <button class="btn btn-quiet" :aria-pressed="answers[p.pid] === 'accept'" @click="answer(p, 'accept')" :aria-label="'Accept: ' + p.title">Accept</button>
+          </div>
+        </div>
+      </template>
+      <div class="pbar">
+        <div><b x-text="answered + ' of ' + props.length + ' proposals answered'"></b><span>Unanswered proposals are sent as proposed.</span></div>
+        <div class="btns">
+          <button class="btn btn-quiet" @click="resetAnswers()">Reset</button>
+          <button class="btn btn-claude" :class="copied.plan && 'is-copied'" @click="applyPlan()"><span x-text="lbl('plan', 'Send plan to Claude')"></span></button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Context: top of mind, ranked, with movement -->
+  <section id="tom" x-show="(d.top_of_mind || []).length">
+    <div class="sh"><span class="eyebrow">Context</span><h2>Top of mind</h2><span class="num" x-text="(d.top_of_mind || []).length"></span></div>
+    <p class="rule">Re-sorted for this week. The arrow shows the move since last week.</p>
+    <div class="toprows">
+      <template x-for="(t, i) in d.top_of_mind || []" :key="t.title">
+        <button type="button" class="toprow ranked" @click="openPanel('tom', t)" :aria-label="'Details: ' + t.title">
+          <span class="rk" x-text="i + 1"></span><span class="swatch" :data-d="dd(t.domain)"></span>
+          <span class="tt"><b x-text="t.title"></b><span class="domain" :data-d="dd(t.domain)" x-show="t.domain" x-text="t.domain"></span><span class="miss" x-show="!t.domain">no domain</span></span><span class="note" x-text="t.note || ''"></span>
+          <span class="signal hl" :class="healthTone(t.health)" x-show="t.health" x-text="t.health"></span>
+          <span class="rt" x-text="t.move || ''"></span>
+        </button>
+      </template>
+    </div>
+  </section>
+
+  <!-- Time: meetings by day -->
+  <section id="meetings" x-show="days.length">
+    <div class="sh"><span class="eyebrow">Time</span><h2>Meetings this week</h2><span class="num" x-text="days.reduce((a, x) => a + x.meetings.length, 0)"></span></div>
+    <p class="rule">Prep level per meeting. Deep prep gets its panel on the day.</p>
+    <div class="days">
+      <template x-for="x in days" :key="x.day">
+        <div class="card day">
+          <div class="day-h"><span x-text="x.day"></span><span class="mono num" x-show="x.hours" x-text="cap.fmt(x.hours)"></span></div>
+          <template x-for="(m, i) in x.meetings" :key="i">
+            <button class="dm" @click="openPanel('meeting', m)" :aria-label="'Meeting details: ' + m.title">
+              <span class="t" x-text="time12(m.start)"></span><span class="mtitle" x-text="m.title"></span>
+              <span class="signal" :class="m.tag_kind" x-show="m.tag" x-text="m.tag"></span>
+            </button>
+          </template>
+        </div>
+      </template>
+    </div>
+  </section>
+
+  <!-- Look back: Linear -->
+  <template x-if="d.linear">
+  <section id="linear">
+    <div class="sh"><span class="eyebrow">Look back · Linear</span><h2 x-text="d.linear.title || 'Linear this week'"></h2></div>
+    <p class="rule" x-show="d.linear.note" x-text="d.linear.note"></p>
+    <div class="tiles4">
+      <template x-for="t in d.linear.tiles || []" :key="t.l"><div class="card tile"><div class="v" :class="t.t" x-text="t.v"></div><div class="l" x-text="t.l"></div><div class="n" x-show="t.n" x-text="t.n"></div></div></template>
+    </div>
+    <div class="card bullets sumtext" style="border-bottom:1px solid var(--line);padding-bottom:14px" x-show="d.linear.summary" x-text="d.linear.summary"></div>
+    <div class="two">
+      <div class="card listcard" x-show="(d.linear.finished || []).length">
+        <div class="eyebrow">Finished</div>
+        <template x-for="f in d.linear.finished || []" :key="f.title"><div class="fin"><span><b x-text="f.title"></b><small x-text="f.meta"></small></span><span class="when" x-text="f.when"></span></div></template>
+      </div>
+      <div class="card" x-show="(d.linear.projects || []).length" style="overflow:hidden">
+        <table class="wtable">
+          <thead><tr><th>Project</th><th>Closed</th><th>Open</th><th>Health</th></tr></thead>
+          <tbody><template x-for="p in d.linear.projects || []" :key="p.name"><tr>
+            <td><b x-text="p.name"></b><small x-text="p.meta"></small></td><td class="mono" x-text="p.closed"></td><td class="mono" x-text="p.open"></td>
+            <td><span class="signal" :class="healthTone(p.health)" x-text="p.health"></span></td></tr></template></tbody>
+        </table>
+      </div>
+    </div>
+    <div class="card stale" style="margin-top:12px;padding:0 0 4px" x-show="(d.linear.stale?.items || []).length">
+      <div class="head"><span class="eyebrow" x-text="d.linear.stale?.title || 'Stale · should you nudge?'"></span><span class="eyebrow" x-text="d.linear.stale?.note"></span></div>
+      <template x-for="(s, i) in d.linear.stale?.items || []" :key="i">
+        <div class="srow">
+          <span class="team" :data-t="team(s.key).t"><b x-text="team(s.key).t"></b><span x-text="team(s.key).n"></span></span>
+          <div><b x-text="s.title"></b><small x-text="s.why"></small></div>
+          <span class="own" x-text="s.owner"></span>
+          <span class="idle" :class="s.verdict === 'Nudge' && 'warn'" x-text="s.idle_d + ' d'"></span>
+          <span class="verdict signal" :class="s.verdict === 'Nudge' && 'warn'" x-text="s.verdict"></span>
+          <span class="ctl"><button class="btn btn-quiet btn-copy sm" x-show="s.verdict === 'Nudge'" :class="copied['n' + i] && 'is-copied'" @click="nudge(s, 'n' + i)"><span x-text="lbl('n' + i, 'Ask Claude')"></span></button></span>
+        </div>
+      </template>
+    </div>
+  </section>
+  </template>
+
+  <!-- Read: product insights -->
+  <template x-if="d.insights">
+  <section id="insights">
+    <div class="sh"><span class="eyebrow">Read</span><h2>Product insights</h2></div>
+    <p class="rule">The Monday insights post and the monthly marketing mail, with what each means for your week.</p>
+    <div class="ins">
+      <template x-for="(c, i) in [d.insights.post, d.insights.mail].filter(Boolean)" :key="i">
+        <div class="card ins-card">
+          <div class="ins-h">
+            <div class="logo"><template x-if="icons[c.source]"><img :src="icons[c.source]" alt=""></template><template x-if="!icons[c.source]"><span x-text="abbr(c.source)"></span></template></div>
+            <div><b x-text="c.title"></b><div class="meta" x-text="c.meta"></div></div>
+            <a class="ext" x-show="url(c.link)" :href="url(c.link)" target="_blank" rel="noopener">Open</a>
+          </div>
+          <ol class="pts"><template x-for="(pt, j) in c.points || []" :key="j"><li><span x-text="String(j + 1).padStart(2, '0')"></span><div x-text="pt"></div></li></template></ol>
+          <div class="fyw" x-show="c.for_week"><div class="eyebrow">For your week</div><div x-text="c.for_week"></div></div>
+        </div>
+      </template>
+    </div>
+  </section>
+  </template>
+
+  <!-- Read: team PRs -->
+  <template x-if="d.teamprs">
+  <section id="teamprs">
+    <div class="sh"><span class="eyebrow">Read · GitHub</span><h2>Team PRs</h2></div>
+    <p class="rule" x-show="!d.teamprs.failed">From the warehouse, last week. Patterns only, no individual scores.</p>
+    <div class="card failcard" x-show="d.teamprs.failed">
+      <div class="logo"><template x-if="icons.github"><img :src="icons.github" alt=""></template></div>
+      <p><span class="signal">Source not reachable</span><span x-text="d.teamprs.failed"></span></p>
+      <button class="btn btn-quiet btn-copy" :class="copied.prs && 'is-copied'" @click="refresh('prs')"><span x-text="lbl('prs', 'Refresh with Claude')"></span></button>
+    </div>
+    <div class="tiles4" x-show="!d.teamprs.failed">
+      <template x-for="t in d.teamprs.tiles || []" :key="t.l"><div class="card tile"><div class="v" :class="t.t" x-text="t.v"></div><div class="l" x-text="t.l"></div></div></template>
+    </div>
+    <div class="card bullets" x-show="!d.teamprs.failed && (d.teamprs.notes || []).length"><ul><template x-for="n in d.teamprs.notes || []"><li x-text="n"></li></template></ul></div>
+  </section>
+  </template>
+  <footer>Built by routines/weekly.md. Click a meeting or initiative for details.</footer>
+</div>
+</template>
+
+<!-- ============ REVIEW ============ -->
+<template x-if="review">
+<div class="wrap wk">
+  <section style="margin-top:8px">
+    <div class="card startc">
+      <div>
+        <div class="eyebrow">Start here</div>
+        <h2 x-text="d.start_here?.title || (props.length + ' proposals' + (d.start_here?.minutes ? ', about ' + d.start_here.minutes + ' minutes' : ''))"></h2>
+        <p x-text="d.start_here?.why || 'Every line is a proposal. Accept, change or skip it, then send only your decisions to Claude.'"></p>
+      </div>
+      <a class="btn btn-quiet" :href="'#' + (navLinks[0]?.id || 'style')">Go to the first</a>
+    </div>
+  </section>
+
+  <template x-for="g in [['style', 'Writing style', 'A new rule per channel, with what Claude drafted against what you sent.'], ['glossary', 'Glossary', 'New or corrected terms from this week.'], ['fixes', 'Fixes from corrections', 'What went wrong, why, and the file the fix changes.'], ['tips', 'Tips', 'The tips queue, with a verdict for each.'], ['routines', 'New routines', 'Sequences you repeated by hand.']]" :key="g[0]">
+  <section :id="g[0]" x-show="rsec(g[0]).length">
+    <div class="sh"><span class="eyebrow">Improve</span><h2 x-text="g[1]"></h2><span class="num" x-text="rsec(g[0]).length"></span></div>
+    <p class="rule" x-text="g[2]"></p>
+    <div class="list">
+      <template x-for="p in rsec(g[0])" :key="p.pid">
+        <article class="card rv" :class="{answered: answers[p.pid] && answers[p.pid] !== 'skip', skipped: answers[p.pid] === 'skip'}">
+          <div class="rv-h">
+            <div>
+              <div class="eyebrow" x-show="p.channel || p.kind || p.from" x-text="[p.channel, p.kind === 'correct' ? 'Correction' : p.kind === 'new' ? 'New term' : '', p.from && 'Suggested by ' + p.from].filter(Boolean).join(' · ')"></div>
+              <h3 style="font-size:16px;margin-top:2px" x-text="p.term || p.issue || p.tip || p.title || p.channel"></h3>
+            </div>
+            <span class="signal" :class="p.verdict === 'adopt' ? 'ok' : p.verdict === 'backlog' ? 'warn' : ''" x-show="p.verdict" x-text="p.verdict"></span>
+          </div>
+<div class="atoms">
+<template x-if="pr(p)"><span class="prio-demo" :class="'prio-' + pr(p)" x-text="pr(p)"></span></template><template x-if="!pr(p)"><span class="miss">no priority</span></template>
+<template x-if="dom(p)"><span class="domain" :data-d="dd(dom(p))" x-text="dom(p)"></span></template><template x-if="!dom(p)"><span class="miss">no domain</span></template>
+<template x-if="topicOf(p)"><span class="team" :data-t="topicOf(p).t"><b x-text="topicOf(p).t"></b><span x-text="topicOf(p).n"></span></span></template>
+</div>
+          <div class="pair" x-show="p.before || p.after">
+            <div><div class="eyebrow">Claude drafted</div><blockquote class="quote full" x-text="p.before"></blockquote></div>
+            <div><div class="eyebrow">You sent</div><blockquote class="quote full" x-text="p.after"></blockquote></div>
+          </div>
+          <p class="rv-p" x-show="p.was"><span class="eyebrow">Was </span><span x-text="p.was"></span></p>
+          <dl class="rv-facts" x-show="p.cause || p.file || p.trigger || p.inputs || p.output">
+            <template x-if="p.cause"><dt>Root cause</dt></template><template x-if="p.cause"><dd x-text="p.cause"></dd></template>
+            <template x-if="p.trigger"><dt>Trigger</dt></template><template x-if="p.trigger"><dd x-text="p.trigger"></dd></template>
+            <template x-if="p.inputs"><dt>Inputs</dt></template><template x-if="p.inputs"><dd x-text="p.inputs"></dd></template>
+            <template x-if="p.output"><dt>Output</dt></template><template x-if="p.output"><dd x-text="p.output"></dd></template>
+            <template x-if="p.file"><dt>Changes</dt></template><template x-if="p.file"><dd class="mono" x-text="p.file"></dd></template>
+          </dl>
+          <div class="suggest">
+            <div class="suggest-h"><span>Claude suggests</span><span x-show="p.source" x-text="'Source: ' + p.source"></span></div>
+            <p x-text="p.rule || p.meaning || p.fix || p.why || p.verdict_text"></p>
+            <div class="btns pcall">
+              <button class="btn btn-quiet sm" :aria-pressed="answers[p.pid] === 'skip'" @click="answer(p, 'skip')" :aria-label="'Skip: ' + p.ttl">Skip</button>
+              <button class="btn btn-quiet sm" :aria-pressed="answers[p.pid] === 'change'" @click="answer(p, 'change')" :aria-label="'Change: ' + p.ttl">Change</button>
+              <button class="btn btn-quiet sm" :aria-pressed="answers[p.pid] === 'accept'" @click="answer(p, 'accept')" :aria-label="'Accept: ' + p.ttl">Accept</button>
+            </div>
+            <textarea class="callnote" x-show="answers[p.pid] === 'change'" x-model="notes[p.pid]" rows="2" maxlength="300" :aria-label="'What instead: ' + p.ttl" placeholder="What instead? Goes to Claude with your decision."></textarea>
+            <p class="callstate" x-show="answers[p.pid]" x-text="callText(p)"></p>
+          </div>
+        </article>
+      </template>
+    </div>
+  </section>
+  </template>
+
+  <section id="planactual" x-show="d.plan_actual">
+    <div class="sh"><span class="eyebrow">Look back · plan vs actual</span><h2>Plan vs actual</h2></div>
+    <p class="rule" x-text="d.plan_actual?.note"></p>
+    <div class="tiles4">
+      <div class="card tile"><div class="v"><span x-text="d.plan_actual?.done"></span> <small x-text="'/ ' + d.plan_actual?.planned"></small></div><div class="l">planned tasks done</div></div>
+      <div class="card tile"><div class="v" :class="d.plan_actual?.slipped ? 'warn' : ''" x-text="d.plan_actual?.slipped"></div><div class="l">slipped</div></div>
+      <div class="card tile"><div class="v" x-text="cap.fmt(d.plan_actual?.planned_h || 0)"></div><div class="l">planned work</div></div>
+      <div class="card tile"><div class="v warn" x-text="cap.fmt(d.plan_actual?.unplanned_h || 0)"></div><div class="l">unplanned work</div></div>
+    </div>
+    <div class="card bullets" x-show="(d.plan_actual?.sources || []).length">
+      <div class="eyebrow">Where the unplanned work came from</div>
+      <template x-for="x in d.plan_actual?.sources || []" :key="x.label">
+        <div class="hb"><span x-text="x.label"></span><span class="trk"><i :style="'width:' + Math.min(100, x.h / (d.plan_actual.unplanned_h || 1) * 100) + '%'"></i></span><span class="mono" x-text="cap.fmt(x.h)"></span></div>
+      </template>
+    </div>
+  </section>
+
+  <div class="pbar-fixed card" style="margin:0">
+    <div class="pbar" style="border:0;border-radius:var(--r-lg)">
+      <div>
+        <b x-text="ansState === 'copied' ? 'Copied, not yet confirmed' : ansState === 'updated' ? 'Decisions changed' : answered + ' of ' + props.length + ' proposals decided'"></b>
+        <span x-text="ansState === 'copied' ? 'Paste in Cowork. The next review shows what Claude applied.' : ansState === 'updated' ? 'Copy again so Claude gets the latest.' : 'Only your decisions are sent. Proposals without one stay open.'"></span>
+      </div>
+      <div class="btns">
+        <button class="btn btn-quiet" @click="resetAnswers()">Reset</button>
+        <button class="btn btn-claude" :class="ansState === 'copied' && copied.review && 'is-copied'" :disabled="!answered" @click="applyReview()"><span x-text="ansState === 'updated' ? 'Copy again' : lbl('review', 'Send to Claude')"></span></button>
+      </div>
+    </div>
+  </div>
+  <footer>Built by routines/review.md.</footer>
+</div>
+</template>
+
+<!-- ============ Detail panel ============ -->
+<div class="scrim" x-show="panel" x-transition.opacity @click="close()"></div>
+<aside class="panel" x-show="panel" x-transition role="dialog" aria-modal="true" :aria-label="panel ? panel.title : ''">
+  <template x-if="panel">
+    <div class="pin">
+      <div class="phead">
+        <div class="logo" :title="label(panel.source)"><template x-if="icons[panel.source]"><img :src="icons[panel.source]" :alt="label(panel.source)"></template><template x-if="!icons[panel.source]"><span x-text="abbr(panel.source || panelKind)"></span></template></div>
+        <div>
+          <div class="eyebrow" x-text="panelKicker"></div>
+          <h3 x-text="panel.title"></h3>
+          <div class="meta" x-show="panelKind !== 'meeting' && meta(panel)" x-text="meta(panel)"></div>
+          <div class="atoms" x-show="panelKind === 'item'"><span class="prio-demo" :class="'prio-' + pr(panel)" x-show="pr(panel)" x-text="pr(panel)"></span><span class="miss" x-show="!pr(panel)">no priority</span><span class="domain" :data-d="dd(dom(panel))" x-show="dom(panel)" x-text="dom(panel)"></span><span class="miss" x-show="!dom(panel)">no domain</span><span class="team" x-show="topicOf(panel)" :data-t="topicOf(panel)?.t"><b x-text="topicOf(panel)?.t"></b><span x-text="topicOf(panel)?.n"></span></span></div>
+          <div class="atoms" x-show="panelKind === 'meeting' && (panel.domain || panel.topic)"><span class="domain" :data-d="dd(panel.domain)" x-show="panel.domain" x-text="panel.domain"></span><span class="team" x-show="topicOf(panel)" :data-t="topicOf(panel)?.t"><b x-text="topicOf(panel)?.t"></b><span x-text="topicOf(panel)?.n"></span></span></div>
+        </div>
+        <button class="btn btn-quiet x" x-ref="closeBtn" @click="close()" aria-label="Close">×</button>
+      </div>
+
+      <!-- meeting: when, where, who, prep level, then the two actions -->
+      <template x-if="panelKind === 'meeting'">
+        <div>
+          <dl class="facts">
+            <dt>When</dt><dd class="mono" x-text="timeRange(panel)"></dd>
+            <template x-if="panel.where"><dt>Where</dt></template><template x-if="panel.where"><dd x-text="panel.where"></dd></template>
+            <template x-if="names(panel.who)"><dt>With</dt></template><template x-if="names(panel.who)"><dd x-text="names(panel.who)"></dd></template>
+          </dl>
+          <div class="callout" x-show="panel.tag || panel.why"><span class="signal" :class="tone(panel.tag_kind)" x-show="panel.tag" x-text="panel.tag"></span><span x-text="panel.why"></span></div>
+          <div class="ptop">
+            <a class="btn btn-quiet" x-show="joinLink(panel)" :href="joinLink(panel)" target="_blank" rel="noopener"><span class="ext">Join Meet</span></a>
+            <button class="btn btn-claude" :class="copied.mprep && 'is-copied'" @click="prep(panel, 'mprep')"><span x-text="lbl('mprep', 'Prep with Claude')"></span></button>
+          </div>
+        </div>
+      </template>
+
+      <template x-if="panelKind === 'task'">
+        <div class="controls">
+          <select class="prio" :class="'prio-' + eff(panel).priority" @change="setPriority(panel, $event.target.value)" aria-label="Priority">
+            <template x-for="p in PRIOS"><option :value="p" :selected="eff(panel).priority === p" x-text="p"></option></template>
+          </select>
+          <span class="status" :class="statusClass(eff(panel).status)" x-text="eff(panel).status"></span>
+          <span class="domain" :data-d="dd(panel.domain)" x-show="panel.domain" x-text="panel.domain"></span>
+          <span class="size" x-show="panel.size" x-text="'Size ' + panel.size"></span>
+          <span class="spacer"></span>
+          <label class="check"><input type="checkbox" :checked="eff(panel).status === 'Done'" @change="setDone(panel, $event.target.checked)"> Done</label>
+          <button class="btn btn-quiet sm" @click="toggleMove(panel)" x-text="eff(panel).list === 'week' ? 'Move to Inbox' : 'Move to This week'"></button>
+          <button class="btn btn-quiet sm" @click="toggleDrop(panel)" x-text="eff(panel).drop ? 'Keep' : 'Drop'"></button>
+        </div>
+      </template>
+
+      <template x-if="panelKind === 'tom'">
+        <div>
+          <div class="controls"><span class="signal" :class="healthTone(panel.health)" x-show="panel.health" x-text="panel.health"></span><span class="domain" :data-d="dd(panel.domain)" x-show="panel.domain" x-text="panel.domain"></span></div>
+          <div class="block" x-show="panel.note"><h4 class="eyebrow">Where it stands</h4><p x-text="panel.note"></p></div>
+          <div class="block" x-show="panel.next"><h4 class="eyebrow">Next milestone</h4><p class="strong" x-text="panel.next"></p></div>
+          <div class="block" x-show="(panel.updates || []).length"><h4 class="eyebrow">Latest updates</h4>
+            <ul class="dash"><template x-for="u in panel.updates || []"><li x-text="u"></li></template></ul></div>
+          <div class="block" x-show="related(panel).length"><h4 class="eyebrow">Open tasks on the board</h4>
+            <ul class="tom-tasks"><template x-for="t in related(panel)" :key="t.id">
+              <li><button type="button" class="linkish" @click="openPanel('task', t)">
+                <span class="prio" :class="'prio-' + eff(t).priority" x-text="eff(t).priority"></span>
+                <span x-text="t.title"></span>
+                <span class="status" :class="statusClass(eff(t).status)" x-text="eff(t).status"></span></button></li>
+            </template></ul></div>
+        </div>
+      </template>
+
+      <div class="block" x-show="panelKind !== 'meeting' && panel.why"><h4 class="eyebrow">Why it matters</h4><p x-text="panel.why"></p></div>
+      <div class="block" x-show="panel.context"><h4 class="eyebrow">Context</h4><blockquote class="quote full" x-text="panel.context"></blockquote></div>
+      <div class="block" x-show="panel.action"><h4 class="eyebrow">Next step</h4><p class="strong" x-text="panel.action"></p></div>
+      <div class="suggest" style="margin-top:22px" x-show="panel.rec"><div class="suggest-h"><span>Claude suggests</span><span x-show="panel.rec?.source" x-text="'Source: ' + panel.rec?.source"></span></div><p style="margin-bottom:0" x-text="panel.rec?.text"></p></div>
+      <div class="block" x-show="panel.closed_when"><h4 class="eyebrow">Closed when</h4><p x-text="panel.closed_when"></p></div>
+
+      <!-- meeting blocks -->
+      <div class="block" x-show="panelKind === 'meeting' && (panel.decide || []).length"><h4 class="eyebrow">Decide in this meeting</h4>
+        <div class="pcards"><template x-for="(x, i) in panel.decide || []" :key="i">
+          <div class="pcard"><div><b><span class="mono num" x-text="String(i + 1).padStart(2, '0') + ' '"></span><span x-text="x.title"></span></b><span class="meta" x-show="x.note" x-text="x.note"></span></div><span class="signal warn" x-show="x.state" x-text="x.state"></span></div>
+        </template></div></div>
+      <template x-if="panelKind === 'meeting' && panel.topic">
+        <div class="block"><h4 class="eyebrow" x-text="'Topic · ' + (panel.topic.kind || '')"></h4>
+          <p class="strong"><a class="ext" x-show="url(panel.topic.link)" :href="url(panel.topic.link)" target="_blank" rel="noopener" x-text="panel.topic.title"></a><span x-show="!url(panel.topic.link)" x-text="panel.topic.title"></span></p>
+          <p x-show="panel.topic.state" x-text="panel.topic.state"></p>
+          <ul class="dash" x-show="(panel.topic.updates || []).length"><template x-for="u in panel.topic.updates || []"><li x-text="u"></li></template></ul>
+          <ul class="dash" x-show="(panel.topic.open || []).length"><template x-for="o in panel.topic.open || []">
+            <li><a class="ext" x-show="url(o.link)" :href="url(o.link)" target="_blank" rel="noopener" x-text="o.text"></a><span x-show="!url(o.link)" x-text="o.text"></span></li></template></ul>
+        </div>
+      </template>
+      <div class="block" x-show="panel.prep"><h4 class="eyebrow">Prep</h4><p x-text="panel.prep"></p></div>
+      <div class="block" x-show="(panel.prep_items || []).length"><h4 class="eyebrow">Unfinished prep</h4>
+        <ul class="acts"><template x-for="x in panel.prep_items || []"><li><span class="status s-todo"></span><span x-text="x"></span><span></span></li></template></ul></div>
+      <template x-if="panelKind === 'meeting' && panel.between">
+        <div>
+          <template x-for="g in [['you_owe', 'You owe'], ['they_owe', 'They owe'], ['threads', 'Running between you']]" :key="g[0]">
+            <div class="block" x-show="(panel.between[g[0]] || []).length"><h4 class="eyebrow" x-text="g[0] === 'threads' ? g[1] : g[1] + (panel.between.name ? ' ' + panel.between.name : '')"></h4>
+              <ul class="atts"><template x-for="e in panel.between[g[0]] || []">
+                <li><span class="logo xs"><template x-if="icons[e.source]"><img :src="icons[e.source]" alt=""></template></span>
+                  <span><a class="ext" x-show="url(e.link)" :href="url(e.link)" target="_blank" rel="noopener" x-text="e.text"></a><span x-show="!url(e.link)" x-text="e.text"></span><small x-show="e.note" x-text="e.note"></small></span></li>
+              </template></ul></div>
+          </template>
+          <div class="suggest" style="margin-top:22px" x-show="(panel.between.agenda || []).length"><div class="suggest-h"><span>Claude suggests an agenda</span></div>
+            <ol style="margin:8px 0 0;padding-left:20px"><template x-for="a in panel.between.agenda || []"><li x-text="a"></li></template></ol></div>
+        </div>
+      </template>
+      <div class="block" x-show="panelKind === 'meeting' && panel.last_time"><h4 class="eyebrow" x-text="'Last time' + (panel.last_time?.date ? ' · ' + panel.last_time.date : '')"></h4>
+        <div class="lastbox">
+          <div class="eyebrow" x-show="(panel.last_time?.discussed || []).length">Discussed</div>
+          <ul class="dash"><template x-for="x in panel.last_time?.discussed || []"><li x-text="x"></li></template></ul>
+          <div class="eyebrow" x-show="(panel.last_time?.decided || []).length">Decided</div>
+          <ul class="dash"><template x-for="x in panel.last_time?.decided || []"><li x-text="x"></li></template></ul>
+        </div></div>
+      <div class="block" x-show="(panel.open_points || []).length"><h4 class="eyebrow">Open from last time</h4>
+        <ul class="dash"><template x-for="p in panel.open_points || []"><li x-text="p"></li></template></ul></div>
+      <div class="block" x-show="(panel.action_items?.mine || []).length"><h4 class="eyebrow">My action items from last time</h4>
+        <ul class="acts"><template x-for="a in panel.action_items?.mine || []">
+          <li><span class="status" :class="actClass(a.status)"></span><span x-text="a.text"></span><span class="act-st" x-text="a.status || 'open'"></span></li>
+        </template></ul></div>
+      <div class="block" x-show="(panel.action_items?.others || []).length"><h4 class="eyebrow">Others' action items from last time</h4>
+        <ul class="acts"><template x-for="a in panel.action_items?.others || []">
+          <li><span class="status" :class="actClass(a.status)"></span><span><b x-text="a.who + ': '"></b><span x-text="a.text"></span></span><span class="act-st" x-text="a.status || 'open'"></span></li>
+        </template></ul></div>
+      <div class="block" x-show="(panel.attachments || []).length"><h4 class="eyebrow">Attached and linked</h4>
+        <ul class="atts"><template x-for="a in panel.attachments || []">
+          <li>
+            <span class="logo xs"><template x-if="icons[a.source]"><img :src="icons[a.source]" alt=""></template></span>
+            <span><a class="ext" :href="url(a.url)" target="_blank" rel="noopener" x-text="a.label"></a><small x-show="a.summary" x-text="a.summary"></small></span>
+          </li>
+        </template></ul></div>
+      <div class="block" x-show="panel.notes"><h4 class="eyebrow">Notes</h4><p x-text="panel.notes"></p></div>
+      <div class="block" x-show="people(panelKind === 'meeting' ? panel.who : panel.people).length"><h4 class="eyebrow" x-text="panelKind === 'meeting' ? 'Who' : 'People'"></h4>
+        <ul class="people"><template x-for="p in people(panelKind === 'meeting' ? panel.who : panel.people)">
+          <li><span class="avatar" x-text="initials(p.name)"></span><span><b x-text="p.name"></b><small x-show="p.note" x-text="p.note"></small></span></li>
+        </template></ul></div>
+      <div class="block" x-show="(panel.history || []).length"><h4 class="eyebrow">History</h4>
+        <ul class="dash history"><template x-for="h in panel.history || []"><li x-text="h"></li></template></ul></div>
+      <div class="block" x-show="url(panel.link) || linksOf(panel).length"><h4 class="eyebrow">Links</h4>
+        <div class="links">
+          <a class="btn btn-quiet sm" x-show="url(panel.link)" :href="url(panel.link)" target="_blank" rel="noopener">
+            <template x-if="icons[panel.source]"><img :src="icons[panel.source]" alt="" width="14" height="14"></template>
+            <span class="ext" x-text="'Open in ' + (label(panel.source) || 'source')"></span></a>
+          <template x-for="l in linksOf(panel)">
+            <a class="btn btn-quiet sm" :href="url(l.url)" target="_blank" rel="noopener">
+              <template x-if="icons[l.source]"><img :src="icons[l.source]" alt="" width="14" height="14"></template>
+              <span class="ext" x-text="l.label"></span></a>
+          </template>
+        </div></div>
+
+      <div class="pactions">
+        <button class="btn btn-quiet" @click="close()">Close</button>
+        <template x-if="panelKind === 'meeting'"><button class="btn btn-claude" :class="copied.mprep2 && 'is-copied'" @click="prep(panel, 'mprep2')"><span x-text="lbl('mprep2', 'Prep with Claude')"></span></button></template>
+        <template x-if="panelKind !== 'meeting'"><button class="btn btn-claude" :class="copied.pask && 'is-copied'" @click="doIt(panel, 'pask')"><span x-text="lbl('pask', 'Ask Claude')"></span></button></template>
+      </div>
+    </div>
+  </template>
+</aside>
+
+<!-- Staged board changes, waiting for Claude -->
+<div class="dock" x-show="changeCount" x-transition role="status">
+  <div class="grow">
+    <span class="dock-n" x-text="dockState === 'copied' ? 'Copied, not yet confirmed' : dockState === 'updated' ? 'Changes updated' : changeCount + (changeCount === 1 ? ' board change on this page' : ' board changes on this page')"></span>
+    <span class="dock-s" :class="dockState === 'updated' && 'warn'" x-text="dockState === 'copied' ? 'Paste in Cowork. The next brief shows the change.' : dockState === 'updated' ? 'Copy again so Claude gets the latest.' : 'Saved in this browser only. Not applied yet.'"></span>
+  </div>
+  <button class="btn btn-quiet" @click="edits = {}; sentSig = null">Undo all</button>
+  <button class="btn btn-claude" :class="dockState === 'copied' && copied.dock && 'is-copied'" @click="applyChanges()"><span x-text="dockState === 'updated' ? 'Copy again' : lbl('dock', 'Send to Claude')"></span></button>
+</div>
+<div class="toast" x-show="toastMsg" x-transition.opacity x-text="toastMsg" role="status"></div>
+<div class="failbox" x-show="fail" role="alert">
+  <b>Could not copy.</b> The prompt is selected below. Press Cmd+C (or Ctrl+C), then paste it in Cowork.
+  <textarea x-ref="failTa" readonly x-model="fail" @keydown.escape="fail = ''"></textarea>
+  <button class="btn btn-quiet sm" style="margin-top:8px" @click="fail = ''">Close</button>
+</div>
+</div>
+
+<script id="icons" type="application/json">__ICONS__</script>
+<script id="data" type="application/json">__DATA__</script>
+<script>__APP__</script>
+<script>__ALPINE__</script>
+</body>
+</html>

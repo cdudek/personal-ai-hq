@@ -1,0 +1,595 @@
+{
+ "kind": "weekly",
+ "date": "sample",
+ "week": 46,
+ "title": "Week of 10 November",
+ "generated": "Monday 6:57 AM",
+ "headline": "Last week closed 5 of 8 planned tasks. This week Claude proposes 5 tasks, about 16.5 hours, which leaves 9.5 hours for unplanned work: as much as last week needed.",
+ "sources": [
+  {
+   "name": "Slack",
+   "ok": true
+  },
+  {
+   "name": "Linear",
+   "ok": true
+  },
+  {
+   "name": "Calendar",
+   "ok": true
+  },
+  {
+   "name": "GitHub",
+   "ok": true
+  }
+ ],
+ "last_week": {
+  "range": "3 to 7 November",
+  "summary": "The week went to the AI stack and the OKR baselines. **O1 is final** and the first brief runs in Claude worked. The partner analytics PR waited 4 days on your caching answer, which pushed the endpoint into this week. Unplanned work took 9 hours, mostly the billing thread and two partner calls.",
+  "went_well": [
+   "O1 targets final",
+   "First Claude runs",
+   "Data clearance agreed"
+  ],
+  "slipped": [
+   "Partner endpoint: waited on you",
+   "Survey KR: decision open"
+  ],
+  "decided": [
+   "Partner API stays a Q1 bet",
+   "Clearance levels for the mart"
+  ],
+  "stats": {
+   "planned": 8,
+   "done": 5,
+   "slipped": 2,
+   "unplanned_h": 9,
+   "meeting_h": 14
+  },
+  "slipped_repeat": false,
+  "lever": "Plan vs actual: **2 of 3 slips** waited on a decision from you. Deciding earlier in the week is the biggest lever."
+ },
+ "capacity": {
+  "available_h": 40,
+  "meetings_h": 14,
+  "goal_free_h": 9,
+  "last_unplanned_h": 9,
+  "baseline_planned_h": 20
+ },
+ "start_here": {
+  "title": "Confirm this week's plan: 9 proposals, about 5 minutes",
+  "why": "The plan fits: 9.5 h free against the 9 h goal, last week's unplanned work. Accept or change each line, then send it to Claude."
+ },
+ "proposals": [
+  {
+   "id": "w2",
+   "kind": "keep",
+   "title": "Answer caching question on PR #812",
+   "why": "Slipped from last week. Blocks the partner endpoint",
+   "priority": "P0",
+   "domain": "API",
+   "effort_h": 1
+  },
+  {
+   "id": "i4",
+   "kind": "keep",
+   "title": "Decide whether partial survey submits count",
+   "why": "Blocks the survey KR and O2 targets",
+   "priority": "P1",
+   "domain": "OKRs",
+   "effort_h": 2
+  },
+  {
+   "id": "w4",
+   "kind": "done",
+   "title": "First brief runs in Claude",
+   "why": "3 runs went through. Close it",
+   "priority": "P1",
+   "domain": "AI Stack"
+  },
+  {
+   "id": "w1",
+   "kind": "add",
+   "title": "Finalise O2 and O3 targets",
+   "why": "From the Inbox. Planning deadline Friday",
+   "priority": "P0",
+   "domain": "OKRs",
+   "effort_h": 10
+  },
+  {
+   "id": "i1",
+   "kind": "add",
+   "title": "Run the GTM process kick-off",
+   "why": "From the Inbox. Jules and Mia, 1 hour",
+   "priority": "P2",
+   "domain": "GTM",
+   "effort_h": 3
+  },
+  {
+   "id": "i2",
+   "kind": "add",
+   "title": "Send Sam infra change apply request",
+   "why": "From the Inbox. 5 minutes, unblocks data clearance",
+   "priority": "P2",
+   "domain": "Data",
+   "effort_h": 0.5
+  },
+  {
+   "id": "i5",
+   "kind": "next week",
+   "title": "Partner incentive idea: monthly partner report",
+   "why": "From the Inbox. No deadline; 3 h would eat a third of the buffer",
+   "priority": "P3",
+   "domain": "Product",
+   "effort_h": 3
+  },
+  {
+   "id": "w5",
+   "kind": "remove",
+   "title": "Approve API repo rename",
+   "why": "Waiting on others for 2 weeks. Track it in Waiting on others",
+   "priority": "P2",
+   "domain": "API",
+   "effort_h": 0.5
+  },
+  {
+   "id": "w3",
+   "kind": "done",
+   "title": "Send Q1 budget split to Priya",
+   "why": "Sent Thursday",
+   "priority": "P1",
+   "domain": "Admin"
+  }
+ ],
+ "top_of_mind": [
+  {
+   "title": "OKRs T3/2026",
+   "note": "O2 and O3 targets due Friday",
+   "health": "At risk",
+   "move": "same",
+   "domain": "OKRs",
+   "source": "linear",
+   "next": "All O2 and O3 targets set by Friday",
+   "updates": [
+    "Nov 3: O1 baselines pulled from the warehouse"
+   ],
+   "link": "https://linear.app/acme/initiative/data-okrs"
+  },
+  {
+   "title": "Partner API",
+   "note": "Endpoint unblocked once caching is answered",
+   "health": "At risk",
+   "move": "up from 3",
+   "domain": "API",
+   "source": "github",
+   "link": "https://github.com/acme/partner-api/issues/12"
+  },
+  {
+   "title": "Data clearance",
+   "note": "infra change apply this week",
+   "health": "On track",
+   "move": "up from 4",
+   "domain": "Data",
+   "source": "linear",
+   "link": "https://linear.app/acme/initiative/data-okrs"
+  },
+  {
+   "title": "GTM process",
+   "note": "Kick-off this week",
+   "health": "Starting",
+   "move": "new",
+   "domain": "GTM",
+   "source": "slack",
+   "link": "https://acme.slack.com/archives/CSAMPLE06/p1793600000000001"
+  },
+  {
+   "title": "Personal AI Stack",
+   "note": "Runs stable, weekly brief next",
+   "health": "On track",
+   "move": "down from 2",
+   "domain": "AI Stack",
+   "source": "me"
+  }
+ ],
+ "days": [
+  {
+   "day": "Monday",
+   "hours": 3,
+   "meetings": [
+    {
+     "start": "10:00",
+     "end": "11:00",
+     "title": "Roadmap review",
+     "source": "calendar",
+     "tag": "Deep prep",
+     "tag_kind": "warn",
+     "links": [
+      {
+       "label": "Calendar event",
+       "url": "https://calendar.google.com/calendar/event?eid=sample",
+       "source": "calendar"
+      }
+     ]
+    },
+    {
+     "start": "13:00",
+     "end": "13:30",
+     "title": "1:1 Nora",
+     "source": "calendar",
+     "tag": "Reminder",
+     "tag_kind": "",
+     "links": [
+      {
+       "label": "Calendar event",
+       "url": "https://calendar.google.com/calendar/event?eid=sample",
+       "source": "calendar"
+      }
+     ]
+    },
+    {
+     "start": "16:00",
+     "end": "16:30",
+     "title": "Eng sync",
+     "source": "calendar",
+     "tag": "No prep",
+     "tag_kind": "",
+     "links": [
+      {
+       "label": "Calendar event",
+       "url": "https://calendar.google.com/calendar/event?eid=sample",
+       "source": "calendar"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "day": "Tuesday",
+   "hours": 2.5,
+   "meetings": [
+    {
+     "start": "11:00",
+     "end": "12:00",
+     "title": "GTM kick-off",
+     "source": "calendar",
+     "tag": "Deep prep",
+     "tag_kind": "warn",
+     "links": [
+      {
+       "label": "Calendar event",
+       "url": "https://calendar.google.com/calendar/event?eid=sample",
+       "source": "calendar"
+      }
+     ]
+    },
+    {
+     "start": "15:00",
+     "end": "15:30",
+     "title": "1:1 Theo",
+     "source": "calendar",
+     "tag": "Reminder",
+     "tag_kind": "",
+     "links": [
+      {
+       "label": "Calendar event",
+       "url": "https://calendar.google.com/calendar/event?eid=sample",
+       "source": "calendar"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "day": "Wednesday",
+   "hours": 4,
+   "meetings": [
+    {
+     "start": "09:00",
+     "end": "10:30",
+     "title": "OKR planning",
+     "source": "calendar",
+     "tag": "Deep prep",
+     "tag_kind": "warn",
+     "links": [
+      {
+       "label": "Calendar event",
+       "url": "https://calendar.google.com/calendar/event?eid=sample",
+       "source": "calendar"
+      }
+     ]
+    },
+    {
+     "start": "14:00",
+     "end": "15:00",
+     "title": "Partner call: Northwind",
+     "source": "calendar",
+     "tag": "No prep",
+     "tag_kind": "",
+     "links": [
+      {
+       "label": "Calendar event",
+       "url": "https://calendar.google.com/calendar/event?eid=sample",
+       "source": "calendar"
+      }
+     ]
+    },
+    {
+     "start": "16:00",
+     "end": "16:30",
+     "title": "Eng sync",
+     "source": "calendar",
+     "tag": "No prep",
+     "tag_kind": "",
+     "links": [
+      {
+       "label": "Calendar event",
+       "url": "https://calendar.google.com/calendar/event?eid=sample",
+       "source": "calendar"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "day": "Thursday",
+   "hours": 2,
+   "meetings": [
+    {
+     "start": "10:00",
+     "end": "11:00",
+     "title": "Board deck review",
+     "source": "calendar",
+     "tag": "Deep prep",
+     "tag_kind": "warn",
+     "links": [
+      {
+       "label": "Calendar event",
+       "url": "https://calendar.google.com/calendar/event?eid=sample",
+       "source": "calendar"
+      }
+     ]
+    },
+    {
+     "start": "14:00",
+     "end": "14:30",
+     "title": "1:1 Alex",
+     "source": "calendar",
+     "tag": "Reminder",
+     "tag_kind": "",
+     "links": [
+      {
+       "label": "Calendar event",
+       "url": "https://calendar.google.com/calendar/event?eid=sample",
+       "source": "calendar"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "day": "Friday",
+   "hours": 2.5,
+   "meetings": [
+    {
+     "start": "10:00",
+     "end": "11:00",
+     "title": "Team demo",
+     "source": "calendar",
+     "tag": "No prep",
+     "tag_kind": "",
+     "links": [
+      {
+       "label": "Calendar event",
+       "url": "https://calendar.google.com/calendar/event?eid=sample",
+       "source": "calendar"
+      }
+     ]
+    },
+    {
+     "start": "15:57",
+     "end": "16:30",
+     "title": "Weekly review",
+     "source": "calendar",
+     "tag": "System",
+     "tag_kind": "",
+     "links": [
+      {
+       "label": "Calendar event",
+       "url": "https://calendar.google.com/calendar/event?eid=sample",
+       "source": "calendar"
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "linear": {
+  "title": "Linear this week",
+  "note": "Closed, finished and stale work across your teams. Stale means no update for 7 days.",
+  "tiles": [
+   {
+    "v": 38,
+    "l": "issues closed",
+    "n": "WEB 21 · DATA 9 · APP 8"
+   },
+   {
+    "v": 1,
+    "l": "milestone reached",
+    "n": "data clearance levels",
+    "t": "ok"
+   },
+   {
+    "v": 41,
+    "l": "in progress",
+    "n": "+3 vs last week"
+   },
+   {
+    "v": 6,
+    "l": "stale issues",
+    "n": "2 worth a nudge",
+    "t": "warn"
+   }
+  ],
+  "summary": "A steady week: the O1 baselines landed and the data clearance milestone is done. The partner endpoint and the survey event both still wait on decisions from you. Most stale work sits in the backlog; two items block someone and are worth a nudge.",
+  "finished": [
+   {
+    "title": "O1 baselines in the warehouse",
+    "meta": "Issue · Data · Jordan",
+    "when": "Thu"
+   },
+   {
+    "title": "Insights Hub: checkout UX audit",
+    "meta": "Milestone · Growth · 7 issues",
+    "when": "Wed"
+   },
+   {
+    "title": "Clearance levels in the mart",
+    "meta": "Milestone · Data · Sam",
+    "when": "Tue"
+   },
+   {
+    "title": "WEB-1377 Signup form step 3 fix",
+    "meta": "Issue · Ravi",
+    "when": "Mon"
+   }
+  ],
+  "projects": [
+   {
+    "name": "Web Platform Q4",
+    "meta": "WEB",
+    "closed": 21,
+    "open": 18,
+    "health": "On track"
+   },
+   {
+    "name": "Partner API",
+    "meta": "WEB · APP",
+    "closed": 9,
+    "open": 11,
+    "health": "At risk"
+   },
+   {
+    "name": "Survey data",
+    "meta": "DATA",
+    "closed": 6,
+    "open": 7,
+    "health": "At risk"
+   },
+   {
+    "name": "Data mart",
+    "meta": "DATA",
+    "closed": 2,
+    "open": 5,
+    "health": "On track"
+   }
+  ],
+  "stale": {
+   "title": "Stale · should you nudge?",
+   "note": "6 stale, sorted by who is blocked",
+   "items": [
+    {
+     "key": "WEB-1388",
+     "title": "Approval flow for partner accounts",
+     "why": "Blocks Ellis, review due Thursday",
+     "owner": "You",
+     "idle_d": 9,
+     "verdict": "Nudge",
+     "link": "https://linear.app/acme/issue/WEB-1388"
+    },
+    {
+     "key": "APP-221",
+     "title": "Pricing page for the Partner API",
+     "why": "Blocks the launch copy",
+     "owner": "Owen",
+     "idle_d": 8,
+     "verdict": "Nudge",
+     "link": "https://linear.app/acme/issue/APP-221"
+    },
+    {
+     "key": "DATA-88",
+     "title": "unmapped fields owners list",
+     "why": "Nora has it in her 1:1 agenda",
+     "owner": "Nora",
+     "idle_d": 7,
+     "verdict": "In 1:1",
+     "link": "https://linear.app/acme/issue/DATA-88"
+    },
+    {
+     "key": "WEB-1360",
+     "title": "Old export cleanup",
+     "why": "Backlog, nothing depends on it",
+     "owner": "Marcus W.",
+     "idle_d": 12,
+     "verdict": "Leave",
+     "link": "https://linear.app/acme/issue/WEB-1360"
+    },
+    {
+     "key": "WEB-1301",
+     "title": "Date picker a11y labels",
+     "why": "Backlog, planned for next cycle",
+     "owner": "Devon",
+     "idle_d": 15,
+     "verdict": "Leave",
+     "link": "https://linear.app/acme/issue/WEB-1301"
+    }
+   ]
+  }
+ },
+ "insights": {
+  "post": {
+   "source": "slack",
+   "title": "Product insights post",
+   "meta": "#product-insights · Monday",
+   "link": "https://acme.slack.com/archives/CSAMPLE05/p1793500000000001",
+   "points": [
+    "Comparison pages drive 31 % of vendor leads, up from 24 %",
+    "Signup form drop-off moved from step 2 to step 3",
+    "AI answer engines now send 6 % of buyer traffic"
+   ],
+   "for_week": "The step 3 drop-off ties to WEB-1402. Bring it to the roadmap review."
+  },
+  "mail": {
+   "source": "gmail",
+   "title": "Marketing insights mail",
+   "meta": "Quinn · monthly, October",
+   "link": "https://mail.google.com/mail/u/0/#all/19a2f0e1",
+   "points": [
+    "Webinar sign-ups doubled with the new category pages",
+    "Buyer newsletter open rate 41 %",
+    "Two vendors asked for API access in sales calls"
+   ],
+   "for_week": "Two more pull signals for the Partner API. Log them."
+  }
+ },
+ "teamprs": {
+  "tiles": [
+   {
+    "v": 23,
+    "l": "merged"
+   },
+   {
+    "v": "1.6 d",
+    "l": "median to first review"
+   },
+   {
+    "v": 4,
+    "l": "waited over 3 days",
+    "t": "warn"
+   },
+   {
+    "v": 2,
+    "l": "of those waited on you",
+    "t": "warn"
+   }
+  ],
+  "notes": [
+   "Review time is stable, but two of the slow ones were yours: block 30 minutes for code reviews on Tuesday and Thursday",
+   "Survey work came in large PRs (over 600 lines). Smaller PRs would review faster"
+  ]
+ },
+ "last_review": {
+  "adopted": 4,
+  "open": 3,
+  "link": "review.html"
+ }
+}

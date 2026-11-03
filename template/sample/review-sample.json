@@ -1,0 +1,192 @@
+{
+ "kind": "review",
+ "date": "sample",
+ "week": 45,
+ "title": "What to improve this week",
+ "generated": "Friday 3:57 PM",
+ "headline": "Claude proposes **12 changes** to how it works for you: 2 style rules, 3 terms, 2 fixes, 3 tips and 2 new routines. Nothing is applied until you decide.",
+ "sources": [
+  {
+   "name": "Gmail sent",
+   "ok": true
+  },
+  {
+   "name": "Slack",
+   "ok": true
+  },
+  {
+   "name": "friction log",
+   "ok": true
+  },
+  {
+   "name": "tips queue",
+   "ok": true
+  }
+ ],
+ "start_here": {
+  "title": "12 proposals, about 6 minutes",
+  "why": "Start with the two fixes: both come from corrections you made twice this week."
+ },
+ "style": [
+  {
+   "id": "st1",
+   "channel": "Slack DM",
+   "rule": "Open with the answer, no greeting for people you talk to daily.",
+   "before": "Hi Mia, hope you are well! I wanted to let you know that I can do Thursday at 2.",
+   "after": "Thursday 2 PM works.",
+   "source": "6 Slack DMs, 29 Oct to 3 Nov",
+   "priority": "P2",
+   "domain": "Admin"
+  },
+  {
+   "id": "st2",
+   "channel": "Email, German",
+   "rule": "Use \"Hallo\" and first names, close with \"Viele Grüße\" and no summary line.",
+   "before": "Sehr geehrter Herr Brandt, anbei die Zusammenfassung unseres Gesprächs.",
+   "after": "Hallo Jan, anbei die Zahlen. Viele Grüße, Riley",
+   "source": "3 sent emails to partners",
+   "priority": "P2",
+   "domain": "GTM"
+  }
+ ],
+ "glossary": [
+  {
+   "id": "g1",
+   "term": "pull signal",
+   "kind": "new",
+   "meaning": "A partner or vendor asking for a product we have not built yet; logged to rank the roadmap.",
+   "source": "Partner call: Northwind, Nov 3",
+   "priority": "P3",
+   "domain": "API"
+  },
+  {
+   "id": "g2",
+   "term": "clearance level",
+   "kind": "correct",
+   "meaning": "Access tier for a dataset in the warehouse (public, internal, restricted), set in the infra change.",
+   "was": "A security review stage.",
+   "source": "Data OKR review, Nov 3",
+   "priority": "P3",
+   "domain": "Data"
+  },
+  {
+   "id": "g3",
+   "term": "settlement cap",
+   "kind": "new",
+   "meaning": "A monthly upper limit on billed clicks per partner.",
+   "source": "billing thread, Nov 2",
+   "priority": "P3",
+   "domain": "Data"
+  }
+ ],
+ "fixes": [
+  {
+   "id": "f1",
+   "issue": "Brief listed the same PR twice",
+   "cause": "Wrong or missing step: radar and Linear both report it, no de-duplication.",
+   "fix": "Add a step to radar.md: merge items with the same link before writing the list.",
+   "file": "routines/radar.md",
+   "source": "friction log, Nov 3 and Nov 4",
+   "priority": "P1",
+   "domain": "AI Stack",
+   "topic": {
+    "key": "WEB-12"
+   }
+  },
+  {
+   "id": "f2",
+   "issue": "Meeting prep used last year's agenda",
+   "cause": "Missing context: recurring meetings share a title.",
+   "fix": "Match the last meeting by series id, not by title.",
+   "file": "routines/meeting-prep.md",
+   "source": "friction log, Nov 4",
+   "priority": "P1",
+   "domain": "AI Stack"
+  }
+ ],
+ "tips": [
+  {
+   "id": "t1",
+   "tip": "Write a short CLAUDE.md per folder for repeated rules",
+   "from": "Jules",
+   "verdict": "adopt",
+   "file": "inbox/CLAUDE.md",
+   "why": "Done signals already live there; one more line covers the receipts rule.",
+   "source": "tips queue, Oct 30",
+   "priority": "P3",
+   "domain": "AI Stack"
+  },
+  {
+   "id": "t2",
+   "tip": "Run the brief with a cheaper model for sorting",
+   "from": "Casey",
+   "verdict": "backlog",
+   "file": "routines/brief.md",
+   "why": "Worth testing once the first week of runs is stable.",
+   "source": "tips queue, Nov 3",
+   "priority": "P3",
+   "domain": "AI Stack"
+  },
+  {
+   "id": "t3",
+   "tip": "Add a voice mode for captures",
+   "from": "Nora",
+   "verdict": "discard",
+   "file": "routines/capture.md",
+   "why": "Capture already accepts dictated text.",
+   "source": "tips queue, Nov 4",
+   "priority": "P3",
+   "domain": "AI Stack"
+  }
+ ],
+ "routines_new": [
+  {
+   "id": "r1",
+   "title": "Partner call follow-up",
+   "trigger": "A Demodesk recording of a partner call lands",
+   "inputs": "transcript, partner name, Linear initiative",
+   "output": "pull signal logged, next step on the board, mail draft",
+   "why": "You did these three steps by hand after 3 calls this week.",
+   "source": "daily notes Nov 3, Nov 4",
+   "priority": "P2",
+   "domain": "API"
+  },
+  {
+   "id": "r2",
+   "title": "Friday receipts batch",
+   "trigger": "Friday 2 PM",
+   "inputs": "Gmail receipts label",
+   "output": "receipts filed to the finance folder, contractor bills as P0 tasks",
+   "why": "Same sequence on 2 Fridays.",
+   "source": "log, Oct 31 and Nov 7",
+   "priority": "P2",
+   "domain": "API"
+  }
+ ],
+ "plan_actual": {
+  "planned": 8,
+  "done": 5,
+  "slipped": 2,
+  "planned_h": 24,
+  "unplanned_h": 9,
+  "note": "Unplanned work took 9 hours, a quarter of the week. Leave 9 hours free next week.",
+  "sources": [
+   {
+    "label": "billing thread",
+    "h": 3.5
+   },
+   {
+    "label": "Partner calls",
+    "h": 2.5
+   },
+   {
+    "label": "Survey tracking bug",
+    "h": 2
+   },
+   {
+    "label": "Other",
+    "h": 1
+   }
+  ]
+ }
+}

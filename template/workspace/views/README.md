@@ -1,0 +1,1 @@
+Daily and weekly view pages. `CLAUDE.md` has the data schema, `DESIGN.md` the design rules. Rendered by `scripts/render_view.py`; rendered `*.html` and `data/*.json` are generated per user and not part of the template.
