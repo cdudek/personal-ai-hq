@@ -35,6 +35,9 @@ If the logs are empty, ask the user for 1-2 drafts they changed and their main p
 ## 3. Skill candidates
 Find sequences the user repeated by hand this week (from the `daily/` notes and the log). For each, propose a routine: trigger, inputs, output.
 
+## 3a. Area drift
+Run the "Area drift" part of `routines/improve.md`; its proposals join section 2's fixes.
+
 ## 4. Done patterns
 How did the user close tasks this week? Propose updates to the done signals in `inbox/CLAUDE.md`.
 
@@ -47,7 +50,7 @@ For each open line in `meta/tips.md`, run `routines/improve.md` and show the ver
 
 ## 7. Write the page
 
-**Labels (required):** every item in Needs attention, Replies and reviews, Waiting on others, Board proposals and on the board gets `priority` and `domain` (from `board.md`; else blocking or due today = P0, due this week = P1, otherwise P2 or P3), plus `topic` when it links to a Linear issue, project, initiative or OKR. Copy the `domains` map from `board.md` into the JSON. The renderer prints `LABEL CHECK` for anything missing; fix it and render again.
+**Labels (required):** every item in Needs attention, Replies and reviews, Waiting on others, Task proposals and on the board gets `priority` and `area` (from the task store; else blocking or due today = P0, due this week = P1, otherwise P2 or P3; area by the tie-break in `context/areas/index.md`), plus `initiative` and `okr` when they apply. Board items also carry `id` and `url` from the task store. The renderer prints `LABEL CHECK` for anything missing; fix it and render again.
 
 Write `views/data/review-YYYY-Www.json` (schema: `views/CLAUDE.md`, "Review view") with the proposals from sections 1 to 6: `style[]`, `glossary[]`, `fixes[]`, `tips[]`, `routines_new[]`, `plan_actual`, `start_here`, `sources[]`. Leave out any "nothing is applied until you decide" sentence from `headline`: the page says it. Every proposal must carry `evidence` (`[{quote, source, link, when}]`: draft vs sent pair, friction lines, the tip's original message, repeated steps with dates), `impact` (one line) and `change` (`{file, before, after}`, the exact text). Render it with `python3 scripts/render_view.py views/data/review-YYYY-Www.json` and `open views/review.html`. The user decides on the page and pastes the `<<<REVIEW ... >>>` block; apply `adopt` lines, apply the user's `your version` for `adjust` lines (ask for it if missing), and leave `park` lines in the queue for the next review. In the next weekly view, set `last_review` (`{adopted, open, link: "review.html"}`).
 

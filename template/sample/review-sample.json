@@ -1,408 +1,418 @@
 {
- "kind": "review",
- "date": "sample",
- "week": 45,
- "title": "What to improve this week",
- "generated": "Friday 3:57 PM",
- "headline": "Claude proposes **12 changes** to how it works for you: 2 style rules, 3 terms, 2 fixes, 3 tips and 2 new routines.",
- "sources": [
-  {
-   "name": "Gmail sent",
-   "ok": true
-  },
-  {
-   "name": "Slack",
-   "ok": true
-  },
-  {
-   "name": "friction log",
-   "ok": true
-  },
-  {
-   "name": "tips queue",
-   "ok": true
-  }
- ],
- "start_here": {
-  "title": "12 proposals, about 6 minutes",
-  "why": "Start with the two fixes: both come from corrections you made twice this week."
- },
- "style": [
-  {
-   "id": "st1",
-   "channel": "Slack DM",
-   "rule": "Open with the answer, no greeting for people you talk to daily.",
-   "before": "Hi Mia, hope you are well! I wanted to let you know that I can do Thursday at 2.",
-   "after": "Thursday 2 PM works.",
-   "source": "6 Slack DMs, 29 Oct to 3 Nov",
-   "priority": "P2",
-   "domain": "Admin",
-   "change": {
-    "file": "context/writing-style.md",
-    "before": "(no rule for Slack DMs yet)",
-    "after": "Slack DM: open with the answer. No greeting for people the user talks to daily. One line unless asked."
-   },
-   "impact": "Affects every Slack DM draft Claude writes for you.",
-   "evidence": [
-    {
-     "quote": "Draft: \"Hi Mia, hope you are well! I wanted to let you know that I can do Thursday at 2.\" Sent: \"Thursday 2 PM works.\"",
-     "source": "Slack DM to Mia",
-     "when": "Mon 3 Nov",
-     "link": "https://acme.slack.com/archives/CSAMPLE07/p1793700000000001"
-    },
-    {
-     "quote": "Draft: \"Thanks for the update, Jordan. Just wanted to confirm...\" Sent: \"Ok, ship it.\"",
-     "source": "Slack DM to Jordan",
-     "when": "Tue 4 Nov",
-     "link": "https://acme.slack.com/archives/CSAMPLE07/p1793700000000001"
-    },
-    {
-     "quote": "Draft: \"Hi Nora, quick question...\" Sent: \"Is 1 PM still on?\"",
-     "source": "Slack DM to Nora",
-     "when": "Wed 5 Nov",
-     "link": "https://acme.slack.com/archives/CSAMPLE07/p1793700000000001"
-    }
-   ]
-  },
-  {
-   "id": "st2",
-   "channel": "Email, German",
-   "rule": "Use \"Hallo\" and first names, close with \"Viele Grüße\" and no summary line.",
-   "before": "Sehr geehrter Herr Brandt, anbei die Zusammenfassung unseres Gesprächs.",
-   "after": "Hallo Jan, anbei die Zahlen. Viele Grüße, Riley",
-   "source": "3 sent emails to partners",
-   "priority": "P2",
-   "domain": "GTM",
-   "change": {
-    "file": "context/writing-style.md",
-    "before": "Email, German: formal salutation",
-    "after": "Email, German: \"Hallo <first name>\", close with \"Viele Grüße\", no summary line."
-   },
-   "impact": "Affects every German email draft.",
-   "evidence": [
-    {
-     "quote": "Draft: \"Sehr geehrter Herr Brandt, anbei die Zusammenfassung...\" Sent: \"Hallo Jan, anbei die Zahlen. Viele Grüße, Riley\"",
-     "source": "Gmail sent to Jan Brandt",
-     "when": "Tue 4 Nov",
-     "link": "https://mail.google.com/mail/u/0/#all/19a2f0f1"
-    },
-    {
-     "quote": "Draft closed with a two-line summary; sent version has none.",
-     "source": "Gmail sent to Sabine Koch",
-     "when": "Thu 6 Nov",
-     "link": "https://mail.google.com/mail/u/0/#all/19a2f0f2"
-    }
-   ]
-  }
- ],
- "glossary": [
-  {
-   "id": "g1",
-   "term": "pull signal",
-   "kind": "new",
-   "meaning": "A partner or vendor asking for a product we have not built yet; logged to rank the roadmap.",
-   "source": "Partner call: Northwind, Nov 3",
-   "priority": "P3",
-   "domain": "API",
-   "change": {
-    "file": "context/glossary.md",
-    "before": "(not in the glossary)",
-    "after": "pull signal: a partner or vendor asking for a product we have not built yet; logged to rank the roadmap."
-   },
-   "impact": "Brief and radar stop asking what a pull signal is.",
-   "evidence": [
-    {
-     "quote": "\"They want their orders in the API. That counts as a pull signal.\"",
-     "source": "Partner call: Northwind",
-     "when": "Mon 3 Nov",
-     "link": "https://demodesk.example/recording/sample-northwind"
-    },
-    {
-     "quote": "\"Log it as a pull signal for the Partner API.\"",
-     "source": "Slack, Jules",
-     "when": "Tue 4 Nov",
-     "link": "https://acme.slack.com/archives/CSAMPLE07/p1793700000000001"
-    }
-   ]
-  },
-  {
-   "id": "g2",
-   "term": "clearance level",
-   "kind": "correct",
-   "meaning": "Access tier for a dataset in the warehouse (public, internal, restricted), set in the infra change.",
-   "was": "A security review stage.",
-   "source": "Data OKR review, Nov 3",
-   "priority": "P3",
-   "domain": "Data",
-   "change": {
-    "file": "context/glossary.md",
-    "before": "clearance level: a security review stage.",
-    "after": "clearance level: access tier for a warehouse dataset (public, internal, restricted), set in the infra change."
-   },
-   "impact": "Fixes how Claude reads every data-access thread.",
-   "evidence": [
-    {
-     "quote": "\"Clearance levels are agreed. Sam applies the the infra change.\"",
-     "source": "Data OKR review",
-     "when": "Mon 3 Nov",
-     "link": "https://docs.google.com/document/d/sample-data-okr-review"
-    }
-   ]
-  },
-  {
-   "id": "g3",
-   "term": "settlement cap",
-   "kind": "new",
-   "meaning": "A monthly upper limit on billed usage per partner.",
-   "source": "billing thread, Nov 2",
-   "priority": "P3",
-   "domain": "Data",
-   "change": {
-    "file": "context/glossary.md",
-    "before": "(not in the glossary)",
-    "after": "settlement cap: a monthly upper limit on billed usage per partner."
-   },
-   "impact": "billing threads become readable for Claude.",
-   "evidence": [
-    {
-     "quote": "\"We need a settlement cap per partner, monthly.\"",
-     "source": "Slack, billing thread",
-     "when": "Sun 2 Nov",
-     "link": "https://acme.slack.com/archives/CSAMPLE07/p1793700000000001"
-    }
-   ]
-  }
- ],
- "fixes": [
-  {
-   "id": "f1",
-   "issue": "Brief listed the same PR twice",
-   "cause": "Wrong or missing step: radar and Linear both report it, no de-duplication.",
-   "fix": "Add a step to radar.md: merge items with the same link before writing the list.",
-   "file": "routines/radar.md",
-   "source": "friction log, Nov 3 and Nov 4",
-   "priority": "P1",
-   "domain": "AI Stack",
-   "topic": {
-    "key": "WEB-12"
-   },
-   "change": {
-    "file": "routines/radar.md",
-    "before": "## 1. GitHub: pull requests that need the user",
-    "after": "## 0. De-duplicate\nBefore writing the list, merge items with the same link and keep the one with the stronger signal."
-   },
-   "impact": "Affects every daily brief.",
-   "evidence": [
-    {
-     "quote": "friction.md: \"2025-11-03 brief: PR #812 listed twice (GitHub and Linear) -> list once\"",
-     "source": "friction log",
-     "when": "Mon 3 Nov",
-     "link": ""
-    },
-    {
-     "quote": "friction.md: \"2025-11-04 brief: same PR twice again -> merge by link\"",
-     "source": "friction log",
-     "when": "Tue 4 Nov",
-     "link": ""
-    }
-   ]
-  },
-  {
-   "id": "f2",
-   "issue": "Meeting prep used last year's agenda",
-   "cause": "Missing context: recurring meetings share a title.",
-   "fix": "Match the last meeting by series id, not by title.",
-   "file": "routines/meeting-prep.md",
-   "source": "friction log, Nov 4",
-   "priority": "P1",
-   "domain": "AI Stack",
-   "change": {
-    "file": "routines/meeting-prep.md",
-    "before": "Find the last meeting with the same title.",
-    "after": "Find the last meeting in the same series (series id); fall back to the title."
-   },
-   "impact": "Affects prep for every recurring meeting.",
-   "evidence": [
-    {
-     "quote": "friction.md: \"2025-11-04 prep for Roadmap review used last year's agenda -> use the last occurrence\"",
-     "source": "friction log",
-     "when": "Tue 4 Nov",
-     "link": ""
-    }
-   ]
-  }
- ],
- "tips": [
-  {
-   "id": "t1",
-   "tip": "Write a short CLAUDE.md per folder for repeated rules",
-   "from": "Jules",
-   "verdict": "adopt",
-   "file": "inbox/CLAUDE.md",
-   "why": "Done signals already live there; one more line covers the receipts rule.",
-   "source": "tips queue, Oct 30",
-   "priority": "P3",
-   "domain": "AI Stack",
-   "change": {
-    "file": "inbox/CLAUDE.md",
-    "before": "Done signals: ...",
-    "after": "Done signals: ...\nReceipts: file to the finance folder, contractor bills as P0 task (see CLAUDE.md, Receipts)."
-   },
-   "impact": "Claude reads folder rules before it files an item.",
-   "evidence": [
-    {
-     "quote": "\"Put the rules next to the files they affect, one short CLAUDE.md per folder.\"",
-     "source": "Slack, Jules",
-     "when": "Thu 30 Oct",
-     "link": "https://acme.slack.com/archives/CSAMPLE07/p1793700000000001"
-    }
-   ]
-  },
-  {
-   "id": "t2",
-   "tip": "Run the brief with a cheaper model for sorting",
-   "from": "Casey",
-   "verdict": "backlog",
-   "file": "routines/brief.md",
-   "why": "Worth testing once the first week of runs is stable.",
-   "source": "tips queue, Nov 3",
-   "priority": "P3",
-   "domain": "AI Stack",
-   "change": {
-    "file": "routines/brief.md",
-    "before": "(one model for the whole brief)",
-    "after": "Sorting step: run with the cheaper model; summaries stay on the main model."
-   },
-   "impact": "Cost per brief; no change to the page.",
-   "evidence": [
-    {
-     "quote": "\"The sorting step does not need the big model.\"",
-     "source": "Slack, Casey",
-     "when": "Mon 3 Nov",
-     "link": "https://acme.slack.com/archives/CSAMPLE07/p1793700000000001"
-    }
-   ]
-  },
-  {
-   "id": "t3",
-   "tip": "Add a voice mode for captures",
-   "from": "Nora",
-   "verdict": "discard",
-   "file": "routines/capture.md",
-   "why": "Capture already accepts dictated text.",
-   "source": "tips queue, Nov 4",
-   "priority": "P3",
-   "domain": "AI Stack",
-   "change": {
-    "file": "routines/capture.md",
-    "before": "Accepts typed or dictated text.",
-    "after": "(unchanged)"
-   },
-   "impact": "None: Claude would discard this tip.",
-   "evidence": [
-    {
-     "quote": "\"Could we add a voice mode for captures?\"",
-     "source": "Slack, Nora",
-     "when": "Tue 4 Nov",
-     "link": "https://acme.slack.com/archives/CSAMPLE07/p1793700000000001"
-    }
-   ]
-  }
- ],
- "routines_new": [
-  {
-   "id": "r1",
-   "title": "Partner call follow-up",
-   "trigger": "A Demo recorder recording of a partner call lands",
-   "inputs": "transcript, partner name, Linear initiative",
-   "output": "pull signal logged, next step on the board, mail draft",
-   "why": "You did these three steps by hand after 3 calls this week.",
-   "source": "daily notes Nov 3, Nov 4",
-   "priority": "P2",
-   "domain": "API",
-   "change": {
-    "file": "routines/partner-call.md",
-    "before": "(new file)",
-    "after": "Trigger: Demo recorder recording of a partner call.\nSteps: log pull signal, add next step to the board, draft the follow-up mail."
-   },
-   "impact": "Saves the three manual steps after every partner call.",
-   "evidence": [
-    {
-     "quote": "Mon 3 Nov: pull signal logged, board task added, mail drafted by hand.",
-     "source": "daily note",
-     "when": "Mon 3 Nov",
-     "link": ""
-    },
-    {
-     "quote": "Tue 4 Nov: same three steps after the Northwind call.",
-     "source": "daily note",
-     "when": "Tue 4 Nov",
-     "link": ""
-    },
-    {
-     "quote": "Thu 6 Nov: same three steps again.",
-     "source": "daily note",
-     "when": "Thu 6 Nov",
-     "link": ""
-    }
-   ]
-  },
-  {
-   "id": "r2",
-   "title": "Friday receipts batch",
-   "trigger": "Friday 2 PM",
-   "inputs": "Gmail receipts label",
-   "output": "receipts filed to the finance folder, contractor bills as P0 tasks",
-   "why": "Same sequence on 2 Fridays.",
-   "source": "log, Oct 31 and Nov 7",
-   "priority": "P2",
-   "domain": "API",
-   "change": {
-    "file": "routines/receipts.md",
-    "before": "(new file)",
-    "after": "Trigger: Friday 2 PM. Receipts go to the finance folder; contractor bills become P0 tasks."
-   },
-   "impact": "Removes the Friday receipts sorting.",
-   "evidence": [
-    {
-     "quote": "Fri 31 Oct: sorted the receipts label by hand.",
-     "source": "log",
-     "when": "Fri 31 Oct",
-     "link": ""
-    },
-    {
-     "quote": "Fri 7 Nov: same sort.",
-     "source": "log",
-     "when": "Fri 7 Nov",
-     "link": ""
-    }
-   ]
-  }
- ],
- "plan_actual": {
-  "planned": 8,
-  "done": 5,
-  "slipped": 2,
-  "planned_h": 24,
-  "unplanned_h": 9,
-  "note": "Unplanned work took 9 hours, a quarter of the week. Leave 9 hours free next week.",
+  "kind": "review",
+  "date": "sample",
+  "week": 45,
+  "title": "What to improve this week",
+  "generated": "Friday 3:57 PM",
+  "headline": "Claude proposes **12 changes** to how it works for you: 2 style rules, 3 terms, 2 fixes, 3 tips and 2 new routines.",
   "sources": [
-   {
-    "label": "billing thread",
-    "h": 3.5
-   },
-   {
-    "label": "Partner calls",
-    "h": 2.5
-   },
-   {
-    "label": "Survey tracking bug",
-    "h": 2
-   },
-   {
-    "label": "Other",
-    "h": 1
-   }
-  ]
- }
+    {
+      "name": "Gmail sent",
+      "ok": true
+    },
+    {
+      "name": "Slack",
+      "ok": true
+    },
+    {
+      "name": "friction log",
+      "ok": true
+    },
+    {
+      "name": "tips queue",
+      "ok": true
+    }
+  ],
+  "start_here": {
+    "title": "12 proposals, about 6 minutes",
+    "why": "Start with the two fixes: both come from corrections you made twice this week."
+  },
+  "style": [
+    {
+      "id": "st1",
+      "channel": "Slack DM",
+      "rule": "Open with the answer, no greeting for people you talk to daily.",
+      "before": "Hi Mia, hope you are well! I wanted to let you know that I can do Thursday at 2.",
+      "after": "Thursday 2 PM works.",
+      "source": "6 Slack DMs, 29 Oct to 3 Nov",
+      "priority": "P2",
+      "change": {
+        "file": "context/writing-style.md",
+        "before": "(no rule for Slack DMs yet)",
+        "after": "Slack DM: open with the answer. No greeting for people the user talks to daily. One line unless asked."
+      },
+      "impact": "Affects every Slack DM draft Claude writes for you.",
+      "evidence": [
+        {
+          "quote": "Draft: \"Hi Mia, hope you are well! I wanted to let you know that I can do Thursday at 2.\" Sent: \"Thursday 2 PM works.\"",
+          "source": "Slack DM to Mia",
+          "when": "Mon 3 Nov",
+          "link": "https://acme.slack.com/archives/CSAMPLE07/p1793700000000001"
+        },
+        {
+          "quote": "Draft: \"Thanks for the update, Jordan. Just wanted to confirm...\" Sent: \"Ok, ship it.\"",
+          "source": "Slack DM to Jordan",
+          "when": "Tue 4 Nov",
+          "link": "https://acme.slack.com/archives/CSAMPLE07/p1793700000000001"
+        },
+        {
+          "quote": "Draft: \"Hi Nora, quick question...\" Sent: \"Is 1 PM still on?\"",
+          "source": "Slack DM to Nora",
+          "when": "Wed 5 Nov",
+          "link": "https://acme.slack.com/archives/CSAMPLE07/p1793700000000001"
+        }
+      ],
+      "area": "Admin"
+    },
+    {
+      "id": "st2",
+      "channel": "Email, German",
+      "rule": "Use \"Hallo\" and first names, close with \"Viele Grüße\" and no summary line.",
+      "before": "Sehr geehrter Herr Brandt, anbei die Zusammenfassung unseres Gesprächs.",
+      "after": "Hallo Jan, anbei die Zahlen. Viele Grüße, Riley",
+      "source": "3 sent emails to partners",
+      "priority": "P2",
+      "change": {
+        "file": "context/writing-style.md",
+        "before": "Email, German: formal salutation",
+        "after": "Email, German: \"Hallo <first name>\", close with \"Viele Grüße\", no summary line."
+      },
+      "impact": "Affects every German email draft.",
+      "evidence": [
+        {
+          "quote": "Draft: \"Sehr geehrter Herr Brandt, anbei die Zusammenfassung...\" Sent: \"Hallo Jan, anbei die Zahlen. Viele Grüße, Riley\"",
+          "source": "Gmail sent to Jan Brandt",
+          "when": "Tue 4 Nov",
+          "link": "https://mail.google.com/mail/u/0/#all/19a2f0f1"
+        },
+        {
+          "quote": "Draft closed with a two-line summary; sent version has none.",
+          "source": "Gmail sent to Sabine Koch",
+          "when": "Thu 6 Nov",
+          "link": "https://mail.google.com/mail/u/0/#all/19a2f0f2"
+        }
+      ],
+      "area": "Company"
+    }
+  ],
+  "glossary": [
+    {
+      "id": "g1",
+      "term": "pull signal",
+      "kind": "new",
+      "meaning": "A partner or vendor asking for a product we have not built yet; logged to rank the roadmap.",
+      "source": "Partner call: Northwind, Nov 3",
+      "priority": "P3",
+      "change": {
+        "file": "context/glossary.md",
+        "before": "(not in the glossary)",
+        "after": "pull signal: a partner or vendor asking for a product we have not built yet; logged to rank the roadmap."
+      },
+      "impact": "Brief and radar stop asking what a pull signal is.",
+      "evidence": [
+        {
+          "quote": "\"They want their orders in the API. That counts as a pull signal.\"",
+          "source": "Partner call: Northwind",
+          "when": "Mon 3 Nov",
+          "link": "https://demodesk.example/recording/sample-northwind"
+        },
+        {
+          "quote": "\"Log it as a pull signal for the Partner API.\"",
+          "source": "Slack, Jules",
+          "when": "Tue 4 Nov",
+          "link": "https://acme.slack.com/archives/CSAMPLE07/p1793700000000001"
+        }
+      ],
+      "area": "Delivery",
+      "initiative": "Partner API"
+    },
+    {
+      "id": "g2",
+      "term": "clearance level",
+      "kind": "correct",
+      "meaning": "Access tier for a dataset in the warehouse (public, internal, restricted), set in the infra change.",
+      "was": "A security review stage.",
+      "source": "Data OKR review, Nov 3",
+      "priority": "P3",
+      "change": {
+        "file": "context/glossary.md",
+        "before": "clearance level: a security review stage.",
+        "after": "clearance level: access tier for a warehouse dataset (public, internal, restricted), set in the infra change."
+      },
+      "impact": "Fixes how Claude reads every data-access thread.",
+      "evidence": [
+        {
+          "quote": "\"Clearance levels are agreed. Sam applies the the infra change.\"",
+          "source": "Data OKR review",
+          "when": "Mon 3 Nov",
+          "link": "https://docs.google.com/document/d/sample-data-okr-review"
+        }
+      ],
+      "area": "Delivery",
+      "initiative": "Data OKRs"
+    },
+    {
+      "id": "g3",
+      "term": "settlement cap",
+      "kind": "new",
+      "meaning": "A monthly upper limit on billed usage per partner.",
+      "source": "billing thread, Nov 2",
+      "priority": "P3",
+      "change": {
+        "file": "context/glossary.md",
+        "before": "(not in the glossary)",
+        "after": "settlement cap: a monthly upper limit on billed usage per partner."
+      },
+      "impact": "billing threads become readable for Claude.",
+      "evidence": [
+        {
+          "quote": "\"We need a settlement cap per partner, monthly.\"",
+          "source": "Slack, billing thread",
+          "when": "Sun 2 Nov",
+          "link": "https://acme.slack.com/archives/CSAMPLE07/p1793700000000001"
+        }
+      ],
+      "area": "Delivery",
+      "initiative": "Data OKRs"
+    }
+  ],
+  "fixes": [
+    {
+      "id": "f1",
+      "issue": "Brief listed the same PR twice",
+      "cause": "Wrong or missing step: radar and Linear both report it, no de-duplication.",
+      "fix": "Add a step to radar.md: merge items with the same link before writing the list.",
+      "file": "routines/radar.md",
+      "source": "friction log, Nov 3 and Nov 4",
+      "priority": "P1",
+      "topic": {
+        "key": "WEB-12"
+      },
+      "change": {
+        "file": "routines/radar.md",
+        "before": "## 1. GitHub: pull requests that need the user",
+        "after": "## 0. De-duplicate\nBefore writing the list, merge items with the same link and keep the one with the stronger signal."
+      },
+      "impact": "Affects every daily brief.",
+      "evidence": [
+        {
+          "quote": "friction.md: \"2025-11-03 brief: PR #812 listed twice (GitHub and Linear) -> list once\"",
+          "source": "friction log",
+          "when": "Mon 3 Nov",
+          "link": ""
+        },
+        {
+          "quote": "friction.md: \"2025-11-04 brief: same PR twice again -> merge by link\"",
+          "source": "friction log",
+          "when": "Tue 4 Nov",
+          "link": ""
+        }
+      ],
+      "area": "Me",
+      "initiative": "Personal AI HQ"
+    },
+    {
+      "id": "f2",
+      "issue": "Meeting prep used last year's agenda",
+      "cause": "Missing context: recurring meetings share a title.",
+      "fix": "Match the last meeting by series id, not by title.",
+      "file": "routines/meeting-prep.md",
+      "source": "friction log, Nov 4",
+      "priority": "P1",
+      "change": {
+        "file": "routines/meeting-prep.md",
+        "before": "Find the last meeting with the same title.",
+        "after": "Find the last meeting in the same series (series id); fall back to the title."
+      },
+      "impact": "Affects prep for every recurring meeting.",
+      "evidence": [
+        {
+          "quote": "friction.md: \"2025-11-04 prep for Roadmap review used last year's agenda -> use the last occurrence\"",
+          "source": "friction log",
+          "when": "Tue 4 Nov",
+          "link": ""
+        }
+      ],
+      "area": "Me",
+      "initiative": "Personal AI HQ"
+    }
+  ],
+  "tips": [
+    {
+      "id": "t1",
+      "tip": "Write a short CLAUDE.md per folder for repeated rules",
+      "from": "Jules",
+      "verdict": "adopt",
+      "file": "inbox/CLAUDE.md",
+      "why": "Done signals already live there; one more line covers the receipts rule.",
+      "source": "tips queue, Oct 30",
+      "priority": "P3",
+      "change": {
+        "file": "inbox/CLAUDE.md",
+        "before": "Done signals: ...",
+        "after": "Done signals: ...\nReceipts: file to the finance folder, contractor bills as P0 task (see CLAUDE.md, Receipts)."
+      },
+      "impact": "Claude reads folder rules before it files an item.",
+      "evidence": [
+        {
+          "quote": "\"Put the rules next to the files they affect, one short CLAUDE.md per folder.\"",
+          "source": "Slack, Jules",
+          "when": "Thu 30 Oct",
+          "link": "https://acme.slack.com/archives/CSAMPLE07/p1793700000000001"
+        }
+      ],
+      "area": "Me",
+      "initiative": "Personal AI HQ"
+    },
+    {
+      "id": "t2",
+      "tip": "Run the brief with a cheaper model for sorting",
+      "from": "Casey",
+      "verdict": "backlog",
+      "file": "routines/brief.md",
+      "why": "Worth testing once the first week of runs is stable.",
+      "source": "tips queue, Nov 3",
+      "priority": "P3",
+      "change": {
+        "file": "routines/brief.md",
+        "before": "(one model for the whole brief)",
+        "after": "Sorting step: run with the cheaper model; summaries stay on the main model."
+      },
+      "impact": "Cost per brief; no change to the page.",
+      "evidence": [
+        {
+          "quote": "\"The sorting step does not need the big model.\"",
+          "source": "Slack, Casey",
+          "when": "Mon 3 Nov",
+          "link": "https://acme.slack.com/archives/CSAMPLE07/p1793700000000001"
+        }
+      ],
+      "area": "Me",
+      "initiative": "Personal AI HQ"
+    },
+    {
+      "id": "t3",
+      "tip": "Add a voice mode for captures",
+      "from": "Nora",
+      "verdict": "discard",
+      "file": "routines/capture.md",
+      "why": "Capture already accepts dictated text.",
+      "source": "tips queue, Nov 4",
+      "priority": "P3",
+      "change": {
+        "file": "routines/capture.md",
+        "before": "Accepts typed or dictated text.",
+        "after": "(unchanged)"
+      },
+      "impact": "None: Claude would discard this tip.",
+      "evidence": [
+        {
+          "quote": "\"Could we add a voice mode for captures?\"",
+          "source": "Slack, Nora",
+          "when": "Tue 4 Nov",
+          "link": "https://acme.slack.com/archives/CSAMPLE07/p1793700000000001"
+        }
+      ],
+      "area": "Me",
+      "initiative": "Personal AI HQ"
+    }
+  ],
+  "routines_new": [
+    {
+      "id": "r1",
+      "title": "Partner call follow-up",
+      "trigger": "A Demo recorder recording of a partner call lands",
+      "inputs": "transcript, partner name, Linear initiative",
+      "output": "pull signal logged, next step on the board, mail draft",
+      "why": "You did these three steps by hand after 3 calls this week.",
+      "source": "daily notes Nov 3, Nov 4",
+      "priority": "P2",
+      "change": {
+        "file": "routines/partner-call.md",
+        "before": "(new file)",
+        "after": "Trigger: Demo recorder recording of a partner call.\nSteps: log pull signal, add next step to the board, draft the follow-up mail."
+      },
+      "impact": "Saves the three manual steps after every partner call.",
+      "evidence": [
+        {
+          "quote": "Mon 3 Nov: pull signal logged, board task added, mail drafted by hand.",
+          "source": "daily note",
+          "when": "Mon 3 Nov",
+          "link": ""
+        },
+        {
+          "quote": "Tue 4 Nov: same three steps after the Northwind call.",
+          "source": "daily note",
+          "when": "Tue 4 Nov",
+          "link": ""
+        },
+        {
+          "quote": "Thu 6 Nov: same three steps again.",
+          "source": "daily note",
+          "when": "Thu 6 Nov",
+          "link": ""
+        }
+      ],
+      "area": "Delivery",
+      "initiative": "Partner API"
+    },
+    {
+      "id": "r2",
+      "title": "Friday receipts batch",
+      "trigger": "Friday 2 PM",
+      "inputs": "Gmail receipts label",
+      "output": "receipts filed to the finance folder, contractor bills as P0 tasks",
+      "why": "Same sequence on 2 Fridays.",
+      "source": "log, Oct 31 and Nov 7",
+      "priority": "P2",
+      "change": {
+        "file": "routines/receipts.md",
+        "before": "(new file)",
+        "after": "Trigger: Friday 2 PM. Receipts go to the finance folder; contractor bills become P0 tasks."
+      },
+      "impact": "Removes the Friday receipts sorting.",
+      "evidence": [
+        {
+          "quote": "Fri 31 Oct: sorted the receipts label by hand.",
+          "source": "log",
+          "when": "Fri 31 Oct",
+          "link": ""
+        },
+        {
+          "quote": "Fri 7 Nov: same sort.",
+          "source": "log",
+          "when": "Fri 7 Nov",
+          "link": ""
+        }
+      ],
+      "area": "Delivery",
+      "initiative": "Partner API"
+    }
+  ],
+  "plan_actual": {
+    "planned": 8,
+    "done": 5,
+    "slipped": 2,
+    "planned_h": 24,
+    "unplanned_h": 9,
+    "note": "Unplanned work took 9 hours, a quarter of the week. Leave 9 hours free next week.",
+    "sources": [
+      {
+        "label": "billing thread",
+        "h": 3.5
+      },
+      {
+        "label": "Partner calls",
+        "h": 2.5
+      },
+      {
+        "label": "Survey tracking bug",
+        "h": 2
+      },
+      {
+        "label": "Other",
+        "h": 1
+      }
+    ]
+  }
 }

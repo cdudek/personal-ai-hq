@@ -113,19 +113,19 @@ def link_problems(data: dict) -> list[str]:
     return out
 
 
-# sections whose items are things to act on: priority and domain are required there (views/CLAUDE.md, "Labels")
+# sections whose items are things to act on: priority and area are required there (views/CLAUDE.md, Labels)
 LABELLED = {"needs", "replies", "waiting", "proposals"}
 REVIEW_KEYS = ("style", "glossary", "fixes", "tips", "routines_new")
 
 
 def label_problems(data: dict) -> list[str]:
     board = [t for lst in (data.get("board") or {}).values() for t in lst]
-    by_link = {t["link"]: t for t in board if t.get("link")}
+    by_link = {k: t for t in board for k in (t.get("link"), t.get("url")) if k}
     out = []
 
     def check(where: str, it: dict, need_priority: bool = True) -> None:
         t = by_link.get(it.get("link") or "") or {}  # an item on the board inherits its task's labels
-        miss = [n for n, need in (("priority", need_priority), ("domain", True)) if need and not (it.get(n) or t.get(n))]
+        miss = [n for n, need in (("priority", need_priority), ("area", True)) if need and not (it.get(n) or t.get(n))]
         if miss:
             name = it.get("title") or it.get("term") or it.get("issue") or it.get("tip") or it.get("channel") or "?"
             out.append(f"{where}: {' and '.join(miss)} missing: {str(name)[:70]}")
@@ -160,7 +160,7 @@ def main(path: str) -> None:
     render_styleguide()
     print(dated)
     if lp := label_problems(data):
-        print(f"LABEL CHECK: {len(lp)} item(s) missing priority or domain (the page shows a dashed placeholder). Fill them from board.md or the rules and render again:")
+        print(f"LABEL CHECK: {len(lp)} item(s) missing priority or area (the page shows a dashed placeholder). Fill them from the task store or the rules (views/CLAUDE.md, Labels) and render again:")
         print("\n".join("  - " + p for p in lp))
     if problems := link_problems(data):
         print(f"LINK CHECK: {len(problems)} item(s) without a deep link to the specific thing. Fix the data and render again:")

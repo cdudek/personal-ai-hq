@@ -5,8 +5,8 @@
     {
       "name": "hq",
       "source": "./",
-      "version": "0.2.0",
-      "description": "Personal AI HQ for Claude: a local second brain, a task board, daily and weekly briefing pages, and a loop that learns from your corrections."
+      "version": "0.3.0",
+      "description": "Personal AI HQ for Claude: a local second brain, your own cloud task manager, daily and weekly briefing pages, and a loop that learns from your corrections."
     }
   ]
 }

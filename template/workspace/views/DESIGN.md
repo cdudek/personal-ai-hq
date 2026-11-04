@@ -4,7 +4,7 @@ The daily and weekly views share one small design language. Goal: every element 
 
 ## Principles
 
-1. **One shape per meaning.** Priority, status, domain, signal and size each have their own shape. No pills. If two things look alike, they mean the same.
+1. **One shape per meaning.** Priority, status, area, initiative, signal and size each have their own shape. No pills. If two things look alike, they mean the same.
 2. **Colour means attention.** Red: act now (blocking, overdue, P0). Amber: decide or due soon. Green: done. Everything else is ink on paper.
 3. **Indigo means Claude.** Only for buttons that copy a prompt (spark icon), Claude's questions, and staged board changes waiting for Claude. Links are never indigo.
 4. **A rule means quoted.** Words from Slack, mail, Linear sit behind a grey rule in Inter. Never Claude's own summaries. No serif anywhere.
@@ -21,7 +21,7 @@ The daily and weekly views share one small design language. Goal: every element 
 | `--red`, `--amber`, `--green` | signals only |
 | `--claude` | Claude only |
 | `--sans`, `--mono` | Inter (interface, quotes), JetBrains Mono (data). Neither is embedded: the page falls back to the system fonts offline |
-| `--d-*`, `--t-*` | domain tints (OKRs, AI Stack, API, Product, GTM, Data, Admin), Linear team keys |
+| `--d-*`, `--t-*` | area tints (Product, Engineering, Team, Company, Admin, Me), Linear team keys |
 | `--r-sm` 4, `--r` 8, `--r-lg` 12 | labels, buttons, cards |
 
 Light and dark follow the system setting. Components use tokens only, never hex values.
@@ -45,8 +45,9 @@ Light and dark follow the system setting. Components use tokens only, never hex 
 | Signal | coloured dot + caps text | why an item wants attention (Blocking, Decision, Due Thu, Deep prep) | status or category |
 | Status | circle glyph + text: hollow, half, dashed, green check, dotted | where a task stands (not started, in progress, waiting, done, unclear) | urgency |
 | Priority | mono badge, soft ladder: P0 red tint + outline, P1 grey fill, P2 outline, P3 plain | task priority | anything else |
-| Domain | muted tint per area + square swatch (text colour, 10 % fill, 28 % border) | where the work belongs | status |
-| Team key | `WEB-638`, key bold in the team colour | which Linear team owns it | urgency, domain |
+| Area | muted tint per area + square swatch (text colour, 10 % fill, 28 % border) | which responsibility it belongs to | status |
+| Initiative | plain text with a small diamond, no box | which initiative it belongs to | area, status |
+| Team key | `WEB-638`, key bold in the team colour | which Linear team owns it | urgency, area |
 | Claude suggests | square indigo block, 10 px square before the label | Claude's suggestion, with Decide differently next to Accept | facts |
 | Size | plain mono | effort | |
 | Quote | serif with left rule | someone else's words | Claude's own summaries |
@@ -84,7 +85,7 @@ Times show in 12h format on the page; the data keeps `HH:MM`.
 
 ## Atom row
 
-Priority, domain, topic, always in this order under the title of anything you can act on. Missing priority or domain shows a dashed placeholder, never nothing. Domain colours are one list (`--d-1` to `--d-11`), the same on every page.
+Priority, area, initiative, topic, always in this order under the title of anything you can act on (initiative and topic only when there is one). Missing priority or area shows a dashed placeholder, never nothing. Area colours are one list (`--d-1` to `--d-11`), the same on every page.
 
 ## Two-minute rules
 

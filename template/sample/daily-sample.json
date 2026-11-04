@@ -1,845 +1,871 @@
 {
- "kind": "daily",
- "date": "sample",
- "title": "Tuesday, 4 November",
- "generated": "7:31 AM",
- "headline": "One blocker and two decisions before noon. Roadmap review at 10:00 AM needs prep.",
- "stats": [
-  {
-   "label": "Needs me",
-   "value": 4,
-   "urgent": true
-  },
-  {
-   "label": "Meetings today",
-   "value": 4
-  },
-  {
-   "label": "Done yesterday",
-   "value": 6
-  },
-  {
-   "label": "New in inbox",
-   "value": 5
-  }
- ],
- "top_of_mind": [
-  {
-   "title": "OKRs T3/2026",
-   "note": "O2 and O3 targets open, planning deadline Friday",
-   "link": "https://linear.app/acme/initiatives",
-   "status": "Active this week",
-   "domain": "OKRs",
-   "source": "linear",
-   "next": "All O2 and O3 targets set by Friday's planning deadline",
-   "updates": [
-    "Nov 3: O1 baselines pulled from the warehouse (top 50: 28 %)",
-    "Nov 2: KR wording simplified, German, one number each"
-   ],
-   "right": "Planning Fri"
-  },
-  {
-   "title": "Personal AI Stack",
-   "note": "First Claude runs this week",
-   "status": "Active this week",
-   "domain": "AI Stack",
-   "source": "me",
-   "next": "Three brief runs in Claude without friction",
-   "updates": [
-    "Nov 3: routines, views and learning loop built",
-    "Nov 3: Claude project linked to the workspace"
-   ],
-   "right": "3 runs to close"
-  },
-  {
-   "title": "Partner API",
-   "note": "Repo rename waiting for approval",
-   "link": "https://github.com/acme/partner-api",
-   "status": "Waiting",
-   "domain": "API",
-   "source": "github",
-   "next": "Repo renamed to partner-api-service, test deploy green",
-   "updates": [
-    "Nov 2: change folder for the WIF binding drafted, waiting for approval",
-    "Oct: 14 beta partners, 8 active"
-   ],
-   "right": "1 pull signal"
-  },
-  {
-   "title": "Data OKRs",
-   "status": "Active this week",
-   "domain": "Data",
-   "note": "Clearance levels agreed, infra change apply pending",
-   "next": "Sam applies the clearance the infra change",
-   "source": "linear",
-   "link": "https://linear.app/acme/initiative/data-okrs"
-  },
-  {
-   "title": "GTM process",
-   "note": "Kick-off next week",
-   "status": "Active this week",
-   "domain": "GTM",
-   "source": "slack",
-   "link": "https://acme.slack.com/archives/CSAMPLE06/p1793600000000001"
-  },
-  {
-   "title": "Data clearance",
-   "note": "infra change apply this week",
-   "status": "Active this week",
-   "domain": "Data",
-   "source": "linear",
-   "link": "https://linear.app/acme/initiative/data-okrs"
-  }
- ],
- "meetings": [
-  {
-   "start": "09:30",
-   "end": "09:45",
-   "title": "Daily standup",
-   "source": "meet",
-   "where": "Google Meet",
-   "who": [
-    "Web Platform team"
-   ],
-   "tag": "No prep",
-   "links": [
+  "kind": "daily",
+  "date": "sample",
+  "title": "Tuesday, 4 November",
+  "generated": "7:31 AM",
+  "headline": "One blocker and two decisions before noon. Roadmap review at 10:00 AM needs prep.",
+  "stats": [
     {
-     "label": "Join Meet",
-     "url": "https://meet.google.com/",
-     "source": "meet"
-    }
-   ]
-  },
-  {
-   "start": "10:00",
-   "end": "11:00",
-   "title": "Roadmap review",
-   "source": "calendar",
-   "where": "Room Elbe + Meet",
-   "who": [
-    {
-     "name": "Dana Whitfield",
-     "note": "Owns the Q1 roadmap. Wants decisions, not options."
+      "label": "Needs me",
+      "value": 4,
+      "urgent": true
     },
     {
-     "name": "Priya Raman",
-     "note": "Needs the budget split by Thursday for the board deck."
+      "label": "Meetings today",
+      "value": 4
     },
     {
-     "name": "Theo",
-     "note": "PM for AI visibility."
-    }
-   ],
-   "why": "The Q1 roadmap gets locked here. AI-visibility scope and OKR O2 targets are on the agenda.",
-   "prep": "Read the OKR draft. Bring three decisions: AI-visibility pilot scope, O2 target numbers, survey KR definition.",
-   "open_points": [
-    "O2 target numbers still X",
-    "Who owns the AI-visibility pilot",
-    "Partial survey submits: count or not"
-   ],
-   "tag": "Deep prep",
-   "tag_kind": "warn",
-   "links": [
-    {
-     "label": "Calendar event",
-     "url": "https://calendar.google.com/",
-     "source": "calendar"
+      "label": "Done yesterday",
+      "value": 6
     },
     {
-     "label": "OKR board",
-     "url": "https://miro.com/",
-     "source": "miro"
-    },
-    {
-     "label": "Join Meet",
-     "url": "https://meet.google.com/",
-     "source": "meet"
+      "label": "New in inbox",
+      "value": 5
     }
-   ],
-   "recurring": true,
-   "attachments": [
-    {
-     "label": "Roadmap Q1 draft",
-     "url": "https://docs.google.com/document/d/sample",
-     "source": "gdocs",
-     "summary": "Three bets for Q1. AI-visibility scope still open; section 4 has the O2 numbers as X."
-    },
-    {
-     "label": "Roadmap board (Asana)",
-     "url": "https://app.asana.com/0/sample",
-     "source": "asana",
-     "summary": "12 open tasks, 3 overdue. Two owned by you: pilot scope, survey KR."
-    },
-    {
-     "label": "OKR board (Miro)",
-     "url": "https://miro.com/app/board/sample",
-     "source": "miro",
-     "summary": "O1 final, O2 and O3 targets empty."
-    }
-   ],
-   "action_items": {
-    "mine": [
-     {
-      "text": "Send O1 baselines to Dana",
-      "status": "done"
-     },
-     {
-      "text": "Propose AI-visibility pilot scope",
-      "status": "open"
-     }
-    ],
-    "others": [
-     {
-      "who": "Dana",
-      "text": "Share revenue targets per segment",
-      "status": "open"
-     },
-     {
-      "who": "Theo",
-      "text": "Draft AI-visibility one-pager",
-      "status": "done"
-     },
-     {
-      "who": "Priya",
-      "text": "Budget envelope for Q1",
-      "status": "unclear"
-     }
-    ]
-   },
-   "topic": {
-    "kind": "okr",
-    "title": "OKR O2: AI visibility",
-    "link": "https://linear.app/acme/initiatives",
-    "source": "linear",
-    "state": "Targets still X, one pilot agreed",
-    "updates": [
-     "Nov 3: pilot scope narrowed to one category",
-     "Oct 30: dashboard purpose clarified"
-    ],
-    "open": [
-     {
-      "text": "Who owns the pilot",
-      "link": "https://linear.app/acme/issue/WEB-1410"
-     }
-    ]
-   },
-   "decide": [
-    {
-     "title": "AI-visibility pilot scope",
-     "note": "Your proposal is still open from last time",
-     "state": "Prep open"
-    },
-    {
-     "title": "O2 target numbers",
-     "note": "Needs Dana's revenue targets, still open",
-     "state": "Blocked"
-    },
-    {
-     "title": "Survey KR definition",
-     "note": "Ready to discuss once WEB-1402 is decided",
-     "state": "Needs WEB-1402"
-    }
-   ],
-   "prep_items": [
-    "Propose AI-visibility pilot scope (your action item)",
-    "Read the Roadmap Q1 draft, section 4 (O2 numbers still X)"
-   ],
-   "last_time": {
-    "date": "Tue 28 Oct",
-    "discussed": [
-     "Three bets for Q1: AI visibility, partner API, survey data",
-     "AI visibility needs a pilot before it gets a team",
-     "O2 numbers depend on the new survey KR"
-    ],
-    "decided": [
-     "Partner API stays a Q1 bet",
-     "Roadmap gets locked in this meeting"
-    ]
-   },
-   "domain": "OKRs"
-  },
-  {
-   "start": "13:00",
-   "end": "13:30",
-   "title": "1:1 Nora",
-   "source": "calendar",
-   "where": "Google Meet",
-   "who": [
-    {
-     "name": "Nora Lindqvist",
-     "note": "Builds the Insights Hub. Waiting for your feature list."
-    }
-   ],
-   "why": "Hand over the Insights Hub feature wishes.",
-   "prep": "Bring the feature list (glossary, usage telemetry, action governance, dataset clearance).",
-   "open_points": [
-    "Usage telemetry: who sees it"
-   ],
-   "tag": "Reminder",
-   "links": [
-    {
-     "label": "Calendar event",
-     "url": "https://calendar.google.com/",
-     "source": "calendar"
-    }
-   ],
-   "between": {
-    "you_owe": [
-     {
-      "text": "Insights Hub feature list (promised Nov 2)",
-      "link": "https://app.slack.com/client",
-      "source": "slack"
-     }
-    ],
-    "they_owe": [
-     {
-      "text": "Usage telemetry proposal",
-      "link": "https://linear.app/acme/issue/DATA-210",
-      "source": "linear"
-     }
-    ],
-    "threads": [
-     {
-      "text": "Dataset clearance levels: agreed in the Data OKR review",
-      "link": "https://docs.google.com/document/d/sample",
-      "source": "gdocs"
-     },
-     {
-      "text": "Glossary in the Insights Hub: who owns it",
-      "link": "https://app.slack.com/client",
-      "source": "slack"
-     }
-    ],
-    "agenda": [
-     "Hand over the feature list and agree the top 3",
-     "Telemetry: who sees usage data",
-     "Glossary owner"
-    ],
-    "name": "Nora"
-   }
-  },
-  {
-   "start": "16:00",
-   "end": "16:30",
-   "title": "Eng sync",
-   "source": "calendar",
-   "where": "Google Meet",
-   "who": [
-    "Engineering leads"
-   ],
-   "tag": "No prep",
-   "links": [
-    {
-     "label": "Calendar event",
-     "url": "https://calendar.google.com/",
-     "source": "calendar"
-    }
-   ]
-  }
- ],
- "board": {
-  "week": [
-   {
-    "id": "w1",
-    "title": "Finalise O1 targets",
-    "priority": "P0",
-    "size": "S",
-    "source": "me",
-    "domain": "OKRs",
-    "status": "In progress",
-    "closed_when": "board shows final numbers for all O1 KRs",
-    "notes": "Top-50 baseline 28 %, target 50 %",
-    "added": "2026-11-02",
-    "history": [
-     "2026-11-02 added from OKR session",
-     "2026-11-03 baselines pulled from the warehouse"
-    ],
-    "people": [
-     {
-      "name": "Jordan",
-      "note": "Data team verifies the baselines"
-     }
-    ]
-   },
-   {
-    "id": "w2",
-    "title": "Answer caching question on partner analytics endpoint",
-    "priority": "P0",
-    "size": "XS",
-    "source": "github",
-    "domain": "API",
-    "status": "Not started",
-    "closed_when": "reply posted and review re-requested",
-    "link": "https://github.com/acme/web/pull/812",
-    "added": "2026-11-03",
-    "context": "\"The aggregation runs per request. Can we move it to the nightly job and cache per partner?\""
-   },
-   {
-    "id": "w3",
-    "title": "Send Q1 budget split to Priya",
-    "priority": "P1",
-    "size": "S",
-    "source": "gmail",
-    "domain": "Admin",
-    "status": "Not started",
-    "closed_when": "reply sent with the split",
-    "link": "https://mail.google.com/mail/u/0/#all/19a2f0c9",
-    "notes": "Due Thursday, for the board deck",
-    "added": "2026-11-03"
-   },
-   {
-    "id": "w4",
-    "title": "First brief runs in Claude",
-    "priority": "P1",
-    "size": "M",
-    "source": "me",
-    "domain": "AI Stack",
-    "status": "In progress",
-    "closed_when": "3 runs without friction",
-    "added": "2026-11-03"
-   },
-   {
-    "id": "w5",
-    "title": "Approve API repo rename",
-    "priority": "P2",
-    "size": "XS",
-    "source": "github",
-    "domain": "API",
-    "status": "Waiting",
-    "closed_when": "change folder approved, PR merged",
-    "notes": "Waiting for the gated apply",
-    "added": "2026-11-02",
-    "link": "https://github.com/acme/partner-api/issues/12"
-   }
   ],
-  "inbox": [
-   {
-    "id": "i1",
-    "title": "Propose two slots for GTM kick-off",
-    "priority": "P2",
-    "size": "XS",
-    "source": "slack",
-    "domain": "GTM",
-    "status": "Not started",
-    "closed_when": "you replied in the thread with two slots",
-    "link": "https://acme.slack.com/archives/CSAMPLE06/p1793600000000001",
-    "added": "2026-11-04",
-    "context": "\"Can we kick off the GTM process next week? I'd bring Mia.\"",
-    "people": [
-     {
-      "name": "Jules Moreau"
-     }
-    ]
-   },
-   {
-    "id": "i2",
-    "title": "Send Sam infra change apply request",
-    "priority": "P2",
-    "size": "XS",
-    "source": "meet",
-    "domain": "Data",
-    "status": "Not started",
-    "closed_when": "message sent to Sam",
-    "notes": "From the Data OKR review",
-    "added": "2026-11-03",
-    "link": "https://docs.google.com/document/d/sample-data-okr-review"
-   },
-   {
-    "id": "i3",
-    "title": "Log Northwind as pull signal for Partner API",
-    "priority": "P3",
-    "size": "XS",
-    "source": "demodesk",
-    "domain": "API",
-    "status": "Not started",
-    "closed_when": "signal logged in the API project",
-    "added": "2026-11-03",
-    "link": "https://demodesk.example/recording/sample-northwind"
-   },
-   {
-    "id": "i4",
-    "title": "Decide: count only full survey submits",
-    "priority": "P1",
-    "size": "XS",
-    "source": "linear",
-    "domain": "OKRs",
-    "status": "Not started",
-    "closed_when": "comment on WEB-1402 with the decision",
-    "link": "https://linear.app/acme/issue/WEB-1402",
-    "added": "2026-11-03"
-   },
-   {
-    "id": "i5",
-    "title": "Partner incentive idea: monthly partner report",
-    "priority": "P3",
-    "size": "S",
-    "source": "wispr",
-    "domain": "Product",
-    "status": "Not started",
-    "closed_when": "filed in ideas/ or dropped",
-    "added": "2026-11-03"
-   }
-  ]
- },
- "sections": [
-  {
-   "id": "needs",
-   "title": "Needs attention",
-   "items": [
+  "top_of_mind": [
     {
-     "source": "github",
-     "title": "Partner analytics endpoint",
-     "where": "web #812",
-     "who": "Marcus Webb requested changes",
-     "when": "waiting 2 days",
-     "context": "\"The aggregation runs per request. Can we move it to the nightly job and cache per partner?\"",
-     "notes": "Two unresolved threads. CI is green. Merge state: BLOCKED (review).",
-     "action": "Answer the caching question, then re-request review",
-     "tag": "Blocking",
-     "tag_kind": "urgent",
-     "urgent": true,
-     "link": "https://github.com/acme/web/pull/812",
-     "people": [
-      {
-       "name": "Marcus Webb",
-       "note": "Backend, owns the nightly jobs"
+      "title": "OKRs T3/2026",
+      "note": "O2 and O3 targets open, planning deadline Friday",
+      "link": "https://linear.app/acme/initiatives",
+      "status": "Active this week",
+      "source": "linear",
+      "next": "All O2 and O3 targets set by Friday's planning deadline",
+      "updates": [
+        "Nov 3: O1 baselines pulled from the warehouse (top 50: 28 %)",
+        "Nov 2: KR wording simplified, German, one number each"
+      ],
+      "right": "Planning Fri",
+      "area": "Company"
+    },
+    {
+      "title": "Personal AI Stack",
+      "note": "First Claude runs this week",
+      "status": "Active this week",
+      "source": "me",
+      "next": "Three brief runs in Claude without friction",
+      "updates": [
+        "Nov 3: routines, views and learning loop built",
+        "Nov 3: Claude project linked to the workspace"
+      ],
+      "right": "3 runs to close",
+      "area": "Me",
+      "initiative": "Personal AI HQ"
+    },
+    {
+      "title": "Partner API",
+      "note": "Repo rename waiting for approval",
+      "link": "https://github.com/acme/partner-api",
+      "status": "Waiting",
+      "source": "github",
+      "next": "Repo renamed to partner-api-service, test deploy green",
+      "updates": [
+        "Nov 2: change folder for the WIF binding drafted, waiting for approval",
+        "Oct: 14 beta partners, 8 active"
+      ],
+      "right": "1 pull signal",
+      "area": "Delivery",
+      "initiative": "Partner API"
+    },
+    {
+      "title": "Data OKRs",
+      "status": "Active this week",
+      "note": "Clearance levels agreed, infra change apply pending",
+      "next": "Sam applies the clearance the infra change",
+      "source": "linear",
+      "link": "https://linear.app/acme/initiative/data-okrs",
+      "area": "Delivery",
+      "initiative": "Data OKRs"
+    },
+    {
+      "title": "GTM process",
+      "note": "Kick-off next week",
+      "status": "Active this week",
+      "source": "slack",
+      "link": "https://acme.slack.com/archives/CSAMPLE06/p1793600000000001",
+      "area": "Company"
+    },
+    {
+      "title": "Data clearance",
+      "note": "infra change apply this week",
+      "status": "Active this week",
+      "source": "linear",
+      "link": "https://linear.app/acme/initiative/data-okrs",
+      "area": "Delivery",
+      "initiative": "Data OKRs"
+    }
+  ],
+  "meetings": [
+    {
+      "start": "09:30",
+      "end": "09:45",
+      "title": "Daily standup",
+      "source": "meet",
+      "where": "Google Meet",
+      "who": [
+        "Web Platform team"
+      ],
+      "tag": "No prep",
+      "links": [
+        {
+          "label": "Join Meet",
+          "url": "https://meet.google.com/",
+          "source": "meet"
+        }
+      ]
+    },
+    {
+      "start": "10:00",
+      "end": "11:00",
+      "title": "Roadmap review",
+      "source": "calendar",
+      "where": "Room Elbe + Meet",
+      "who": [
+        {
+          "name": "Dana Whitfield",
+          "note": "Owns the Q1 roadmap. Wants decisions, not options."
+        },
+        {
+          "name": "Priya Raman",
+          "note": "Needs the budget split by Thursday for the board deck."
+        },
+        {
+          "name": "Theo",
+          "note": "PM for AI visibility."
+        }
+      ],
+      "why": "The Q1 roadmap gets locked here. AI-visibility scope and OKR O2 targets are on the agenda.",
+      "prep": "Read the OKR draft. Bring three decisions: AI-visibility pilot scope, O2 target numbers, survey KR definition.",
+      "open_points": [
+        "O2 target numbers still X",
+        "Who owns the AI-visibility pilot",
+        "Partial survey submits: count or not"
+      ],
+      "tag": "Deep prep",
+      "tag_kind": "warn",
+      "links": [
+        {
+          "label": "Calendar event",
+          "url": "https://calendar.google.com/",
+          "source": "calendar"
+        },
+        {
+          "label": "OKR board",
+          "url": "https://miro.com/",
+          "source": "miro"
+        },
+        {
+          "label": "Join Meet",
+          "url": "https://meet.google.com/",
+          "source": "meet"
+        }
+      ],
+      "recurring": true,
+      "attachments": [
+        {
+          "label": "Roadmap Q1 draft",
+          "url": "https://docs.google.com/document/d/sample",
+          "source": "gdocs",
+          "summary": "Three bets for Q1. AI-visibility scope still open; section 4 has the O2 numbers as X."
+        },
+        {
+          "label": "Roadmap board (Asana)",
+          "url": "https://app.asana.com/0/sample",
+          "source": "asana",
+          "summary": "12 open tasks, 3 overdue. Two owned by you: pilot scope, survey KR."
+        },
+        {
+          "label": "OKR board (Miro)",
+          "url": "https://miro.com/app/board/sample",
+          "source": "miro",
+          "summary": "O1 final, O2 and O3 targets empty."
+        }
+      ],
+      "action_items": {
+        "mine": [
+          {
+            "text": "Send O1 baselines to Dana",
+            "status": "done"
+          },
+          {
+            "text": "Propose AI-visibility pilot scope",
+            "status": "open"
+          }
+        ],
+        "others": [
+          {
+            "who": "Dana",
+            "text": "Share revenue targets per segment",
+            "status": "open"
+          },
+          {
+            "who": "Theo",
+            "text": "Draft AI-visibility one-pager",
+            "status": "done"
+          },
+          {
+            "who": "Priya",
+            "text": "Budget envelope for Q1",
+            "status": "unclear"
+          }
+        ]
+      },
+      "topic": {
+        "kind": "okr",
+        "title": "OKR O2: AI visibility",
+        "link": "https://linear.app/acme/initiatives",
+        "source": "linear",
+        "state": "Targets still X, one pilot agreed",
+        "updates": [
+          "Nov 3: pilot scope narrowed to one category",
+          "Oct 30: dashboard purpose clarified"
+        ],
+        "open": [
+          {
+            "text": "Who owns the pilot",
+            "link": "https://linear.app/acme/issue/WEB-1410"
+          }
+        ]
+      },
+      "decide": [
+        {
+          "title": "AI-visibility pilot scope",
+          "note": "Your proposal is still open from last time",
+          "state": "Prep open"
+        },
+        {
+          "title": "O2 target numbers",
+          "note": "Needs Dana's revenue targets, still open",
+          "state": "Blocked"
+        },
+        {
+          "title": "Survey KR definition",
+          "note": "Ready to discuss once WEB-1402 is decided",
+          "state": "Needs WEB-1402"
+        }
+      ],
+      "prep_items": [
+        "Propose AI-visibility pilot scope (your action item)",
+        "Read the Roadmap Q1 draft, section 4 (O2 numbers still X)"
+      ],
+      "last_time": {
+        "date": "Tue 28 Oct",
+        "discussed": [
+          "Three bets for Q1: AI visibility, partner API, survey data",
+          "AI visibility needs a pilot before it gets a team",
+          "O2 numbers depend on the new survey KR"
+        ],
+        "decided": [
+          "Partner API stays a Q1 bet",
+          "Roadmap gets locked in this meeting"
+        ]
+      },
+      "area": "Company"
+    },
+    {
+      "start": "13:00",
+      "end": "13:30",
+      "title": "1:1 Nora",
+      "source": "calendar",
+      "where": "Google Meet",
+      "who": [
+        {
+          "name": "Nora Lindqvist",
+          "note": "Builds the Insights Hub. Waiting for your feature list."
+        }
+      ],
+      "why": "Hand over the Insights Hub feature wishes.",
+      "prep": "Bring the feature list (glossary, usage telemetry, action governance, dataset clearance).",
+      "open_points": [
+        "Usage telemetry: who sees it"
+      ],
+      "tag": "Reminder",
+      "links": [
+        {
+          "label": "Calendar event",
+          "url": "https://calendar.google.com/",
+          "source": "calendar"
+        }
+      ],
+      "between": {
+        "you_owe": [
+          {
+            "text": "Insights Hub feature list (promised Nov 2)",
+            "link": "https://app.slack.com/client",
+            "source": "slack"
+          }
+        ],
+        "they_owe": [
+          {
+            "text": "Usage telemetry proposal",
+            "link": "https://linear.app/acme/issue/DATA-210",
+            "source": "linear"
+          }
+        ],
+        "threads": [
+          {
+            "text": "Dataset clearance levels: agreed in the Data OKR review",
+            "link": "https://docs.google.com/document/d/sample",
+            "source": "gdocs"
+          },
+          {
+            "text": "Glossary in the Insights Hub: who owns it",
+            "link": "https://app.slack.com/client",
+            "source": "slack"
+          }
+        ],
+        "agenda": [
+          "Hand over the feature list and agree the top 3",
+          "Telemetry: who sees usage data",
+          "Glossary owner"
+        ],
+        "name": "Nora"
       }
-     ],
-     "key": "web#812",
-     "priority": "P0",
-     "domain": "API"
     },
     {
-     "source": "linear",
-     "title": "WEB-1402 Survey submit tracking",
-     "where": "Web Platform · Survey project",
-     "who": "Alex mentioned you",
-     "when": "yesterday 4:12 PM",
-     "context": "\"Do we count partial submits as submitted for the KR? Needs a decision before we ship the event.\"",
-     "action": "Decide: count only full submits",
-     "tag": "Decision",
-     "tag_kind": "warn",
-     "link": "https://linear.app/acme/issue/WEB-1402",
-     "urgent": false,
-     "rec": {
-      "text": "Count only full submits",
-      "source": "KR definition, OKR draft section 3"
-     },
-     "key": "WEB-1402",
-     "priority": "P1",
-     "domain": "OKRs"
-    },
-    {
-     "source": "gmail",
-     "title": "Q1 budget split",
-     "where": "Inbox",
-     "who": "Priya",
-     "when": "yesterday 6:40 PM",
-     "context": "\"Can you send me your split between product and data by Thursday? I need it for the board deck.\"",
-     "action": "Reply with the split",
-     "tag": "Due Thu",
-     "tag_kind": "warn",
-     "link": "https://mail.google.com/mail/u/0/#all/19a2f0c9",
-     "priority": "P1",
-     "domain": "Admin"
-    },
-    {
-     "source": "slack",
-     "title": "GTM process kick-off",
-     "where": "#gtm-engine",
-     "who": "Jules Moreau",
-     "when": "8:05 AM",
-     "context": "\"Can we kick off the GTM process next week? I'd bring Mia.\"",
-     "action": "Propose two slots",
-     "tag": "Today",
-     "link": "https://acme.slack.com/archives/CSAMPLE06/p1793600000000001",
-     "priority": "P2",
-     "domain": "GTM"
+      "start": "16:00",
+      "end": "16:30",
+      "title": "Eng sync",
+      "source": "calendar",
+      "where": "Google Meet",
+      "who": [
+        "Engineering leads"
+      ],
+      "tag": "No prep",
+      "links": [
+        {
+          "label": "Calendar event",
+          "url": "https://calendar.google.com/",
+          "source": "calendar"
+        }
+      ]
     }
-   ],
-   "note": "Blockers, decisions and deadlines."
+  ],
+  "board": {
+    "week": [
+      {
+        "id": "1210000000000001",
+        "title": "Finalise O1 targets",
+        "priority": "P0",
+        "size": "S",
+        "source": "me",
+        "closed_when": "board shows final numbers for all O1 KRs",
+        "notes": "Top-50 baseline 28 %, target 50 %",
+        "added": "2026-11-02",
+        "history": [
+          "2026-11-02 added from OKR session",
+          "2026-11-03 baselines pulled from the warehouse"
+        ],
+        "people": [
+          {
+            "name": "Jordan",
+            "note": "Data team verifies the baselines"
+          }
+        ],
+        "section": "This week",
+        "due": "2026-11-06",
+        "okr": "O3",
+        "area": "Company",
+        "url": "https://app.asana.com/0/1200000000000000/1210000000000001"
+      },
+      {
+        "id": "1210000000000002",
+        "title": "Answer caching question on partner analytics endpoint",
+        "priority": "P0",
+        "size": "S",
+        "source": "github",
+        "closed_when": "reply posted and review re-requested",
+        "link": "https://github.com/acme/web/pull/812",
+        "added": "2026-11-03",
+        "context": "\"The aggregation runs per request. Can we move it to the nightly job and cache per partner?\"",
+        "section": "This week",
+        "due": "2026-11-06",
+        "area": "Delivery",
+        "initiative": "Partner API",
+        "url": "https://app.asana.com/0/1200000000000000/1210000000000002"
+      },
+      {
+        "id": "1210000000000003",
+        "title": "Send Q1 budget split to Priya",
+        "priority": "P1",
+        "size": "S",
+        "source": "gmail",
+        "closed_when": "reply sent with the split",
+        "link": "https://mail.google.com/mail/u/0/#all/19a2f0c9",
+        "notes": "Due Thursday, for the board deck",
+        "added": "2026-11-03",
+        "section": "This week",
+        "area": "Admin",
+        "url": "https://app.asana.com/0/1200000000000000/1210000000000003"
+      },
+      {
+        "id": "1210000000000004",
+        "title": "First brief runs in Claude",
+        "priority": "P1",
+        "size": "M",
+        "source": "me",
+        "closed_when": "3 runs without friction",
+        "added": "2026-11-03",
+        "section": "This week",
+        "area": "Me",
+        "initiative": "Personal AI HQ",
+        "url": "https://app.asana.com/0/1200000000000000/1210000000000004"
+      },
+      {
+        "id": "1210000000000005",
+        "title": "Approve API repo rename",
+        "priority": "P2",
+        "size": "S",
+        "source": "github",
+        "closed_when": "change folder approved, PR merged",
+        "notes": "Waiting for the gated apply",
+        "added": "2026-11-02",
+        "link": "https://github.com/acme/partner-api/issues/12",
+        "section": "This week",
+        "area": "Delivery",
+        "initiative": "Partner API",
+        "url": "https://app.asana.com/0/1200000000000000/1210000000000005"
+      }
+    ],
+    "inbox": [
+      {
+        "id": "1210000000000006",
+        "title": "Propose two slots for GTM kick-off",
+        "priority": "P2",
+        "size": "S",
+        "source": "slack",
+        "closed_when": "you replied in the thread with two slots",
+        "link": "https://acme.slack.com/archives/CSAMPLE06/p1793600000000001",
+        "added": "2026-11-04",
+        "context": "\"Can we kick off the GTM process next week? I'd bring Mia.\"",
+        "people": [
+          {
+            "name": "Jules Moreau"
+          }
+        ],
+        "section": "Inbox",
+        "area": "Company",
+        "url": "https://app.asana.com/0/1200000000000000/1210000000000006"
+      },
+      {
+        "id": "1210000000000007",
+        "title": "Send Sam infra change apply request",
+        "priority": "P2",
+        "size": "S",
+        "source": "meet",
+        "closed_when": "message sent to Sam",
+        "notes": "From the Data OKR review",
+        "added": "2026-11-03",
+        "link": "https://docs.google.com/document/d/sample-data-okr-review",
+        "section": "Inbox",
+        "area": "Delivery",
+        "initiative": "Data OKRs",
+        "url": "https://app.asana.com/0/1200000000000000/1210000000000007"
+      },
+      {
+        "id": "1210000000000008",
+        "title": "Log Northwind as pull signal for Partner API",
+        "priority": "P3",
+        "size": "S",
+        "source": "demodesk",
+        "closed_when": "signal logged in the API project",
+        "added": "2026-11-03",
+        "link": "https://demodesk.example/recording/sample-northwind",
+        "section": "Inbox",
+        "area": "Delivery",
+        "initiative": "Partner API",
+        "url": "https://app.asana.com/0/1200000000000000/1210000000000008"
+      },
+      {
+        "id": "1210000000000009",
+        "title": "Decide: count only full survey submits",
+        "priority": "P1",
+        "size": "S",
+        "source": "linear",
+        "closed_when": "comment on WEB-1402 with the decision",
+        "link": "https://linear.app/acme/issue/WEB-1402",
+        "added": "2026-11-03",
+        "section": "Inbox",
+        "okr": "O3",
+        "area": "Company",
+        "url": "https://app.asana.com/0/1200000000000000/1210000000000009"
+      },
+      {
+        "id": "1210000000000010",
+        "title": "Partner incentive idea: monthly partner report",
+        "priority": "P3",
+        "size": "S",
+        "source": "wispr",
+        "closed_when": "filed in ideas/ or dropped",
+        "added": "2026-11-03",
+        "section": "Inbox",
+        "area": "Product",
+        "url": "https://app.asana.com/0/1200000000000000/1210000000000010"
+      }
+    ]
   },
-  {
-   "id": "waiting",
-   "title": "Waiting on others",
-   "note": "You asked, nobody answered yet. Drops off when the answer arrives.",
-   "items": [
+  "sections": [
     {
-     "source": "gmail",
-     "key": "thread 19a2f0c",
-     "title": "Your mail to Priya",
-     "where": "sent Friday",
-     "who": "Priya",
-     "when": "4 days",
-     "context": "Q1 budget envelope for product and data.",
-     "action": "Nudge Priya before 10:00",
-     "tag": "4 days",
-     "tag_kind": "warn",
-     "link": "https://mail.google.com/mail/u/0/#all/19a2f0c",
-     "what": "has no reply after 2 working days",
-     "what_kind": "warn",
-     "priority": "P1",
-     "domain": "Admin"
+      "id": "needs",
+      "title": "Needs attention",
+      "items": [
+        {
+          "source": "github",
+          "title": "Partner analytics endpoint",
+          "where": "web #812",
+          "who": "Marcus Webb requested changes",
+          "when": "waiting 2 days",
+          "context": "\"The aggregation runs per request. Can we move it to the nightly job and cache per partner?\"",
+          "notes": "Two unresolved threads. CI is green. Merge state: BLOCKED (review).",
+          "action": "Answer the caching question, then re-request review",
+          "tag": "Blocking",
+          "tag_kind": "urgent",
+          "urgent": true,
+          "link": "https://github.com/acme/web/pull/812",
+          "people": [
+            {
+              "name": "Marcus Webb",
+              "note": "Backend, owns the nightly jobs"
+            }
+          ],
+          "key": "web#812",
+          "priority": "P0",
+          "area": "Delivery",
+          "initiative": "Partner API"
+        },
+        {
+          "source": "linear",
+          "title": "WEB-1402 Survey submit tracking",
+          "where": "Web Platform · Survey project",
+          "who": "Alex mentioned you",
+          "when": "yesterday 4:12 PM",
+          "context": "\"Do we count partial submits as submitted for the KR? Needs a decision before we ship the event.\"",
+          "action": "Decide: count only full submits",
+          "tag": "Decision",
+          "tag_kind": "warn",
+          "link": "https://linear.app/acme/issue/WEB-1402",
+          "urgent": false,
+          "rec": {
+            "text": "Count only full submits",
+            "source": "KR definition, OKR draft section 3"
+          },
+          "key": "WEB-1402",
+          "priority": "P1",
+          "area": "Company"
+        },
+        {
+          "source": "gmail",
+          "title": "Q1 budget split",
+          "where": "Inbox",
+          "who": "Priya",
+          "when": "yesterday 6:40 PM",
+          "context": "\"Can you send me your split between product and data by Thursday? I need it for the board deck.\"",
+          "action": "Reply with the split",
+          "tag": "Due Thu",
+          "tag_kind": "warn",
+          "link": "https://mail.google.com/mail/u/0/#all/19a2f0c9",
+          "priority": "P1",
+          "area": "Admin"
+        },
+        {
+          "source": "slack",
+          "title": "GTM process kick-off",
+          "where": "#gtm-engine",
+          "who": "Jules Moreau",
+          "when": "8:05 AM",
+          "context": "\"Can we kick off the GTM process next week? I'd bring Mia.\"",
+          "action": "Propose two slots",
+          "tag": "Today",
+          "link": "https://acme.slack.com/archives/CSAMPLE06/p1793600000000001",
+          "priority": "P2",
+          "area": "Company"
+        }
+      ],
+      "note": "Blockers, decisions and deadlines."
     },
     {
-     "source": "github",
-     "key": "web#5810",
-     "title": "Your PR #5810",
-     "where": "web",
-     "who": "Ravi (requested)",
-     "when": "26 h",
-     "context": "Partner API auth scopes.",
-     "action": "Nudge Ravi or pick another reviewer",
-     "tag": "26 h",
-     "link": "https://github.com/acme/web/pull/5810",
-     "what": "has no first review after 26 hours",
-     "what_kind": "warn",
-     "priority": "P2",
-     "domain": "API"
+      "id": "waiting",
+      "title": "Waiting on others",
+      "note": "You asked, nobody answered yet. Drops off when the answer arrives.",
+      "items": [
+        {
+          "source": "gmail",
+          "key": "thread 19a2f0c",
+          "title": "Your mail to Priya",
+          "where": "sent Friday",
+          "who": "Priya",
+          "when": "4 days",
+          "context": "Q1 budget envelope for product and data.",
+          "action": "Nudge Priya before 10:00",
+          "tag": "4 days",
+          "tag_kind": "warn",
+          "link": "https://mail.google.com/mail/u/0/#all/19a2f0c",
+          "what": "has no reply after 2 working days",
+          "what_kind": "warn",
+          "priority": "P1",
+          "area": "Admin"
+        },
+        {
+          "source": "github",
+          "key": "web#5810",
+          "title": "Your PR #5810",
+          "where": "web",
+          "who": "Ravi (requested)",
+          "when": "26 h",
+          "context": "Partner API auth scopes.",
+          "action": "Nudge Ravi or pick another reviewer",
+          "tag": "26 h",
+          "link": "https://github.com/acme/web/pull/5810",
+          "what": "has no first review after 26 hours",
+          "what_kind": "warn",
+          "priority": "P2",
+          "area": "Delivery",
+          "initiative": "Partner API"
+        },
+        {
+          "source": "slack",
+          "key": "slack-eng-deploy",
+          "title": "Your question to Owen",
+          "what": "has no reply after 1 working day",
+          "what_kind": "warn",
+          "where": "#web-eng",
+          "who": "Owen",
+          "context": "Which deploy window works for the survey event?",
+          "action": "Nudge Owen",
+          "when": "1 day",
+          "link": "https://acme.slack.com/archives/CSAMPLE01/p1793100000000001",
+          "priority": "P2",
+          "area": "Product"
+        },
+        {
+          "source": "asana",
+          "key": "asana-1200000000000002",
+          "title": "Task you gave Kai",
+          "what": "is overdue",
+          "what_kind": "warn",
+          "where": "Survey QA",
+          "who": "Kai",
+          "context": "QA sign-off for the survey event, due Monday.",
+          "action": "Nudge Kai or reassign",
+          "when": "1 day",
+          "link": "https://app.asana.com/0/1200000000000001/1200000000000002",
+          "priority": "P2",
+          "area": "Company"
+        }
+      ]
     },
     {
-     "source": "slack",
-     "key": "slack-eng-deploy",
-     "title": "Your question to Owen",
-     "what": "has no reply after 1 working day",
-     "what_kind": "warn",
-     "where": "#web-eng",
-     "who": "Owen",
-     "context": "Which deploy window works for the survey event?",
-     "action": "Nudge Owen",
-     "when": "1 day",
-     "link": "https://acme.slack.com/archives/CSAMPLE01/p1793100000000001",
-     "priority": "P2",
-     "domain": "Product"
+      "id": "week",
+      "title": "This week",
+      "type": "board",
+      "list": "week",
+      "note": "The plan. Locked in the weekly prep, changes mid-week only when you confirm."
     },
     {
-     "source": "asana",
-     "key": "asana-1200000000000002",
-     "title": "Task you gave Kai",
-     "what": "is overdue",
-     "what_kind": "warn",
-     "where": "Survey QA",
-     "who": "Kai",
-     "context": "QA sign-off for the survey event, due Monday.",
-     "action": "Nudge Kai or reassign",
-     "when": "1 day",
-     "link": "https://app.asana.com/0/1200000000000001/1200000000000002",
-     "priority": "P2",
-     "domain": "OKRs"
+      "id": "inbox",
+      "title": "Inbox",
+      "type": "board",
+      "list": "inbox",
+      "note": "Everything new since the last brief. Nothing moves to This week without your yes."
+    },
+    {
+      "id": "yesterday",
+      "title": "Yesterday",
+      "items": [
+        {
+          "source": "meet",
+          "title": "Data OKR review",
+          "where": "Google Meet · 45 min",
+          "who": "Jordan, Nora",
+          "context": "Clearance levels agreed. Sam applies the infra change. Top-5 data gaps come from unmapped fields.",
+          "action": "Send Sam the apply request",
+          "link": "https://meet.google.com/"
+        },
+        {
+          "source": "demodesk",
+          "title": "Partner call: Northwind",
+          "where": "Demodesk · 30 min",
+          "who": "Northwind team",
+          "context": "Wants their orders in the API and asked what it costs. That counts as a pull signal.",
+          "action": "Log as PULL signal for the Partner API",
+          "tag": "Signal",
+          "tag_kind": "ok",
+          "link": "https://demodesk.example/"
+        },
+        {
+          "source": "wispr",
+          "title": "Scratchpad: idea for partner incentives",
+          "where": "Notes app",
+          "context": "\"Give partners a monthly review report with a nudge when they fall below 3 orders a quarter.\"",
+          "action": "File as idea"
+        }
+      ],
+      "note": "What happened, and what landed on you."
+    },
+    {
+      "id": "replies",
+      "title": "Replies and reviews",
+      "note": "People waiting for your answer. Oldest first.",
+      "items": [
+        {
+          "source": "linear",
+          "who": "Ellis",
+          "what": "mentioned you",
+          "where": "WEB-1388",
+          "title": "Needs your review before Thursday",
+          "when": "2 days",
+          "kind": "review",
+          "link": "https://linear.app/acme/issue/WEB-1388",
+          "key": "WEB-1388",
+          "action": "Reply, or review and comment",
+          "priority": "P1",
+          "area": "Company"
+        },
+        {
+          "source": "gmail",
+          "who": "Mia",
+          "what": "asked for a meeting slot",
+          "where": "Inbox",
+          "title": "Got 20 minutes for the product marketing brief this week?",
+          "when": "yesterday",
+          "kind": "reply",
+          "link": "https://mail.google.com/mail/u/0/#all/19a2f0d1",
+          "key": "19a2f0d1",
+          "action": "Reply, or review and comment",
+          "priority": "P2",
+          "area": "Company"
+        },
+        {
+          "source": "gmail",
+          "who": "Theo",
+          "what": "is waiting for comments",
+          "where": "Inbox",
+          "title": "AI-visibility one-pager attached",
+          "when": "yesterday",
+          "kind": "review",
+          "link": "https://mail.google.com/mail/u/0/#all/19a2f0d2",
+          "key": "19a2f0d2",
+          "action": "Reply, or review and comment",
+          "priority": "P2",
+          "area": "Me",
+          "initiative": "Personal AI HQ"
+        },
+        {
+          "source": "github",
+          "who": "Ravi",
+          "what": "requested your review",
+          "where": "web #431",
+          "title": "Survey submit event tracking",
+          "when": "14h",
+          "kind": "review",
+          "link": "https://github.com/acme/web/pull/431",
+          "key": "431",
+          "action": "Reply, or review and comment",
+          "priority": "P1",
+          "area": "Delivery",
+          "initiative": "Partner API"
+        },
+        {
+          "source": "slack",
+          "who": "Casey",
+          "what": "is waiting for your reply",
+          "where": "#ai-engineering thread",
+          "title": "Can we use the smaller model for the brief summaries?",
+          "when": "11h",
+          "kind": "reply",
+          "link": "https://acme.slack.com/archives/CSAMPLE02/p1793200000000001",
+          "key": "p1793200000000001",
+          "action": "Reply, or review and comment",
+          "priority": "P2",
+          "area": "Me",
+          "initiative": "Personal AI HQ"
+        },
+        {
+          "source": "slack",
+          "who": "Jordan",
+          "what": "is waiting for your reply",
+          "where": "DM",
+          "title": "Can you look at the top-50 baseline query before I share it?",
+          "when": "1h",
+          "kind": "reply",
+          "link": "https://acme.slack.com/archives/D0SAMPLE03/p1793300000000001",
+          "key": "p1793300000000001",
+          "action": "Reply, or review and comment",
+          "priority": "P1",
+          "area": "Delivery",
+          "initiative": "Data OKRs"
+        },
+        {
+          "source": "slack",
+          "who": "Nora Lindqvist",
+          "what": "asked a question",
+          "where": "DM",
+          "title": "Is our 1:1 still at 1 PM?",
+          "when": "30m",
+          "kind": "reply",
+          "link": "https://acme.slack.com/archives/D0SAMPLE04/p1793400000000001",
+          "key": "p1793400000000001",
+          "action": "Reply, or review and comment",
+          "priority": "P3",
+          "area": "Admin"
+        }
+      ]
     }
-   ]
-  },
-  {
-   "id": "week",
-   "title": "This week",
-   "type": "board",
-   "list": "week",
-   "note": "The plan. Locked in the weekly prep, changes mid-week only when you confirm."
-  },
-  {
-   "id": "inbox",
-   "title": "Inbox",
-   "type": "board",
-   "list": "inbox",
-   "note": "Everything new since the last brief. Nothing moves to This week without your yes."
-  },
-  {
-   "id": "yesterday",
-   "title": "Yesterday",
-   "items": [
+  ],
+  "questions": [
     {
-     "source": "meet",
-     "title": "Data OKR review",
-     "where": "Google Meet · 45 min",
-     "who": "Jordan, Nora",
-     "context": "Clearance levels agreed. Sam applies the infra change. Top-5 data gaps come from unmapped fields.",
-     "action": "Send Sam the apply request",
-     "link": "https://meet.google.com/"
-    },
-    {
-     "source": "demodesk",
-     "title": "Partner call: Northwind",
-     "where": "Demodesk · 30 min",
-     "who": "Northwind team",
-     "context": "Wants their orders in the API and asked what it costs. That counts as a pull signal.",
-     "action": "Log as PULL signal for the Partner API",
-     "tag": "Signal",
-     "tag_kind": "ok",
-     "link": "https://demodesk.example/"
-    },
-    {
-     "source": "wispr",
-     "title": "Scratchpad: idea for partner incentives",
-     "where": "Notes app",
-     "context": "\"Give partners a monthly review report with a nudge when they fall below 3 orders a quarter.\"",
-     "action": "File as idea"
+      "term": "settlement cap",
+      "understanding": "From the billing thread: a monthly upper limit on billed usage per partner. Save it?"
     }
-   ],
-   "note": "What happened, and what landed on you."
-  },
-  {
-   "id": "replies",
-   "title": "Replies and reviews",
-   "note": "People waiting for your answer. Oldest first.",
-   "items": [
+  ],
+  "sources": [
     {
-     "source": "linear",
-     "who": "Ellis",
-     "what": "mentioned you",
-     "where": "WEB-1388",
-     "title": "Needs your review before Thursday",
-     "when": "2 days",
-     "kind": "review",
-     "link": "https://linear.app/acme/issue/WEB-1388",
-     "key": "WEB-1388",
-     "action": "Reply, or review and comment",
-     "priority": "P1",
-     "domain": "OKRs"
+      "name": "Slack",
+      "ok": true,
+      "read_at": "7:30 AM"
     },
     {
-     "source": "gmail",
-     "who": "Mia",
-     "what": "asked for a meeting slot",
-     "where": "Inbox",
-     "title": "Got 20 minutes for the product marketing brief this week?",
-     "when": "yesterday",
-     "kind": "reply",
-     "link": "https://mail.google.com/mail/u/0/#all/19a2f0d1",
-     "key": "19a2f0d1",
-     "action": "Reply, or review and comment",
-     "priority": "P2",
-     "domain": "GTM"
+      "name": "Gmail",
+      "ok": true,
+      "read_at": "7:30 AM"
     },
     {
-     "source": "gmail",
-     "who": "Theo",
-     "what": "is waiting for comments",
-     "where": "Inbox",
-     "title": "AI-visibility one-pager attached",
-     "when": "yesterday",
-     "kind": "review",
-     "link": "https://mail.google.com/mail/u/0/#all/19a2f0d2",
-     "key": "19a2f0d2",
-     "action": "Reply, or review and comment",
-     "priority": "P2",
-     "domain": "AI Stack"
+      "name": "Linear",
+      "ok": true,
+      "read_at": "7:30 AM"
     },
     {
-     "source": "github",
-     "who": "Ravi",
-     "what": "requested your review",
-     "where": "web #431",
-     "title": "Survey submit event tracking",
-     "when": "14h",
-     "kind": "review",
-     "link": "https://github.com/acme/web/pull/431",
-     "key": "431",
-     "action": "Reply, or review and comment",
-     "priority": "P1",
-     "domain": "API"
+      "name": "GitHub",
+      "ok": true,
+      "read_at": "7:30 AM"
     },
     {
-     "source": "slack",
-     "who": "Casey",
-     "what": "is waiting for your reply",
-     "where": "#ai-engineering thread",
-     "title": "Can we use the smaller model for the brief summaries?",
-     "when": "11h",
-     "kind": "reply",
-     "link": "https://acme.slack.com/archives/CSAMPLE02/p1793200000000001",
-     "key": "p1793200000000001",
-     "action": "Reply, or review and comment",
-     "priority": "P2",
-     "domain": "AI Stack"
+      "name": "Asana",
+      "ok": true,
+      "read_at": "7:30 AM"
     },
     {
-     "source": "slack",
-     "who": "Jordan",
-     "what": "is waiting for your reply",
-     "where": "DM",
-     "title": "Can you look at the top-50 baseline query before I share it?",
-     "when": "1h",
-     "kind": "reply",
-     "link": "https://acme.slack.com/archives/D0SAMPLE03/p1793300000000001",
-     "key": "p1793300000000001",
-     "action": "Reply, or review and comment",
-     "priority": "P1",
-     "domain": "Data"
+      "name": "Calendar",
+      "ok": true,
+      "read_at": "7:30 AM"
     },
     {
-     "source": "slack",
-     "who": "Nora Lindqvist",
-     "what": "asked a question",
-     "where": "DM",
-     "title": "Is our 1:1 still at 1 PM?",
-     "when": "30m",
-     "kind": "reply",
-     "link": "https://acme.slack.com/archives/D0SAMPLE04/p1793400000000001",
-     "key": "p1793400000000001",
-     "action": "Reply, or review and comment",
-     "priority": "P3",
-     "domain": "Admin"
+      "name": "Meeting notes",
+      "ok": true,
+      "read_at": "7:30 AM"
+    },
+    {
+      "name": "Notes app",
+      "ok": false,
+      "read_at": "7:30 AM",
+      "note": "Scratchpad notes since yesterday may be missing. Nothing above depends on them."
     }
-   ]
+  ],
+  "start_here": {
+    "title": "Answer Marcus's caching question on PR #812",
+    "why": "His PR has waited 2 days on your answer and blocks the partner analytics endpoint. Then prep for the roadmap review.",
+    "minutes": 10,
+    "until": "until 10:00 AM",
+    "key": "web#812"
   }
- ],
- "questions": [
-  {
-   "term": "settlement cap",
-   "understanding": "From the billing thread: a monthly upper limit on billed usage per partner. Save it?"
-  }
- ],
- "sources": [
-  {
-   "name": "Slack",
-   "ok": true,
-   "read_at": "7:30 AM"
-  },
-  {
-   "name": "Gmail",
-   "ok": true,
-   "read_at": "7:30 AM"
-  },
-  {
-   "name": "Linear",
-   "ok": true,
-   "read_at": "7:30 AM"
-  },
-  {
-   "name": "GitHub",
-   "ok": true,
-   "read_at": "7:30 AM"
-  },
-  {
-   "name": "Asana",
-   "ok": true,
-   "read_at": "7:30 AM"
-  },
-  {
-   "name": "Calendar",
-   "ok": true,
-   "read_at": "7:30 AM"
-  },
-  {
-   "name": "Meeting notes",
-   "ok": true,
-   "read_at": "7:30 AM"
-  },
-  {
-   "name": "Notes app",
-   "ok": false,
-   "read_at": "7:30 AM",
-   "note": "Scratchpad notes since yesterday may be missing. Nothing above depends on them."
-  }
- ],
- "start_here": {
-  "title": "Answer Marcus's caching question on PR #812",
-  "why": "His PR has waited 2 days on your answer and blocks the partner analytics endpoint. Then prep for the roadmap review.",
-  "minutes": 10,
-  "until": "until 10:00 AM",
-  "key": "web#812"
- },
- "domains": {
-  "Marketplace": 8
- }
 }

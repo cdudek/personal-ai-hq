@@ -25,3 +25,14 @@ Code (GitHub or GitLab, `gh` CLI as fallback), tickets (Linear or Jira), chat (S
 
 ## Typical meeting types
 Daily standup, team 1:1, sprint planning, retro, architecture review, incident review, hiring debrief, roadmap sync with product.
+
+## Default areas (setup proposes, you confirm)
+- **Delivery:** how we build and ship. Roadmap delivery, quality, reviews, releases.
+- **Platform:** infra, data, tooling, security, on-call and incidents.
+- **Product:** the what and why with product partners. Roadmap input, estimates, trade-offs.
+- **Team:** people. Hiring, 1:1s, feedback, performance, org design.
+- **Company:** up and across. Management, budget, other units.
+- **Admin:** contracts, invoices, access, expenses.
+- **Me:** own growth and outside presence.
+
+Example tie-break: 1 about a specific person: Team. 2 for someone outside engineering: Company. 3 running systems or incidents: Platform. 4 building and shipping: Delivery. 5 what or why: Product. 6 pure bureaucracy: Admin. 7 for yourself: Me.

@@ -71,7 +71,7 @@ answers, drafts, briefs  ->  good answers get filed back into context/topics/
 | `views/` | read-only daily and weekly views (HTML) built from JSON; see `views/CLAUDE.md` | Claude via `scripts/render_view.py` |
 | `routines/` | the routines as instruction files; scheduled tasks point here | Claude, changes only after the user approves |
 | `scripts/` | `build_index.py`, `render_view.py` | Claude |
-| `board.md` | the task board | Claude, after the user confirms |
+| `meta/task-store.md` | which tool holds the tasks and its ids; the tasks themselves live in that tool | setup, Claude |
 | `index.md`, `log.md` | generated map; append-only change log | Claude |
 
 ## Conventions
@@ -104,7 +104,7 @@ answers, drafts, briefs  ->  good answers get filed back into context/topics/
 1. **Nothing is saved to `context/` without a yes.** Ask with: "A term I didn't know, the [X]... I read [source] and understand [Y]. Want me to save?" Accept "yes", "yes, but...", or "no".
 2. **Look before asking.** Check the references below first; ask the user only if nothing answers it.
 3. **Company facts are referenced, not copied** into `context/`.
-4. **Board changes only after the user confirms** (`board.md`).
+4. **Task store changes only after the user confirms** (new Inbox tasks from triage and the agent's own tasks excepted).
 5. **Every routine logs friction:** when the user corrects you, append `- YYYY-MM-DD <routine>: <what went wrong> -> <what they wanted>` to `meta/friction.md`.
 6. **Every draft is logged:** append date, channel, recipient and text to `meta/drafts.md`.
 7. **Never publish.** Pages and documents stay local unless the user explicitly asks to share one. Never send, post or reply on the user's behalf without a yes.
@@ -155,11 +155,11 @@ Meeting attachments (docs, boards, tickets linked on calendar events) are read b
 | The user themselves | `context/` |
 | Where files and repos live | `context/places.md` |
 
-## Board
+## Task store
 
-`board.md` holds four sections: Top of mind, This week, Inbox, Agent. Claude maintains it. The user reads it in the daily and weekly views (`views/`) and gives input in chat ("done", "move X", "drop Y"). The task tool ({{TOOL_TASKS}}) is only an inbox source: items assigned to the user.
+Tasks live in one cloud tool, named in `meta/task-store.md`. Routines say "the task store" and follow the adapter `routines/stores/<store>.md` (model: `routines/stores/README.md`). Sections: Top of mind, This week, Waiting, Inbox, Agent. Every task has one Area (`context/areas/index.md`). The user reads it in the tool and in the daily and weekly views (`views/`) and gives input by commenting on a task, dragging, ticking off, or in chat. Tasks assigned to the user in other tools ({{TOOL_TASKS}}) are inbox sources: they become team tasks in the task store (link back, never copy).
 
-Rule: `board.md` changes only after the user confirms (rule 4).
+Rule: the task store changes only after the user confirms (rule 4).
 
 ## Phone input
 

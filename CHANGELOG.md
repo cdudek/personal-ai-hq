@@ -2,6 +2,15 @@
 
 Versions follow semver. Each release is a git tag `vX.Y.Z` with an entry here. `/hq:upgrade` shows the entries between your workspace version and the installed one.
 
+## 0.3.0 (2026-11-04)
+
+- Your tasks live in a cloud task manager you pick in `/hq:setup`: Asana, Notion, Monday or Trello (GitHub Projects works but is not recommended). `board.md` is gone. One mapping file per tool in `routines/stores/`; `meta/task-store.md` holds the ids.
+- One flat board that Claude manages: sections (Top of mind, This week, Waiting, Inbox, Agent) and one property per question (Area, Initiative, OKR, Priority, Size, Source, Waiting on, Closed when). Comment on a task, drag it or tick it off: the next brief acts on it.
+- Areas: setup proposes areas and a tie-break from your role and what exists; they live in `context/areas/`. The Friday review checks them for drift, and the brief proposes new initiatives by an initiative test.
+- `/hq:task` reads and writes the task store: `list`, `add`, `move`, `set`, `done`.
+- `/hq:upgrade` migrates `board.md` once: asks which tool, shows the mapping (domain becomes area and initiative), creates the board, moves every task, then removes `board.md`.
+- Views: tasks show Area and Initiative (not domain) and link to the task store; staged edits copy a prompt with the task id and url; the renderer checks `priority` and `area`; area colours are stable for any area name. Sample pages use the new fields. `build_index.py` leaves a hand-written `index.md` alone.
+
 ## 0.2.0 (2026-11-04)
 
 - Renamed to Personal AI HQ: plugin `hq`, commands `/hq:<skill>`, config `~/.config/hq/workspace` (setup still reads the old `~/.config/personal-ai-os/workspace`).

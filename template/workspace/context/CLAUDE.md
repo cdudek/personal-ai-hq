@@ -6,6 +6,7 @@ Memory. Read by every routine. Write only after the user says yes (see top-level
 - `goals.md`: goals and OKRs, with pointers to the source docs
 - `glossary.md`: terms, abbreviations, internal names. One line each: `**term**: meaning (source, date)`. Before adding: check plurals, acronyms, casing.
 - `writing-style.md`: the voice file. Every drafting routine reads it. Changes only via `review` with approval; append a dated line to its "Learned" section.
+- `areas/`: `index.md` (areas, tie-break, initiative test) and one file per area. The areas of the task store live here, not in the tool.
 - `places.md`: where files, repos and projects live. Read it before searching the disk.
 - `people/`, `projects/`, `topics/`: one file per item, frontmatter required, link with `[[...]]`.
 

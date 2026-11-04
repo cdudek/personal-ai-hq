@@ -25,3 +25,13 @@ CRM (HubSpot, Salesforce or Pipedrive), mail and calendar, chat (Slack or Teams)
 
 ## Typical meeting types
 Discovery call, demo, proposal review, negotiation, onboarding kickoff, QBR, renewal call, pipeline review, handover from sales to success.
+
+## Default areas (setup proposes, you confirm)
+- **Pipeline:** new deals. Prospects, demos, proposals, negotiation.
+- **Accounts:** existing customers. Onboarding, renewals, QBRs, escalations, churn risks.
+- **Team:** people, if you lead any. Hiring, 1:1s, coaching.
+- **Company:** up and across. Management, forecast, marketing, product feedback.
+- **Admin:** contracts, expenses, CRM hygiene, access.
+- **Me:** own growth and outside presence.
+
+Example tie-break: 1 about a specific person on your team: Team. 2 about a named customer under contract: Accounts. 3 about a prospect or a new deal: Pipeline. 4 for someone inside the company: Company. 5 pure bureaucracy: Admin. 6 for yourself: Me.

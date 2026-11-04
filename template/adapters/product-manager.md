@@ -24,3 +24,13 @@ Chat (Slack or Teams), mail and calendar (Google or Microsoft), tickets (Linear,
 
 ## Typical meeting types
 Product sync, roadmap review, stakeholder 1:1, customer interview, sprint planning, design review, launch readiness, quarterly planning.
+
+## Default areas (setup proposes, you confirm)
+- **Product:** what we build, why, for whom. Strategy, roadmap, discovery, pricing, insights.
+- **Delivery:** shipping with engineering and design. Specs, launches, sprint questions, release readiness.
+- **Team:** people, if you lead any. Hiring, 1:1s, feedback.
+- **Company:** up and across. Management, budget, go-to-market, other units.
+- **Admin:** contracts, invoices, access, expenses.
+- **Me:** own growth and outside presence. Talks, writing, learning.
+
+Example tie-break: 1 about a specific person: Team. 2 for someone outside product and tech: Company. 3 what or why we build: Product. 4 how it ships: Delivery. 5 pure bureaucracy: Admin. 6 for yourself: Me.

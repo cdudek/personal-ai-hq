@@ -7,7 +7,7 @@ updated: {{SETUP_DATE}}
 
 # Routine: radar (what needs me?)
 
-Use it inside `brief` and `sync`, or on its own any time ("Follow routines/radar.md"). It only reads; nothing is written to `board.md` without confirmation. Skip every source the tool routing marks "none"; say which were skipped.
+Use it inside `brief` and `sync`, or on its own any time ("Follow routines/radar.md"). It only reads; nothing is written to the task store without confirmation. Skip every source the tool routing marks "none"; say which were skipped.
 
 ## 1. Code: pull requests that need the user
 
@@ -70,7 +70,7 @@ The other direction: things the user sent that still wait for someone else. Only
 - **Tickets:** comments where the user asked someone, with no reply after 2 working days; tickets the user created or assigned to someone else that are overdue.
 - **Tasks tool:** tasks the user assigned to someone else that are overdue.
 
-Each line: who the user waits for, what they asked (short quote), since when, deep link. Suggested next step: "nudge <name>" (offer a draft) or "drop it". A line disappears as soon as the answer arrives. These are not board tasks.
+Each line: who the user waits for, what they asked (short quote), since when, deep link. Suggested next step: "nudge <name>" (offer a draft) or "drop it". A line disappears as soon as the answer arrives. These are not tasks in the task store.
 
 ## Deep links (every line, every source)
 

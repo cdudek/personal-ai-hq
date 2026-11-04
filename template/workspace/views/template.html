@@ -72,10 +72,10 @@
         <div class="toprows">
           <template x-for="t in topRows" :key="t.title">
             <button type="button" class="toprow" @click="openPanel('tom', t)" :aria-label="'Details: ' + t.title">
-              <span class="swatch" :data-d="dd(t.domain)"></span>
+              <span class="swatch" :data-d="dd(t.area)"></span>
               <span class="tt"><b x-text="t.title"></b></span>
               <span class="note" x-text="t.note || ''"></span>
-              <span class="domain" :data-d="dd(t.domain)" x-show="t.domain" x-text="t.domain"></span><span class="miss" x-show="!t.domain">no domain</span>
+              <span class="domain" :data-d="dd(t.area)" x-show="t.area" x-text="t.area"></span><span class="miss" x-show="!t.area">no area</span>
               <span class="rt" x-text="topRight(t)"></span>
             </button>
           </template>
@@ -105,7 +105,8 @@
                 <th class="c-prio"><button @click="sortBy('priority')" x-text="'Prio' + sortMark('priority')"></button></th>
                 <th class="c-size"><button @click="sortBy('size')" x-text="'Size' + sortMark('size')"></button></th>
                 <th class="c-status"><button @click="sortBy('status')" x-text="'Status' + sortMark('status')"></button></th>
-                <th class="c-dom"><button @click="sortBy('domain')" x-text="'Domain' + sortMark('domain')"></button></th>
+                <th class="c-dom"><button @click="sortBy('area')" x-text="'Area' + sortMark('area')"></button></th>
+                <th class="c-init"><button @click="sortBy('initiative')" x-text="'Initiative' + sortMark('initiative')"></button></th>
                 <th class="c-src"><button @click="sortBy('source')" x-text="'From' + sortMark('source')"></button></th>
               </tr></thead>
               <tbody>
@@ -125,13 +126,14 @@
                     </td>
                     <td class="c-size"><span class="size" x-text="t.size || ''"></span></td>
                     <td class="c-status"><span class="status" :class="statusClass(eff(t).status)" x-text="eff(t).status"></span></td>
-                    <td class="c-dom"><span class="domain" :data-d="dd(t.domain)" x-show="t.domain" x-text="t.domain"></span><span class="miss" x-show="!t.domain">no domain</span></td>
+                    <td class="c-dom"><span class="domain" :data-d="dd(t.area)" x-show="t.area" x-text="t.area"></span><span class="miss" x-show="!t.area">no area</span></td>
+                    <td class="c-init"><span class="init" x-show="t.initiative" x-text="t.initiative"></span></td>
                     <td class="c-src"><span class="src" x-show="t.source" :title="label(t.source)">
                       <span class="logo xs"><template x-if="icons[t.source]"><img :src="icons[t.source]" alt=""></template><template x-if="!icons[t.source]"><span x-text="abbr(t.source)"></span></template></span>
                       <span x-text="label(t.source)"></span></span></td>
                   </tr>
                 </template>
-                <tr x-show="!tasks(b.s.list).length"><td colspan="7" class="empty" x-text="b.s.empty || 'Nothing here.'"></td></tr>
+                <tr x-show="!tasks(b.s.list).length"><td colspan="8" class="empty" x-text="b.s.empty || 'Nothing here.'"></td></tr>
               </tbody>
             </table>
           </div>
@@ -163,7 +165,8 @@
                   </div>
 <div class="atoms" x-show="labelled(b.s)">
 <template x-if="pr(it)"><span class="prio-demo" :class="'prio-' + pr(it)" x-text="pr(it)"></span></template><template x-if="!pr(it)"><span class="miss">no priority</span></template>
-<template x-if="dom(it)"><span class="domain" :data-d="dd(dom(it))" x-text="dom(it)"></span></template><template x-if="!dom(it)"><span class="miss">no domain</span></template>
+<template x-if="area(it)"><span class="domain" :data-d="dd(area(it))" x-text="area(it)"></span></template><template x-if="!area(it)"><span class="miss">no area</span></template>
+<template x-if="initiativeOf(it)"><span class="init" x-text="initiativeOf(it)"></span></template>
 <template x-if="topicOf(it)"><span class="team" :data-t="topicOf(it).t"><b x-text="topicOf(it).t"></b><span x-text="topicOf(it).n"></span></span></template>
 </div>
                   <blockquote class="quote" x-show="it.context" x-text="it.context"></blockquote>
@@ -201,7 +204,8 @@
                 </div>
 <div class="atoms ra">
 <template x-if="pr(it)"><span class="prio-demo" :class="'prio-' + pr(it)" x-text="pr(it)"></span></template><template x-if="!pr(it)"><span class="miss">no priority</span></template>
-<template x-if="dom(it)"><span class="domain" :data-d="dd(dom(it))" x-text="dom(it)"></span></template><template x-if="!dom(it)"><span class="miss">no domain</span></template>
+<template x-if="area(it)"><span class="domain" :data-d="dd(area(it))" x-text="area(it)"></span></template><template x-if="!area(it)"><span class="miss">no area</span></template>
+<template x-if="initiativeOf(it)"><span class="init" x-text="initiativeOf(it)"></span></template>
 <template x-if="topicOf(it)"><span class="team" :data-t="topicOf(it).t"><b x-text="topicOf(it).t"></b><span x-text="topicOf(it).n"></span></span></template>
 </div>
                 <span class="when" x-text="it.when || ''"></span>
@@ -282,8 +286,9 @@
       <dt><span class="prio-demo prio-P0">P0</span><span class="prio-demo prio-P1">P1</span><span class="prio-demo prio-P2">P2</span><span class="prio-demo prio-P3">P3</span></dt><dd>Priority. Weight drops with importance.</dd>
       <dt><span class="signal urgent">Red</span></dt><dd>Act now: blocking, overdue.</dd>
       <dt><span class="signal warn">Amber</span></dt><dd>Decide or due soon.</dd>
-      <dt><span class="status s-todo"></span><span class="status s-doing"></span><span class="status s-waiting"></span><span class="status s-done"></span></dt><dd>Not started, in progress, waiting, done.</dd>
-      <dt><span class="domain">Domain</span></dt><dd>Where the work belongs.</dd>
+      <dt><span class="status s-todo"></span><span class="status s-waiting"></span><span class="status s-done"></span></dt><dd>Open, waiting, done.</dd>
+      <dt><span class="domain">Area</span></dt><dd>Area: whose responsibility it is.</dd>
+      <dt><span class="init">Initiative</span></dt><dd>The initiative it belongs to.</dd>
       <dt><span class="quote-demo">Quote</span></dt><dd>Someone else's words, with a rule.</dd>
       <dt><span class="claude-demo"></span></dt><dd>Indigo is Claude: copies a prompt or waits for Claude.</dd>
     </dl>
@@ -351,15 +356,15 @@
 
   <section id="plan" x-show="props.length">
     <div class="sh"><span class="eyebrow">Decide</span><h2>Plan this week</h2><span class="num" x-text="props.length + ' proposals'"></span></div>
-    <p class="rule">One proposal per board item and Inbox item. Change flips a line in or out of the plan; the capacity above follows.</p>
+    <p class="rule">One proposal per open task (This week, Waiting, Inbox). Change flips a line in or out of the plan; the capacity above follows.</p>
     <div class="ptable">
-      <div class="prow head"><span>Proposal</span><span>Task and reason</span><span>Prio</span><span class="pdom">Domain</span><span>Effort</span><span>Your call</span></div>
+      <div class="prow head"><span>Proposal</span><span>Task and reason</span><span>Prio</span><span class="pdom">Area</span><span>Effort</span><span>Your call</span></div>
       <template x-for="p in props" :key="p.pid">
         <div class="prow" :class="{out: !inPlan(p) && p.k !== 'done', answered: answers[p.pid]}">
           <span class="ptag" :class="'k-' + p.k" x-text="p.k === 'next' ? 'Next week' : p.k"></span>
           <div class="pt"><div class="ptitle"><span x-text="p.title"></span> <span class="team" x-show="topicOf(p)" :data-t="topicOf(p)?.t"><b x-text="topicOf(p)?.t"></b><span x-text="topicOf(p)?.n"></span></span></div><div class="pwhy" x-text="p.why"></div></div>
           <span class="pprio"><span class="prio-demo" :class="'prio-' + p.priority" x-show="p.priority" x-text="p.priority"></span><span class="miss" x-show="!p.priority">none</span></span>
-          <span class="pdom"><span class="domain" :data-d="dd(p.domain)" x-show="p.domain" x-text="p.domain"></span><span class="miss" x-show="!p.domain">no domain</span></span>
+          <span class="pdom"><span class="domain" :data-d="dd(p.area)" x-show="p.area" x-text="p.area"></span><span class="miss" x-show="!p.area">no area</span></span>
           <span class="peffort"><span x-text="effort(p) ? cap.fmt(effort(p)) : '-'"></span><small x-text="inPlan(p) ? 'in plan' : p.k === 'done' ? 'done' : 'out'"></small></span>
           <div class="pcall">
             <button class="btn btn-quiet" :aria-pressed="answers[p.pid] === 'change'" @click="answer(p, 'change')" :aria-label="'Change: ' + p.title">Change</button>
@@ -384,8 +389,8 @@
     <div class="toprows">
       <template x-for="(t, i) in d.top_of_mind || []" :key="t.title">
         <button type="button" class="toprow ranked" @click="openPanel('tom', t)" :aria-label="'Details: ' + t.title">
-          <span class="rk" x-text="i + 1"></span><span class="swatch" :data-d="dd(t.domain)"></span>
-          <span class="tt"><b x-text="t.title"></b><span class="domain" :data-d="dd(t.domain)" x-show="t.domain" x-text="t.domain"></span><span class="miss" x-show="!t.domain">no domain</span></span><span class="note" x-text="t.note || ''"></span>
+          <span class="rk" x-text="i + 1"></span><span class="swatch" :data-d="dd(t.area)"></span>
+          <span class="tt"><b x-text="t.title"></b><span class="domain" :data-d="dd(t.area)" x-show="t.area" x-text="t.area"></span><span class="miss" x-show="!t.area">no area</span></span><span class="note" x-text="t.note || ''"></span>
           <span class="signal hl" :class="healthTone(t.health)" x-show="t.health" x-text="t.health"></span>
           <span class="rt" x-text="t.move || ''"></span>
         </button>
@@ -523,7 +528,8 @@
           </div>
 <div class="atoms">
 <template x-if="pr(p)"><span class="prio-demo" :class="'prio-' + pr(p)" x-text="pr(p)"></span></template><template x-if="!pr(p)"><span class="miss">no priority</span></template>
-<template x-if="dom(p)"><span class="domain" :data-d="dd(dom(p))" x-text="dom(p)"></span></template><template x-if="!dom(p)"><span class="miss">no domain</span></template>
+<template x-if="area(p)"><span class="domain" :data-d="dd(area(p))" x-text="area(p)"></span></template><template x-if="!area(p)"><span class="miss">no area</span></template>
+<template x-if="initiativeOf(p)"><span class="init" x-text="initiativeOf(p)"></span></template>
 <template x-if="topicOf(p)"><span class="team" :data-t="topicOf(p).t"><b x-text="topicOf(p).t"></b><span x-text="topicOf(p).n"></span></span></template>
 </div>
           <div class="pair" x-show="p.before || p.after">
@@ -597,8 +603,8 @@
           <div class="eyebrow" x-text="panelKicker"></div>
           <h3 x-text="panel.title"></h3>
           <div class="meta" x-show="panelKind !== 'meeting' && meta(panel)" x-text="meta(panel)"></div>
-          <div class="atoms" x-show="panelKind === 'item'"><span class="prio-demo" :class="'prio-' + pr(panel)" x-show="pr(panel)" x-text="pr(panel)"></span><span class="miss" x-show="!pr(panel)">no priority</span><span class="domain" :data-d="dd(dom(panel))" x-show="dom(panel)" x-text="dom(panel)"></span><span class="miss" x-show="!dom(panel)">no domain</span><span class="team" x-show="topicOf(panel)" :data-t="topicOf(panel)?.t"><b x-text="topicOf(panel)?.t"></b><span x-text="topicOf(panel)?.n"></span></span></div>
-          <div class="atoms" x-show="panelKind === 'meeting' && (panel.domain || panel.topic)"><span class="domain" :data-d="dd(panel.domain)" x-show="panel.domain" x-text="panel.domain"></span><span class="team" x-show="topicOf(panel)" :data-t="topicOf(panel)?.t"><b x-text="topicOf(panel)?.t"></b><span x-text="topicOf(panel)?.n"></span></span></div>
+          <div class="atoms" x-show="panelKind === 'item'"><span class="prio-demo" :class="'prio-' + pr(panel)" x-show="pr(panel)" x-text="pr(panel)"></span><span class="miss" x-show="!pr(panel)">no priority</span><span class="domain" :data-d="dd(area(panel))" x-show="area(panel)" x-text="area(panel)"></span><span class="miss" x-show="!area(panel)">no area</span><span class="init" x-show="initiativeOf(panel)" x-text="initiativeOf(panel)"></span><span class="team" x-show="topicOf(panel)" :data-t="topicOf(panel)?.t"><b x-text="topicOf(panel)?.t"></b><span x-text="topicOf(panel)?.n"></span></span></div>
+          <div class="atoms" x-show="panelKind === 'meeting' && (panel.area || panel.topic)"><span class="domain" :data-d="dd(panel.area)" x-show="panel.area" x-text="panel.area"></span><span class="team" x-show="topicOf(panel)" :data-t="topicOf(panel)?.t"><b x-text="topicOf(panel)?.t"></b><span x-text="topicOf(panel)?.n"></span></span></div>
         </div>
         <button class="btn btn-quiet x" x-ref="closeBtn" @click="close()" aria-label="Close">×</button>
       </div>
@@ -625,7 +631,8 @@
             <template x-for="p in PRIOS"><option :value="p" :selected="eff(panel).priority === p" x-text="p"></option></template>
           </select>
           <span class="status" :class="statusClass(eff(panel).status)" x-text="eff(panel).status"></span>
-          <span class="domain" :data-d="dd(panel.domain)" x-show="panel.domain" x-text="panel.domain"></span>
+          <span class="domain" :data-d="dd(panel.area)" x-show="panel.area" x-text="panel.area"></span>
+          <span class="init" x-show="panel.initiative" x-text="panel.initiative"></span>
           <span class="size" x-show="panel.size" x-text="'Size ' + panel.size"></span>
           <span class="spacer"></span>
           <label class="check"><input type="checkbox" :checked="eff(panel).status === 'Done'" @change="setDone(panel, $event.target.checked)"> Done</label>
@@ -634,14 +641,21 @@
         </div>
       </template>
 
+      <dl class="facts" x-show="panelKind === 'task' && (panel.section || panel.okr || panel.waiting_on || panel.due)">
+        <dt x-show="panel.section">Section</dt><dd x-show="panel.section" x-text="panel.section"></dd>
+        <dt x-show="panel.okr">OKR</dt><dd x-show="panel.okr" x-text="panel.okr"></dd>
+        <dt x-show="panel.waiting_on">Waiting on</dt><dd x-show="panel.waiting_on" x-text="panel.waiting_on"></dd>
+        <dt x-show="panel.due">Due</dt><dd class="mono" x-show="panel.due" x-text="panel.due"></dd>
+      </dl>
+
       <template x-if="panelKind === 'tom'">
         <div>
-          <div class="controls"><span class="signal" :class="healthTone(panel.health)" x-show="panel.health" x-text="panel.health"></span><span class="domain" :data-d="dd(panel.domain)" x-show="panel.domain" x-text="panel.domain"></span></div>
+          <div class="controls"><span class="signal" :class="healthTone(panel.health)" x-show="panel.health" x-text="panel.health"></span><span class="domain" :data-d="dd(panel.area)" x-show="panel.area" x-text="panel.area"></span></div>
           <div class="block" x-show="panel.note"><h4 class="eyebrow">Where it stands</h4><p x-text="panel.note"></p></div>
           <div class="block" x-show="panel.next"><h4 class="eyebrow">Next milestone</h4><p class="strong" x-text="panel.next"></p></div>
           <div class="block" x-show="(panel.updates || []).length"><h4 class="eyebrow">Latest updates</h4>
             <ul class="dash"><template x-for="u in panel.updates || []"><li x-text="u"></li></template></ul></div>
-          <div class="block" x-show="related(panel).length"><h4 class="eyebrow">Open tasks on the board</h4>
+          <div class="block" x-show="related(panel).length"><h4 class="eyebrow">Open tasks in the task store</h4>
             <ul class="tom-tasks"><template x-for="t in related(panel)" :key="t.id">
               <li><button type="button" class="linkish" @click="openPanel('task', t)">
                 <span class="prio" :class="'prio-' + eff(t).priority" x-text="eff(t).priority"></span>
@@ -732,8 +746,9 @@
         </template></ul></div>
       <div class="block" x-show="(panel.history || []).length"><h4 class="eyebrow">History</h4>
         <ul class="dash history"><template x-for="h in panel.history || []"><li x-text="h"></li></template></ul></div>
-      <div class="block" x-show="url(panel.link) || linksOf(panel).length"><h4 class="eyebrow">Links</h4>
+      <div class="block" x-show="url(panel.link) || url(panel.url) || linksOf(panel).length"><h4 class="eyebrow">Links</h4>
         <div class="links">
+          <a class="btn btn-quiet sm" x-show="url(panel.url)" :href="url(panel.url)" target="_blank" rel="noopener"><span class="ext">Open in task store</span></a>
           <a class="btn btn-quiet sm" x-show="url(panel.link)" :href="url(panel.link)" target="_blank" rel="noopener">
             <template x-if="icons[panel.source]"><img :src="icons[panel.source]" alt="" width="14" height="14"></template>
             <span class="ext" x-text="'Open in ' + (label(panel.source) || 'source')"></span></a>
@@ -760,7 +775,7 @@
 <!-- Staged board changes, waiting for Claude -->
 <div class="dock" x-show="changeCount" x-transition role="status">
   <div class="grow">
-    <span class="dock-n" x-text="dockState === 'copied' ? 'Copied, not yet confirmed' : dockState === 'updated' ? 'Changes updated' : changeCount + (changeCount === 1 ? ' board change on this page' : ' board changes on this page')"></span>
+    <span class="dock-n" x-text="dockState === 'copied' ? 'Copied, not yet confirmed' : dockState === 'updated' ? 'Changes updated' : changeCount + (changeCount === 1 ? ' task store change on this page' : ' task store changes on this page')"></span>
     <span class="dock-s" :class="dockState === 'updated' && 'warn'" x-text="dockState === 'copied' ? 'Paste in Cowork. The next brief shows the change.' : dockState === 'updated' ? 'Copy again so Claude gets the latest.' : 'Saved in this browser only. Not applied yet.'"></span>
   </div>
   <button class="btn btn-quiet" @click="edits = {}; sentSig = null">Undo all</button>

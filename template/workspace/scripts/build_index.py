@@ -106,14 +106,21 @@ def build_root() -> str:
     return "\n".join(out) + "\n"
 
 
+def hand_written(d: Path) -> bool:
+    """A folder whose index.md is real content (context/areas/), not a generated index: leave it alone."""
+    f = d / "index.md"
+    return f.exists() and not f.read_text(encoding="utf-8").startswith("# Index")
+
+
 def main() -> None:
     dirs = [d for d in ROOT.rglob("*") if d.is_dir() and not (set(d.relative_to(ROOT).parts) & SKIP_DIRS)]
     for d in dirs:
-        (d / "index.md").write_text(build_folder(d), encoding="utf-8")
+        if not hand_written(d):
+            (d / "index.md").write_text(build_folder(d), encoding="utf-8")
     (ROOT / "index.md").write_text(build_root(), encoding="utf-8")
     # self-check: every non-dated, non-private file is listed in its folder index
     for d in dirs:
-        if d.relative_to(ROOT).parts[0] in TIME_DIRS:
+        if d.relative_to(ROOT).parts[0] in TIME_DIRS or hand_written(d):
             continue
         idx = (d / "index.md").read_text(encoding="utf-8")
         missing = [p.name for p in md_files(d) if f"|{p.stem}]]" not in idx and f"\\|{p.stem}]]" not in idx]

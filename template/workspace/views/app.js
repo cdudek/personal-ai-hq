@@ -5,7 +5,11 @@ const LABEL = {github:"GitHub",linear:"Linear",slack:"Slack",gmail:"Gmail",calen
   wispr:"Wispr Flow",asana:"Asana",miro:"Miro",hubspot:"HubSpot",gdocs:"Google Docs",posthog:"PostHog",aios:"Workspace",board:"Board",note:"Note",me:"Me",meeting:"Meeting"};
 const PRIOS = ["P0", "P1", "P2", "P3"];
 const SIZES = {XS: 0, S: 1, M: 2, L: 3, XL: 4};
-const STATUSES = ["Not started", "In progress", "Waiting", "Done"];
+// derived from the task store: Done = completed, Waiting = section Waiting, else Open
+const STATUSES = ["Open", "Waiting", "Done"];
+// the store writes sources as Slack, Mail, Meeting, ...; icons and labels are keyed by the lower-case names below
+const SRC_ALIAS = {mail: "gmail", meeting: "meet"};
+const normSource = s => { const k = String(s || "").toLowerCase(); return SRC_ALIAS[k] || k; };
 const LISTS = {week: "This week", inbox: "Inbox"};
 const ANSWERS = ["accept", "change"];
 // review decisions: adopt = Claude writes it, park = comes back next review, adjust = Claude applies "your version"
@@ -23,9 +27,10 @@ const EYEBROW = {needs: "Act", week: "Plan", inbox: "Plan", proposals: "Plan", r
 const LIMITS = {needs: 5, replies: 8, waiting: 5, inbox: 5, yesterday: 5, tom: 3};
 const ROW_SECTIONS = ["replies", "waiting"];
 const RECAP_SECTIONS = ["yesterday", "finished"];
-// one domain list for every page: colour index into --d-1..--d-11 (app.css). Data may add domains with `domains: {Name: index}`.
-const DOMAINS = {"OKRs": 1, "AI Stack": 2, "API": 3, "Product": 4, "GTM": 5, "Data": 6, "Admin": 7};
-// sections whose items are things to act on: they always show priority, domain and topic
+// the six areas (context/areas/index.md): colour index into --d-1..--d-11 (app.css), the same on every page
+// fixed colours for the common areas; any other area name gets a stable colour (1 to 11) from its name
+const AREAS = {"Product": 3, "Engineering": 6, "Team": 4, "Company": 5, "Admin": 7, "Me": 2};
+// sections whose items are things to act on: they always show priority, area, initiative and topic
 const LABELLED = ["needs", "replies", "waiting", "proposals"];
 const KINDS = {keep: "keep", add: "add", done: "done", next: "next", "next week": "next", remove: "remove"};
 
@@ -58,8 +63,8 @@ document.addEventListener("alpine:init", () => {
     const d = readJSON("data");
     const allTasks = [];
     for (const list of Object.keys(LISTS)) {
-      // page key is namespaced by list so equal ids in two lists never collide; ref is the board.md id the routine resolves
-      (d.board?.[list] || []).forEach((t, i) => allTasks.push({...t, ref: clean(t.id || `${list}-${i}`, 60), id: `${list}:${t.id || i}`, _list: list}));
+      // page key is namespaced by list so equal ids in two lists never collide; ref is the task store id the routine resolves
+      (d.board?.[list] || []).forEach((t, i) => allTasks.push({...t, source: normSource(t.source), ref: clean(t.id || `${list}-${i}`, 60), id: `${list}:${t.id || i}`, _list: list}));
     }
     // weekly proposals: one per board or Inbox item; the page keys them by position so equal ids never collide
     const rprops = [];
@@ -110,13 +115,16 @@ document.addEventListener("alpine:init", () => {
       whereWho(x) { return [x.where, this.names(x.who)].filter(Boolean).join(" · "); },
       linksOf(x) { return (x.links || []).filter(l => this.url(l.url)); },
       dd(name) {
-        const m = {...DOMAINS, ...(d.domains || {})}, k = Object.keys(m).find(n => n.toLowerCase() === String(name || "").toLowerCase());
-        return k ? String(m[k]) : "";
+        const k = Object.keys(AREAS).find(n => n.toLowerCase() === String(name || "").toLowerCase());
+        if (k) return String(AREAS[k]);
+        const s = String(name || "");
+        return s ? String(1 + [...s.toLowerCase()].reduce((h, c) => (h * 31 + c.charCodeAt(0)) % 11, 7) % 11) : "";
       },
-      // priority and domain of an item, taken from its board task when it has none of its own
-      linked(x) { return x.link ? allTasks.find(t => t.link === x.link) : null; },
+      // priority, area and initiative of an item, taken from its task when it has none of its own (matched by link or task url)
+      linked(x) { return x.link ? allTasks.find(t => t.link === x.link || t.url === x.link) : null; },
       pr(x) { return x.priority || this.linked(x)?.priority || ""; },
-      dom(x) { return x.domain || this.linked(x)?.domain || ""; },
+      area(x) { return x.area || this.linked(x)?.area || ""; },
+      initiativeOf(x) { return x.initiative || this.linked(x)?.initiative || ""; },
       // topic: a Linear key, or an OKR, project or initiative name
       topicOf(x) {
         const t = x.topic, k = (t && (t.key || t.title)) || (x.source === "linear" && /^[A-Z]+-\d+$/.test(x.key || "") ? x.key : "");
@@ -222,7 +230,7 @@ document.addEventListener("alpine:init", () => {
       get srcChips() { return (d.sources || []).map(s => ({name: s.name, ok: s.ok !== false, text: s.status || (s.ok === false ? "not reachable" : "read")})); },
 
       // ---------- board: effective value = original overlaid with staged edit ----------
-      orig(t) { return {priority: t.priority || "P2", status: t.status || "Not started", list: t._list, drop: false}; },
+      orig(t) { return {priority: t.priority || "P2", status: t.completed ? "Done" : t.section === "Waiting" ? "Waiting" : "Open", list: t._list, drop: false}; },
       eff(t) { return {...this.orig(t), ...(this.edits[t.id] || {})}; },
       tasks(list) { return this.sorted(allTasks.filter(t => this.eff(t).list === list)); },
       sorted(ts) {
@@ -246,7 +254,7 @@ document.addEventListener("alpine:init", () => {
         this.edits = all;
       },
       setPriority(t, p) { this.edit(t, {priority: p}); },
-      setDone(t, on) { this.edit(t, {status: on ? "Done" : (t.status && t.status !== "Done" ? t.status : "Not started")}); },
+      setDone(t, on) { this.edit(t, {status: on ? "Done" : this.orig(t).status === "Done" ? "Open" : this.orig(t).status}); },
       toggleMove(t) { this.edit(t, {list: this.eff(t).list === "week" ? "inbox" : "week"}); },
       toggleDrop(t) { this.edit(t, {drop: !this.eff(t).drop}); },
       undo(t) { const all = {...this.edits}; delete all[t.id]; this.edits = all; },
@@ -258,7 +266,7 @@ document.addEventListener("alpine:init", () => {
         if (e.drop) parts.push("drop it");
         if (e.list) parts.push("move to " + LISTS[e.list]);
         if (e.priority) parts.push(`priority ${o.priority} to ${e.priority}`);
-        if (e.status) parts.push(e.status === "Done" ? "mark done" : "status " + e.status);
+        if (e.status) parts.push(e.status === "Done" ? "mark done" : "reopen");
         return parts.join(" · ");
       },
       changeLines() {
@@ -267,21 +275,22 @@ document.addEventListener("alpine:init", () => {
           if (e.drop) parts.push("drop it");
           if (e.list) parts.push(`move ${LISTS[o.list]} -> ${LISTS[e.list]}`);
           if (e.priority) parts.push(`priority ${o.priority} -> ${e.priority}`);
-          if (e.status) parts.push(e.status === "Done" ? "mark done" : `status -> ${e.status}`);
-          return `- [${o.list}] id ${t.ref} ("${clean(t.title, 80).replace(/"/g, "'")}"): ${parts.join(", ")}`;
+          if (e.status) parts.push(e.status === "Done" ? "mark done" : "reopen");
+          // id and url name the exact task in the task store; the title is only for display
+          return `- [${o.list}] id ${t.ref}${this.url(t.url) ? " url " + this.url(t.url) : ""} ("${clean(t.title, 80).replace(/"/g, "'")}"): ${parts.join(", ")}`;
         }).join("\n");
       },
       // dock states: pending (not copied) -> copied (not confirmed) -> updated (edited after copying, copy again)
       get dockState() { return this.sentSig === null ? "pending" : this.sentSig === JSON.stringify(this.edits) ? "copied" : "updated"; },
       async applyChanges() {
         const sig = JSON.stringify(this.edits);
-        const ok = await this.ask("Apply these board changes to board.md (views/CLAUDE.md, \"Board changes from the page\"). I confirm them.\n" +
+        const ok = await this.ask("Apply these changes to the task store (views/CLAUDE.md, \"Task store changes from the page\"). Resolve each line by its id (the url is the same task's deep link). I confirm them.\n" +
           "<<<CHANGES\n" + this.changeLines() + "\n>>>\nThen rebuild the " + d.kind + " view.", "dock");
         if (ok) this.sentSig = sig;
       },
       statusClass(s) { return {"In progress": "s-doing", "Waiting": "s-waiting", "Done": "s-done"}[s] || "s-todo"; },
       actClass(s) { return {done: "s-done", unclear: "s-unclear"}[s] || "s-todo"; },
-      alsoTask(it) { return it.link ? allTasks.find(t => t._list === "week" && t.link === it.link) : null; },
+      alsoTask(it) { return it.link ? allTasks.find(t => t._list === "week" && (t.link === it.link || t.url === it.link)) : null; },
 
       // ---------- weekly: plan answers and capacity ----------
       inPlan(p) { const base = p.k === "keep" || p.k === "add"; return this.answers[p.pid] === "change" ? !base : base; },
@@ -350,7 +359,7 @@ document.addEventListener("alpine:init", () => {
         }).join("\n");
       },
       applyPlan() {
-        this.ask("Apply this week's plan to board.md (views/CLAUDE.md, \"Plan answers from the page\"). I confirm the answers below; unanswered lines are accepted as proposed.\n" +
+        this.ask("Apply this week's plan to the task store (views/CLAUDE.md, \"Plan answers from the page\"). I confirm the answers below; unanswered lines are accepted as proposed.\n" +
           "<<<PLAN\n" + this.planLines() + "\n>>>\nThen rebuild the weekly view.", "plan");
       },
 
@@ -374,11 +383,11 @@ document.addEventListener("alpine:init", () => {
         this.panel = null; this.panelKind = null;
         this.returnFocus?.focus?.();
       },
-      // board tasks behind a Top of mind initiative: listed by id in t.tasks, else same domain
+      // tasks behind a Top of mind initiative: listed by id in t.tasks, else the tasks whose Initiative is this title
       related(t) {
         const ids = Array.isArray(t.tasks) ? t.tasks.map(String) : null;
         return this.sorted(allTasks.filter(x => !this.eff(x).drop && this.eff(x).status !== "Done" &&
-          (ids ? ids.includes(x.ref) : (t.domain && x.domain === t.domain))));
+          (ids ? ids.includes(x.ref) : (x.initiative && String(x.initiative).toLowerCase() === String(t.title).toLowerCase()))));
       },
       topRight(t) { const n = this.related(t).length; return t.right || (n ? n + (n === 1 ? " open task" : " open tasks") : ""); },
       get topRows() { const all = d.top_of_mind || []; return this.open.tom || this.weekly ? all : all.slice(0, this.limit({id: "tom"})); },
@@ -386,7 +395,7 @@ document.addEventListener("alpine:init", () => {
       get panelKicker() {
         if (this.panelKind === "tom") return "Top of mind";
         if (this.panelKind === "rv") return "Why · " + (RTITLES[this.panel.group] || "");
-        if (this.panelKind === "task") return "Board · " + LISTS[this.eff(this.panel).list];
+        if (this.panelKind === "task") return "Task store · " + LISTS[this.eff(this.panel).list];
         if (this.panelKind === "meeting") return "Meeting" + (this.panel.between ? " · 1:1" : "");
         return this.label(this.panel.source);
       },
@@ -418,7 +427,7 @@ document.addEventListener("alpine:init", () => {
       doIt(x, k) {
         return this.ask("Follow routines/next.md and start with the item below. Open it by its link or id first.\n" +
           fence({title: clean(x.title), source: clean(this.label(x.source), 30), id: clean(x.key || x.ref, 60),
-            link: this.url(x.link), "more links": this.linkList(x), board: x.ref ? "task id " + clean(x.ref, 60) : "",
+            link: this.url(x.link), "more links": this.linkList(x), "task store": x.ref ? "task id " + clean(x.ref, 60) + (this.url(x.url) ? " " + this.url(x.url) : "") : "",
             goal: clean(x.action || x.next), "closed when": clean(x.closed_when)}), k);
       },
       // decisions are confirmed only when the next brief shows them: this copies the choice, nothing else
@@ -439,7 +448,7 @@ document.addEventListener("alpine:init", () => {
       askTerm(q, k) { return this.ask("Answer about a term from the briefing page.\n" + fence({term: clean(q.term, 60)}) + "\nMy answer: ", k); },
       refresh(k) { return this.ask("Follow routines/" + ({weekly: "weekly", review: "review"}[d.kind] || "sync") + ".md. Read what is new and rebuild this " + d.kind + " view.", k); },
       prep(m, k) {
-        return this.ask("Follow routines/next.md and prep me for the meeting below. Use the calendar and meeting notes and context/people.\n" +
+        return this.ask("Follow routines/next.md and prep me for the meeting below. Use the AI OS calendar and meeting notes and context/people.\n" +
           fence({meeting: clean(m.title), start: clean(m.start, 5), "event link": this.url(m.link), with: clean(this.names(m.who), 200),
             topic: m.topic ? clean(m.topic.title, 80) + " " + (this.url(m.topic.link) || "") : "",
             "links and attachments": this.linkList(m), "open points": clean((m.open_points || []).join("; "), 300)}), k);

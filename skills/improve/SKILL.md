@@ -1,6 +1,6 @@
 ---
 name: improve
-description: Runs the learning loop. `review` compares drafts with what was sent, learns style and vocabulary, groups friction, triages the tips queue and shows plan vs actual (everything is a proposal); `tip` audits one tip, post or link against the current setup and gives a verdict (adopt, backlog, discard). Use when the user says "review", "weekly review", "what did you learn", "improve", "should I adopt this" or pastes a link about working with AI.
+description: Runs the learning loop. `review` compares drafts with what was sent, learns style and vocabulary, groups friction, triages the tips queue, checks the areas for drift and shows plan vs actual (everything is a proposal); `tip` audits one tip, post or link against the current setup and gives a verdict (adopt, backlog, discard). Use when the user says "review", "weekly review", "what did you learn", "improve", "should I adopt this" or pastes a link about working with AI.
 argument-hint: "[review|tip <link or text>]"
 ---
 

@@ -1,6 +1,6 @@
 ---
 name: setup
-description: Onboarding for the HQ plugin. Interviews the user (name, company, team, role, day to day, goals, tools, writing samples, languages), picks a role adapter, copies the workspace template to a folder, fills in the rules, context and tool routing, starts a local git repo, creates the scheduled tasks, and offers a first brief. Use when the user says "setup", "set up my AI workspace", "onboard me", "install HQ", "get started", or runs /hq:setup.
+description: Onboarding for the HQ plugin. Interviews the user (name, company, team, role, day to day, goals, tools, writing samples, languages, where tasks live), picks a role adapter, proposes areas and a tie-break, creates the task board in the chosen tool (Asana, Notion, Monday, Trello or GitHub Projects), copies the workspace template to a folder, fills in the rules, context and tool routing, starts a local git repo, creates the scheduled tasks, and offers a first brief. Use when the user says "setup", "set up my AI workspace", "onboard me", "install HQ", "get started", or runs /hq:setup.
 ---
 
 # setup
@@ -14,17 +14,17 @@ Goal: a working private workspace in about 20 minutes. Never push anything anywh
 
 ## 1. Interview
 
-Start with one line: "I'll ask 9 short questions (about 10 minutes). Say `skip` to pass on any, or `demo` to see sample pages first, no connectors needed." If the user says `demo`, run the `demo` skill, then come back.
+Start with one line: "I'll ask 10 short questions (about 12 minutes). Say `skip` to pass on any, or `demo` to see sample pages first, no connectors needed." If the user says `demo`, run the `demo` skill, then come back.
 
 Rules for the interview:
 
-- **One question at a time,** with a progress marker: "3 of 9".
+- **One question at a time,** with a progress marker: "3 of 10".
 - **A default in brackets** that an empty answer or "ok" accepts, for example "Language for work? [English]". Use what you already know (the system language, the folder name, earlier answers).
 - **`skip` is always allowed.** A skipped answer becomes "to confirm" in the files; never invent one.
 - **Give an example** for the role and goals questions so people know the size of answer you want.
 - Keep your own text to one or two lines per question.
 
-The nine questions, in this order:
+The ten questions, in this order:
 
 1. **Name** and how you want to be addressed. [the name in the system user]
 2. **Role and title.** Example: "Head of Product at a 200-person software company".
@@ -35,12 +35,23 @@ The nine questions, in this order:
 7. **Languages** for work and which one for which channel. [English everywhere]
 8. **Tools, one category at a time** (chat, mail, calendar, tasks and tickets, code, docs and files, CRM, notes and meetings, whiteboard): name the product or "none". Also: is there a company data gateway? Optional. Then ask where captures come from (a DM to yourself in the work chat, a private drop folder, a voice notes app) and any fixed handling rules ("receipts go to finance"). [none]
 9. **Writing samples:** paste 2 or 3 messages you sent and like, or say where to find sent items and you will read 10. Anything confidential can be anonymised.
+10. **Where do your tasks live?** Your tasks go in one cloud task manager, not in a file on your computer, so you get comments, history and a phone app. Options: **Asana**, **Notion**, **Monday**, **Trello**, or **GitHub Projects (not recommended: no private personal-task semantics, tied to repositories)**. [the task tool named in question 8 if it is one of these, otherwise Asana]. A different tool: say so; HQ then has no adapter for it, and you pick one of the five.
 
-Before writing anything, show a short summary (name, role, company, team, goals, languages, tools, role adapter, workspace folder) and ask "Write this? [yes]". Change what they correct, then continue.
+Before writing anything, show a short summary (name, role, company, team, goals, languages, tools, task store, role adapter, areas, workspace folder) and ask "Write this? [yes]". Change what they correct, then continue.
 
 ## 2. Pick the role adapter
 
 Choose from `${CLAUDE_PLUGIN_ROOT}/template/adapters/`: `product-manager`, `engineering-lead`, `sales-cs`, `founder-exec`. Propose the best fit from the role and tools, and let the user pick. If none fits, use the closest and say what differs. Read the adapter: it gives tool defaults, routine emphasis, glossary seeds and typical meeting types.
+
+## 2b. Areas and the task store
+
+Every task carries one Area. Propose the set; the user confirms.
+
+1. Start from the adapter's "Default areas" and example tie-break.
+2. Look at what exists and adjust: projects already in the chosen task tool (if its connector works), ticket teams (for example Linear teams), recurring meetings on the calendar, chat channels the user is in, and the goals from question 6. A recurring theme with no area is a candidate for a new one. Keep it to 4 to 7 areas, each with a one-line definition.
+3. Write the tie-break as an ordered list, first match wins, ending with "Me" for the user themselves and with Admin for pure bureaucracy. Say: "Uncommitted ideas stay in `ideas/`, not in the task store."
+4. Propose initiatives only from what is real (goals, projects with an end date, more than one task or longer than a week). Never invent one.
+5. Show areas, tie-break and initiatives, ask "Use this? [yes]", and change what the user corrects.
 
 ## 3. Connectors: what to switch on
 
@@ -48,7 +59,7 @@ For every tool named in step 1, say which connector to enable and how, one line 
 
 - **Claude Code:** `/mcp` lists connectors; add a missing one with `claude mcp add` (see the tool's own docs) or install the tool's plugin from `/plugin`.
 - **Cowork and Claude Desktop:** Settings > Connectors (or Customize > Connectors), pick the tool, sign in.
-- Common ones: Slack, Gmail, Google Calendar, Google Drive and Docs, Linear, Asana, Jira and Confluence (Atlassian), GitHub (or the `gh` CLI), Notion, HubSpot, Miro, Granola, Fireflies.
+- Common ones: Slack, Gmail, Google Calendar, Google Drive and Docs, Linear, Asana, Monday, Trello, Jira and Confluence (Atlassian), GitHub (or the `gh` CLI), Notion, HubSpot, Miro, Granola, Fireflies. The connector for the task store chosen in question 10 is required for step 5b; if there is none, the browser (Claude in Chrome) or manual steps cover it.
 - No connector for a tool: the browser (Claude in Chrome) covers it, slower. Mark it in the routing as "browser".
 
 Test each enabled connector with one read (today's calendar, one mail, one ticket) and list what works and what is missing. A missing one is not a blocker: routing says "none" and routines skip it. Never claim a connector exists without checking that its tools are available in this session.
@@ -72,9 +83,20 @@ Default `~/ai-workspace`. Check the path: it must not be under `~/Library/Mobile
    - everywhere: `{{SETUP_DATE}}` = today.
    - Append a "Role adapter" block to `context/me.md` with the chosen adapter's routine emphasis and typical meeting types.
 3. If a tool has no row in the folder (for example no code tool), remove that source's mention only if the routine would otherwise fail; the routing "none" already makes routines skip it.
-4. Re-run the grep: no `{{` may remain.
-5. Create the drop folder if the user wants one, and write the config: `mkdir -p ~/.config/hq && printf '%s\n' "<workspace>" > ~/.config/hq/workspace`.
-6. In Cowork, tell the user to create a project that points at the workspace folder and to put this project instruction in it: "Read CLAUDE.md first, then index.md. Follow the rules there. Routines live in routines/." Scheduled tasks must be created inside that project.
+4. Areas: write `context/areas/index.md` from step 2b (`{{AREAS_TABLE}}` rows `| Area | definition | examples |`, `{{TIE_BREAK}}` as the numbered list) and one `context/areas/<slug>.md` per area (frontmatter `type: topic`, `summary`, `status: draft`; body: definition, examples, people, recurring meetings; each marked "to confirm" where you guessed).
+5. Re-run the grep: only `meta/task-store.md` may still hold `{{` (step 5b fills it).
+6. Create the drop folder if the user wants one, and write the config: `mkdir -p ~/.config/hq && printf '%s\n' "<workspace>" > ~/.config/hq/workspace`.
+7. In Cowork, tell the user to create a project that points at the workspace folder and to put this project instruction in it: "Read CLAUDE.md first, then index.md. Follow the rules there. Routines live in routines/." Scheduled tasks must be created inside that project.
+
+## 5b. Create the task store
+
+Read `routines/stores/<store>.md` (the adapter for the tool from question 10) and `routines/stores/README.md`.
+
+1. Test the connector with one read. Say which operations you could verify. Do not claim an operation works before you have used it.
+2. Create the board by the adapter's "Create the board": the five sections, the properties (Area options from step 2b, Initiative options from the confirmed initiatives, Priority P0 to P3, Size S/M/L, Source with the user's tools plus Me, Waiting on, Closed when, optional OKR from the goals). Create the confirmed initiatives as Top of mind tasks.
+3. Anything the connector cannot do: print the exact manual steps from the adapter (in the tool's own words, numbered, one action each), wait for the user to say done, then read the ids back. If the user wants to do it all later, leave the ids as `none` and say that `/hq:task` and the briefs will ask for them.
+4. Fill `meta/task-store.md`: `store`, `board_name`, `board_url`, `board_id`, every id under `fields` and `sections`, `{{AREA_VALUES}}` and the other value lists, `{{SAVED_VIEWS}}` (the adapter's recipe, or "none"). Re-run the grep: no `{{` may remain anywhere.
+5. Read the board back and show the user the link. Nothing is moved or created beyond this without a yes.
 
 ## 6. Git, indexes, first commit
 
@@ -111,6 +133,7 @@ Show this block, filled in:
 
 > **You're set.**
 > **Your workspace:** `<path>` (a local git repo, never pushed)
+> **Your tasks:** `<board url>` in `<tool>`, with the areas `<list>`
 > **Try first:** `/hq:brief` (today's brief), `/hq:task` (what to do next), `/hq:inbox` (what needs you and what you wait on)
 > **Still missing:** each connector that did not work, with how to add it (Claude Code: `/mcp`; Cowork: Settings > Connectors). Everything else works without it.
 > **Schedule:** the tasks you created (or the ones to add by hand), with times. They only run while the computer is awake and the app is open.

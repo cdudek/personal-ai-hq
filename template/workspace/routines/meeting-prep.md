@@ -27,7 +27,7 @@ Extract the action items:
 - **others:** what each other attendee committed to, with their name and the same status check.
 - **open points:** questions left open.
 
-The user's open items also go to the board Inbox with `closed when:` (proposal, as in the brief).
+The user's open items also go to the Inbox of the task store with `closed when:` (proposal, as in the brief).
 
 ## 3a. 1:1s: what runs between you
 Only for meetings explicitly marked as a 1:1 in the title ("1:1", "1-1", "1on1", "One-on-One", "Name / <user>"). Not for any other small meeting.
