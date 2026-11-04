@@ -66,6 +66,12 @@ def icons() -> dict:
             out[source] = "data:image/svg+xml;base64," + base64.b64encode(svg.encode()).decode()
         else:
             out[source] = "data:image/png;base64," + base64.b64encode(f.read_bytes()).decode()
+    # items about the task board show the task tool's logo, not a "Boa" abbreviation
+    m = re.search(r"^store:\s*([a-z-]+)", (OUT.parent / "meta" / "task-store.md").read_text(encoding="utf-8"), re.M) \
+        if (OUT.parent / "meta" / "task-store.md").exists() else None
+    store = {"github-projects": "github"}.get(m.group(1), m.group(1)) if m else ""
+    if store in out:
+        out.setdefault("board", out[store])
     return out
 
 

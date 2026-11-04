@@ -2,6 +2,10 @@
 
 Versions follow semver. Each release is a git tag `vX.Y.Z` with an entry here. `/hq:upgrade` shows the entries between your workspace version and the installed one.
 
+## 0.3.12 (2026-11-04)
+
+- Page: items about the task board show the task tool's logo instead of a three-letter "Boa" abbreviation.
+
 ## 0.3.11 (2026-11-04)
 
 - Meeting prep: off, declined or cancelled meetings keep last time's decisions, open action items and open points, and say where they roll to. Every recurring meeting on the page is checked, not only the first.
