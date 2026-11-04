@@ -595,3 +595,15 @@ footer{font-size:12px;color:var(--ink-3);margin-top:16px}
 .callnote{display:block;width:100%;margin-top:10px;font:inherit;font-size:14px;line-height:1.45;padding:9px 11px;border:1px solid var(--claude-line);border-radius:7px;background:var(--surface);color:var(--ink);resize:vertical}
 .callnote:focus{outline:2px solid var(--claude);outline-offset:1px}
 .suggest .callstate,.callstate{margin:8px 0 0;font:500 11px/1.4 var(--mono);letter-spacing:.04em;color:var(--claude);text-align:right}
+
+/* Review: explainer, why link, evidence */
+.explain{font-size:14.5px;line-height:1.5;color:var(--ink-2);max-width:72ch;margin:12px 0 0}
+.explain b{color:var(--ink);font-weight:600}
+.rv-side{display:flex;flex-direction:column;align-items:flex-end;gap:6px}
+.callhint{margin:8px 0 0;font-size:12px;color:var(--ink-3);text-align:right}
+.callstate .linkbtn{margin-left:8px;color:var(--ink-2)}
+.callnote-l{display:block;margin-top:10px}
+.diff{margin-top:8px}
+.diff pre{margin:4px 0 0;white-space:pre-wrap;font:12.5px/1.5 var(--mono);background:var(--sunken);border-radius:var(--r);padding:10px 12px}
+.diff.add pre{background:color-mix(in srgb,var(--green) 9%,transparent);border:1px solid color-mix(in srgb,var(--green) 28%,transparent)}
+.ev{list-style:none;margin:0;padding:0;display:grid;gap:14px}

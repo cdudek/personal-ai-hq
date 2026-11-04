@@ -21,4 +21,4 @@ Shows the daily, weekly and review pages built from fictional sample data. Needs
    ```
 3. If `views/template.html` is missing in the copy, the view files were not synced into this version of the template: say so and stop.
 4. Open `$T/views/daily-sample.html`, `$T/views/weekly-sample.html` and `$T/views/review-sample.html` (`open` on macOS, `xdg-open` on Linux, `start` on Windows). In Cowork, if you cannot open a browser, tell the user the three file paths.
-5. Say in two lines what the pages show, that all names and data are fictional (company "Acme"), and that `/personal-ai-os:setup` builds the real thing.
+5. End with the three-line block (Done, Where, Next) from `${CLAUDE_PLUGIN_ROOT}/skills/_shared/version-check.md`: what the pages show, that all names and data are fictional (company "Acme"), the folder they are in, and that `/hq:setup` builds the real thing.

@@ -1,107 +1,71 @@
-# Personal AI Operating System
+# Personal AI HQ
 
-A plugin for Claude Code and Cowork that turns Claude into a personal operating system for your work. It keeps a private second brain and a task board in a local folder, builds a daily and a weekly briefing page from your calendar, mail, chat and tickets, and learns from your corrections. Everything stays on your computer; nothing is pushed anywhere.
+A plugin for Claude Code and Cowork that turns Claude into your personal HQ. It keeps a private second brain and a task board in a local folder, builds a daily and a weekly briefing page from your calendar, mail, chat and tickets, and learns from your corrections. Everything stays on your computer; nothing is pushed anywhere.
 
-## What it looks like
+## Quick start (30 seconds)
 
-Daily page (fictional Acme data):
+```text
+/plugin marketplace add cdudek/personal-ai-hq
+/plugin install hq@cdudek
+/hq:setup
+```
 
-![Daily brief](docs/screenshots/daily.png)
-
-Weekly page:
-
-![Weekly plan](docs/screenshots/weekly.png)
-
-Friday review page:
-
-![Review](docs/screenshots/review.png)
-
-## What is in it
-
-**Components**
-
-- **Storage (second brain):** a Karpathy-style wiki in plain markdown. One folder per kind of knowledge, a `CLAUDE.md` rule file per folder, a one-line summary per page, and generated indexes so Claude reads the map before the pages.
-- **Tasks (board):** one `board.md` with Top of mind, This week, Inbox and Agent. Every task has an id, priority, size, domain, status, a "closed when" line, a source and a deep link.
-- **Visualise:** read-only daily and weekly pages (single HTML files, work offline) built from the board and your inputs.
-- **Dashboard:** the weekly page, with board proposals, project status, team code status and plan vs actual.
-
-**Loops**
-
-- **Daily:** `brief` collects what is new, re-plans the board, preps meetings and lists what needs you and what you wait on. `sync`, `radar`, `next` and `capture` run on demand.
-- **Weekly:** `weekly` on Monday re-sorts the board and preps the week. `review` on Friday compares drafts with what you sent and learns your style and vocabulary.
-- **Monthly:** `refresh` updates context, lints the wiki and proposes a reorganisation.
-- **Improvement:** every routine logs friction and drafts. `review` and `improve` turn them into rule changes you approve.
-
-**Skills** (called `/personal-ai-os:<skill>`): `setup`, `brief`, `weekly`, `review`, `refresh`, `sync`, `next`, `capture`, `radar`, `meeting-prep`, `ingest`, `improve`, `demo`.
-
-**Role adapters:** product manager, engineering lead, sales and customer success, founder or executive. They change tool defaults, routine emphasis, glossary seeds and typical meeting types, nothing else.
+Then `/hq:brief`. Not sure yet? `/hq:demo` shows sample pages first and needs no connectors.
 
 ## Install
 
 ### Claude Code
 
-In a session:
-
 ```text
-/plugin marketplace add cdudek/personal-ai-operating-system
-/plugin install personal-ai-os@personal-ai-os
-```
-
-Or from the shell:
-
-```bash
-claude plugin marketplace add cdudek/personal-ai-operating-system && claude plugin install personal-ai-os@personal-ai-os
+/plugin marketplace add cdudek/personal-ai-hq
+/plugin install hq@cdudek
 ```
 
 ### Cowork
 
-1. Customize > Plugins > Add marketplace, enter `cdudek/personal-ai-operating-system`, then Install.
-2. Or build the zip and use Add > Upload plugin: run `scripts/build-zip.sh` and upload `dist/personal-ai-os-<version>.zip`.
-
-Unverified: this repo is marketplace and plugin in one (source `./`). Whether Cowork accepts a root-level source is not confirmed; if the marketplace route fails, use the zip. A plugin installed in Cowork syncs to Claude Code at the next session start; a CLI install stays local.
+Customize > Plugins > Add marketplace, enter `cdudek/personal-ai-hq`, then Install. Or run `scripts/build-zip.sh` and use Add > Upload plugin with `dist/hq-<version>.zip`. Unverified: whether Cowork accepts the root-level plugin source; if the marketplace route fails, use the zip.
 
 ## Set up
 
-Run `/personal-ai-os:setup`. It interviews you (name, company, team, role, day to day, goals, tools, writing samples, languages), tells you which connector to switch on per tool, picks a role adapter, copies the workspace template to a folder you choose (default `~/ai-workspace`, never a synced folder), fills in your rules and context, starts a local git repo, creates the scheduled tasks and offers a first brief. Want a preview first? Run `/personal-ai-os:demo`; it needs no connectors.
+Run `/hq:setup`. It interviews you (name, company, team, role, goals, tools, writing samples, languages), tells you which connector to switch on per tool, picks a role adapter, copies the workspace template to a folder you choose (default `~/ai-workspace`, never a synced folder), starts a local git repo, creates the scheduled tasks and offers a first brief. Want a preview first? Run `/hq:demo`; it needs no connectors.
 
-The setup skill copies `${CLAUDE_PLUGIN_ROOT}/template/workspace`. In Claude Code that variable works in skills; in Cowork it is unverified, so the skill falls back to finding the template next to itself or asking for the plugin path.
+## Commands
 
-## Scheduling
+Skip the argument and the skill infers it and says what it chose.
 
-Setup creates four tasks inside your workspace project, each with the prompt "Follow routines/<name>.md":
+| Command | What it does | Example |
+|---|---|---|
+| `/hq:setup` | Interview, workspace, scheduled tasks | `/hq:setup` |
+| `/hq:upgrade` | Brings your workspace up to the installed version | `/hq:upgrade` |
+| `/hq:demo` | Renders fictional sample pages | `/hq:demo` |
+| `/hq:brief [daily\|weekly\|update]` | Daily brief, Monday weekly prep, mid-day update | `/hq:brief weekly` |
+| `/hq:task [next\|capture <text>]` | Work the next task, or file a capture | `/hq:task call the vendor Friday` |
+| `/hq:inbox` | What needs you and what you wait on | `/hq:inbox` |
+| `/hq:meeting [name or time]` | Prep a meeting; default the next one | `/hq:meeting 1:1 Nora` |
+| `/hq:improve [review\|tip <link>]` | Friday learning loop, or audit a tip | `/hq:improve tip https://example.com/post` |
+| `/hq:wiki [ingest <link or file>\|refresh]` | File sources, monthly lint | `/hq:wiki ingest notes.pdf` |
+| `/hq:debrief` | Evening reflection and day note | `/hq:debrief` |
 
-- brief: weekdays 7:27
-- weekly: Monday 6:57
-- review: Friday 15:57
-- refresh: first Monday of the month 7:57
+Scheduled tasks (created by setup): brief weekdays 7:27, weekly Monday 6:57, review Friday 15:57, refresh first Monday of the month 7:57. Local tasks only run while your computer is awake and the app is open.
 
-If it cannot create them, it prints them for you to add under Scheduled > New task in Cowork or in Claude Desktop. Local tasks only run while your computer is awake and the app is open.
+## Updates
+
+HQ is versioned with semver. Each release is a git tag `vX.Y.Z` with an entry in `CHANGELOG.md`.
+
+`/hq:upgrade` is the one command you need. In Claude Code it updates the plugin itself (`claude plugin marketplace update cdudek`, `claude plugin update hq@cdudek`), asks you to restart, and on the second run brings your workspace along. Where it cannot run commands (Cowork) it prints the two slash commands (`/plugin marketplace update cdudek`, then update `hq` in `/plugin`) for you. You can also enable auto-update for the `cdudek` marketplace in `/plugin` > Marketplaces. The workspace step shows what changed, updates system files only (routines, view code, scripts, folder rule files) and never your data (context, board, inbox, daily, weekly, journal, meta). If you edited a system file, it shows the diff and asks.
+
+Every skill checks versions at the start and tells you in one line when your workspace or the plugin is behind; it never upgrades by itself. The latest-release check is one request a day to raw.githubusercontent.com and stays silent if it fails. Maintainers: `scripts/release.sh X.Y.Z` bumps both manifests, adds a changelog stub, commits and tags (no push).
 
 ## Privacy
 
 - The workspace is a local folder and a local git repo. Never add a remote. Do not put it in iCloud, Dropbox or another synced folder.
 - Connectors read your data (mail, calendar, chat, tickets). Claude reads it during a run; this plugin sends nothing anywhere itself.
 - Nothing is saved to your context pages without your yes, and nothing is sent or posted for you without your yes.
-- The optional phone capture by DM to yourself in a work chat is company data. Never write anything private there; use the private drop folder or a voice notes app for that.
 - Respect your company's policy on AI and connectors before you switch them on.
 
-## Update, uninstall
+## Uninstall
 
-```text
-/plugin marketplace update personal-ai-os
-```
-
-Your workspace is a copy, so updates do not touch it. To get new routine versions, compare `routines/` with the plugin's `template/workspace/routines/`.
-
-Uninstall with `/plugin uninstall personal-ai-os@personal-ai-os` and `/plugin marketplace remove personal-ai-os`. Delete the workspace folder and `~/.config/personal-ai-os/` by hand if you want everything gone.
-
-## Troubleshooting
-
-- **Skills do not show up:** restart the session after install, then type `/personal-ai-os:` to list them.
-- **Template not found in setup:** the skill asks for the plugin folder; give it the path where the plugin is installed or unzipped.
-- **A connector is missing:** the routine skips it and says so; enable it and re-run, or let Claude use the browser.
-- **Views are empty or missing:** the daily and weekly pages need the files in `views/` from the template; check that `views/template.html` exists.
-- **A scheduled task did not run:** the computer was asleep or the app closed. Run the skill by hand.
+`/plugin uninstall hq@cdudek` and `/plugin marketplace remove cdudek`. Delete the workspace folder and `~/.config/hq/` by hand if you want everything gone.
 
 ## Credits
 

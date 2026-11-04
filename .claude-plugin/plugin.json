@@ -1,8 +1,8 @@
 {
-  "name": "personal-ai-os",
-  "version": "0.1.0",
-  "description": "A personal AI operating system for Claude: a local second brain, a task board, daily and weekly briefing pages, and a loop that learns from your corrections.",
+  "name": "hq",
+  "version": "0.2.0",
+  "description": "Personal AI HQ for Claude: a local second brain, a task board, daily and weekly briefing pages, and a loop that learns from your corrections.",
   "author": { "name": "Calvin Dudek" },
-  "homepage": "https://github.com/cdudek/personal-ai-operating-system",
+  "homepage": "https://github.com/cdudek/personal-ai-hq",
   "license": "MIT"
 }

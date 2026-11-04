@@ -1,20 +1,23 @@
 ---
 name: brief
-description: Builds the daily morning brief: calendar, meetings, mentions, mail, tickets, code reviews, tasks, a re-planned board, a daily note and the daily view page. Use when the user says "brief", "morning brief", "what's on today", "start my day", "good morning", or "daily overview".
+description: Builds the briefing: the daily brief (calendar, meetings, mentions, mail, tickets, code reviews, board, daily page), the weekly prep on Monday (board re-sort, week meetings, project and code status, weekly page), or a mid-day update after new input. Use when the user says "brief", "morning brief", "start my day", "good morning", "weekly", "plan my week", "Monday prep", "sync", "update brief" or "new priority".
+argument-hint: "[daily|weekly|update]"
 ---
 
 # brief
 
-## Find the workspace
+Follow `${CLAUDE_PLUGIN_ROOT}/skills/_shared/version-check.md` first (if the variable is empty, `skills/_shared/version-check.md` in the plugin folder).
 
-1. Read `~/.config/personal-ai-os/workspace` (one line: the absolute path of the workspace). Setup writes it.
-2. If that file is missing or unreadable (for example in a sandbox), use the current folder when it contains `CLAUDE.md` and `routines/`. In Cowork, the project's folder is the workspace.
-3. Otherwise ask the user for the workspace path, or tell them to run `/personal-ai-os:setup` first. Do not guess a path.
+## Pick the variant
 
-Then read `<workspace>/CLAUDE.md` and `<workspace>/index.md`. Follow the rules in `CLAUDE.md`: nothing is saved to `context/` without a yes, nothing is sent without a yes.
+Argument `daily`, `weekly` or `update` wins. With no argument infer, and say in one line what you inferred and why:
 
-## Steps
+- `weekly`: it is Monday before noon and `<workspace>/weekly/` has no file for this ISO week.
+- `update`: today's `daily/YYYY-MM-DD.md` already exists.
+- otherwise `daily`.
 
-1. Run `routines/brief.md` end to end. When run on a schedule and nobody answers, write the brief and leave every proposal open.
-2. If the routine ends with building indexes, run `python3 scripts/build_index.py` from the workspace, append one line to `log.md`, and commit with `git add -A && git commit -m "brief: <date>"`. Never push.
-3. When the user corrects you, append a line to `meta/friction.md`: `- YYYY-MM-DD brief: <what went wrong> -> <what they wanted>`.
+## Run
+
+- `daily` runs `routines/brief.md`, `weekly` runs `routines/weekly.md`, `update` runs `routines/sync.md`. Run it end to end. On a schedule with nobody answering, write the output and leave every proposal open.
+- At the end run `python3 scripts/build_index.py` from the workspace, append one line to `log.md`, and commit `git add -A && git commit -m "<variant>: <date>"`. Never push.
+- When the user corrects you, append to `meta/friction.md`: `- YYYY-MM-DD <variant>: <what went wrong> -> <what they wanted>`.

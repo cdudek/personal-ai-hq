@@ -1,6 +1,6 @@
 ---
 type: topic
-summary: The whole personal AI operating system on one page
+summary: The whole Personal AI HQ on one page
 status: current
 updated: {{SETUP_DATE}}
 ---

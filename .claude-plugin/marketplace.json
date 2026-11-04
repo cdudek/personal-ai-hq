@@ -1,11 +1,12 @@
 {
-  "name": "personal-ai-os",
+  "name": "cdudek",
   "owner": { "name": "Calvin Dudek" },
   "plugins": [
     {
-      "name": "personal-ai-os",
+      "name": "hq",
       "source": "./",
-      "description": "A personal AI operating system for Claude: a local second brain, a task board, daily and weekly briefing pages, and a loop that learns from your corrections."
+      "version": "0.2.0",
+      "description": "Personal AI HQ for Claude: a local second brain, a task board, daily and weekly briefing pages, and a loop that learns from your corrections."
     }
   ]
 }

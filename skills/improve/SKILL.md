@@ -1,20 +1,17 @@
 ---
 name: improve
-description: Audits a tip, post, video or article against the current setup and gives a verdict: adopt, backlog or discard. Use when the user says "improve", "should I adopt this", "check this tip", "does my setup already do this", or pastes a link about working with AI.
+description: Runs the learning loop. `review` compares drafts with what was sent, learns style and vocabulary, groups friction, triages the tips queue and shows plan vs actual (everything is a proposal); `tip` audits one tip, post or link against the current setup and gives a verdict (adopt, backlog, discard). Use when the user says "review", "weekly review", "what did you learn", "improve", "should I adopt this" or pastes a link about working with AI.
+argument-hint: "[review|tip <link or text>]"
 ---
 
 # improve
 
-## Find the workspace
+Follow `${CLAUDE_PLUGIN_ROOT}/skills/_shared/version-check.md` first (if the variable is empty, `skills/_shared/version-check.md` in the plugin folder).
 
-1. Read `~/.config/personal-ai-os/workspace` (one line: the absolute path of the workspace). Setup writes it.
-2. If that file is missing or unreadable (for example in a sandbox), use the current folder when it contains `CLAUDE.md` and `routines/`. In Cowork, the project's folder is the workspace.
-3. Otherwise ask the user for the workspace path, or tell them to run `/personal-ai-os:setup` first. Do not guess a path.
+## Pick the variant
 
-Then read `<workspace>/CLAUDE.md` and `<workspace>/index.md`. Follow the rules in `CLAUDE.md`: nothing is saved to `context/` without a yes, nothing is sent without a yes.
+- `review`: run `routines/review.md`.
+- `tip <link or text>` (or a pasted link or text): run `routines/improve.md` on it.
+- No argument: on Friday run `review` and say so; on any other day list the open lines of `meta/tips.md` and offer to run `tip` on one.
 
-## Steps
-
-1. Run `routines/improve.md` on the link or text the user gave, or on the open lines in `meta/tips.md`.
-2. If the routine ends with building indexes, run `python3 scripts/build_index.py` from the workspace, append one line to `log.md`, and commit with `git add -A && git commit -m "improve: <date>"`. Never push.
-3. When the user corrects you, append a line to `meta/friction.md`: `- YYYY-MM-DD improve: <what went wrong> -> <what they wanted>`.
+Everything is a proposal; apply only what the user approves, and log each applied rule in `meta/learnings.md`. Commit locally; never push.

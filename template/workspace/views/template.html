@@ -17,6 +17,7 @@
       <h1 x-text="d.title"></h1>
       <p class="headline" x-show="d.headline"><template x-for="r in rich(d.headline)"><span :class="r.b && 'bold'" x-text="r.t"></span></template></p>
       <p class="meta" x-show="d.last_review"><span x-text="'Last review: ' + d.last_review?.adopted + ' adopted, ' + d.last_review?.open + ' open'"></span> <a class="ext" x-show="reviewHref(d.last_review?.link)" :href="reviewHref(d.last_review?.link)">Open</a></p>
+      <p class="explain" x-show="review">Claude proposes changes to how it works for you. Pick <b>Adopt</b>, <b>Not now</b> or <b>Adjust</b> on each. Nothing changes until you press <b>Send to Claude</b> at the bottom: that copies one prompt with your decisions; paste it in Cowork.</p>
       <div class="src-chips" x-show="!daily && srcChips.length">
         <template x-for="c in srcChips"><span class="chip" :class="!c.ok && 'fail'" x-text="c.name + ' · ' + c.text"></span></template>
       </div>
@@ -499,7 +500,7 @@
       <div>
         <div class="eyebrow">Start here</div>
         <h2 x-text="d.start_here?.title || (props.length + ' proposals' + (d.start_here?.minutes ? ', about ' + d.start_here.minutes + ' minutes' : ''))"></h2>
-        <p x-text="d.start_here?.why || 'Every line is a proposal. Accept, change or skip it, then send only your decisions to Claude.'"></p>
+        <p x-text="d.start_here?.why || 'Every line is a proposal with the evidence behind it. Decide each, then send only your decisions to Claude.'"></p>
       </div>
       <a class="btn btn-quiet" :href="'#' + (navLinks[0]?.id || 'style')">Go to the first</a>
     </div>
@@ -511,13 +512,14 @@
     <p class="rule" x-text="g[2]"></p>
     <div class="list">
       <template x-for="p in rsec(g[0])" :key="p.pid">
-        <article class="card rv" :class="{answered: answers[p.pid] && answers[p.pid] !== 'skip', skipped: answers[p.pid] === 'skip'}">
+        <article class="card rv" :class="{answered: answers[p.pid] && answers[p.pid] !== 'park', skipped: answers[p.pid] === 'park'}">
           <div class="rv-h">
             <div>
               <div class="eyebrow" x-show="p.channel || p.kind || p.from" x-text="[p.channel, p.kind === 'correct' ? 'Correction' : p.kind === 'new' ? 'New term' : '', p.from && 'Suggested by ' + p.from].filter(Boolean).join(' · ')"></div>
               <h3 style="font-size:16px;margin-top:2px" x-text="p.term || p.issue || p.tip || p.title || p.channel"></h3>
             </div>
-            <span class="signal" :class="p.verdict === 'adopt' ? 'ok' : p.verdict === 'backlog' ? 'warn' : ''" x-show="p.verdict" x-text="p.verdict"></span>
+            <span class="rv-side"><span class="signal" :class="p.verdict === 'adopt' ? 'ok' : p.verdict === 'backlog' ? 'warn' : ''" x-show="p.verdict" x-text="p.verdict"></span>
+            <button type="button" class="linkbtn" @click="openWhy(p)" :aria-label="'Why: ' + p.ttl" x-text="'Why ›' + ((p.evidence || []).length ? ' ' + p.evidence.length + ' ' + (p.evidence.length === 1 ? 'example' : 'examples') : '')"></button></span>
           </div>
 <div class="atoms">
 <template x-if="pr(p)"><span class="prio-demo" :class="'prio-' + pr(p)" x-text="pr(p)"></span></template><template x-if="!pr(p)"><span class="miss">no priority</span></template>
@@ -540,12 +542,14 @@
             <div class="suggest-h"><span>Claude suggests</span><span x-show="p.source" x-text="'Source: ' + p.source"></span></div>
             <p x-text="p.rule || p.meaning || p.fix || p.why || p.verdict_text"></p>
             <div class="btns pcall">
-              <button class="btn btn-quiet sm" :aria-pressed="answers[p.pid] === 'skip'" @click="answer(p, 'skip')" :aria-label="'Skip: ' + p.ttl">Skip</button>
-              <button class="btn btn-quiet sm" :aria-pressed="answers[p.pid] === 'change'" @click="answer(p, 'change')" :aria-label="'Change: ' + p.ttl">Change</button>
-              <button class="btn btn-quiet sm" :aria-pressed="answers[p.pid] === 'accept'" @click="answer(p, 'accept')" :aria-label="'Accept: ' + p.ttl">Accept</button>
+              <button class="btn btn-quiet sm" :aria-pressed="answers[p.pid] === 'park'" @click="answer(p, 'park')" :aria-label="'Not now: ' + p.ttl">Not now</button>
+              <button class="btn btn-quiet sm" :aria-pressed="answers[p.pid] === 'adjust'" @click="answer(p, 'adjust')" :aria-label="'Adjust: ' + p.ttl">Adjust…</button>
+              <button class="btn btn-quiet sm" :aria-pressed="answers[p.pid] === 'adopt'" @click="answer(p, 'adopt')" :aria-label="'Adopt: ' + p.ttl">Adopt</button>
             </div>
-            <textarea class="callnote" x-show="answers[p.pid] === 'change'" x-model="notes[p.pid]" rows="2" maxlength="300" :aria-label="'What instead: ' + p.ttl" placeholder="What instead? Goes to Claude with your decision."></textarea>
-            <p class="callstate" x-show="answers[p.pid]" x-text="callText(p)"></p>
+            <label class="callnote-l" x-show="answers[p.pid] === 'adjust'"><span class="eyebrow">Your version</span>
+              <textarea class="callnote" x-model="notes[p.pid]" rows="2" maxlength="300" :aria-label="'Your version: ' + p.ttl" placeholder="Write the rule, term or fix the way you want it. Claude applies your version."></textarea></label>
+            <p class="callstate" x-show="answers[p.pid]"><span x-text="callText(p)"></span> <button type="button" class="linkbtn" @click="undoAnswer(p)" :aria-label="'Undo: ' + p.ttl">Undo</button></p>
+            <p class="callhint" x-show="!answers[p.pid]" x-text="rvHint"></p>
           </div>
         </article>
       </template>
@@ -570,17 +574,13 @@
     </div>
   </section>
 
-  <div class="pbar-fixed card" style="margin:0">
-    <div class="pbar" style="border:0;border-radius:var(--r-lg)">
-      <div>
-        <b x-text="ansState === 'copied' ? 'Copied, not yet confirmed' : ansState === 'updated' ? 'Decisions changed' : answered + ' of ' + props.length + ' proposals decided'"></b>
-        <span x-text="ansState === 'copied' ? 'Paste in Cowork. The next review shows what Claude applied.' : ansState === 'updated' ? 'Copy again so Claude gets the latest.' : 'Only your decisions are sent. Proposals without one stay open.'"></span>
-      </div>
-      <div class="btns">
-        <button class="btn btn-quiet" @click="resetAnswers()">Reset</button>
-        <button class="btn btn-claude" :class="ansState === 'copied' && copied.review && 'is-copied'" :disabled="!answered" @click="applyReview()"><span x-text="ansState === 'updated' ? 'Copy again' : lbl('review', 'Send to Claude')"></span></button>
-      </div>
+  <div class="dock" role="status">
+    <div class="grow">
+      <span class="dock-n" x-text="ansState === 'copied' ? 'Copied, not yet confirmed' : ansState === 'updated' ? 'Decisions changed' : answered + ' of ' + props.length + ' decided'"></span>
+      <span class="dock-s" :class="ansState === 'updated' && 'warn'" x-text="ansState === 'copied' ? 'Paste in Cowork. The next review shows what Claude applied.' : ansState === 'updated' ? 'Copy again so Claude gets the latest.' : 'Nothing changes until you send. Only decided lines are sent.'"></span>
     </div>
+    <button class="btn btn-quiet" @click="resetAnswers()" x-show="answered">Undo all</button>
+    <button class="btn btn-claude" :class="ansState === 'copied' && copied.review && 'is-copied'" :disabled="!answered" @click="applyReview()"><span x-text="ansState === 'updated' ? 'Copy again' : lbl('review', 'Send to Claude')"></span></button>
   </div>
   <footer>Built by routines/review.md.</footer>
 </div>
@@ -592,7 +592,7 @@
   <template x-if="panel">
     <div class="pin">
       <div class="phead">
-        <div class="logo" :title="label(panel.source)"><template x-if="icons[panel.source]"><img :src="icons[panel.source]" :alt="label(panel.source)"></template><template x-if="!icons[panel.source]"><span x-text="abbr(panel.source || panelKind)"></span></template></div>
+        <div class="logo" :style="review && 'visibility:hidden'" :title="label(panel.source)"><template x-if="icons[panel.source]"><img :src="icons[panel.source]" :alt="label(panel.source)"></template><template x-if="!icons[panel.source]"><span x-text="abbr(panel.source || panelKind)"></span></template></div>
         <div>
           <div class="eyebrow" x-text="panelKicker"></div>
           <h3 x-text="panel.title"></h3>
@@ -651,6 +651,20 @@
         </div>
       </template>
 
+      <template x-if="panelKind === 'rv'">
+        <div>
+          <div class="block"><h4 class="eyebrow" x-text="'What changes · ' + panel.file"></h4>
+            <div class="diff" x-show="panel.before"><div class="eyebrow">Now</div><pre x-text="panel.before"></pre></div>
+            <div class="diff add"><div class="eyebrow" x-text="panel.before ? 'After' : 'Added'"></div><pre x-text="panel.after"></pre></div></div>
+          <div class="block" x-show="panel.impact"><h4 class="eyebrow">Impact</h4><p x-text="panel.impact"></p></div>
+          <div class="block"><h4 class="eyebrow" x-text="'Evidence' + (panel.evidence.length ? ' · ' + panel.evidence.length : '')"></h4>
+            <p class="meta" x-show="!panel.evidence.length">No evidence in the data: the routine must add some.</p>
+            <ul class="ev"><template x-for="(e, i) in panel.evidence" :key="i"><li>
+              <blockquote class="quote full" x-text="e.quote"></blockquote>
+              <div class="meta"><span x-text="[e.source, e.when].filter(Boolean).join(' · ')"></span> <a class="ext" x-show="url(e.link)" :href="url(e.link)" target="_blank" rel="noopener">Open</a></div>
+            </li></template></ul></div>
+        </div>
+      </template>
       <div class="block" x-show="panelKind !== 'meeting' && panel.why"><h4 class="eyebrow">Why it matters</h4><p x-text="panel.why"></p></div>
       <div class="block" x-show="panel.context"><h4 class="eyebrow">Context</h4><blockquote class="quote full" x-text="panel.context"></blockquote></div>
       <div class="block" x-show="panel.action"><h4 class="eyebrow">Next step</h4><p class="strong" x-text="panel.action"></p></div>
@@ -732,8 +746,12 @@
 
       <div class="pactions">
         <button class="btn btn-quiet" @click="close()">Close</button>
+        <template x-if="panelKind === 'rv'"><div style="display:flex;gap:8px" class="pcall">
+          <button class="btn btn-quiet" :aria-pressed="answers[panel.pid] === 'park'" @click="answer(panel, 'park')">Not now</button>
+          <button class="btn btn-quiet" :aria-pressed="answers[panel.pid] === 'adjust'" @click="answer(panel, 'adjust'); close()">Adjust…</button>
+          <button class="btn btn-quiet" :aria-pressed="answers[panel.pid] === 'adopt'" @click="answer(panel, 'adopt')">Adopt</button></div></template>
         <template x-if="panelKind === 'meeting'"><button class="btn btn-claude" :class="copied.mprep2 && 'is-copied'" @click="prep(panel, 'mprep2')"><span x-text="lbl('mprep2', 'Prep with Claude')"></span></button></template>
-        <template x-if="panelKind !== 'meeting'"><button class="btn btn-claude" :class="copied.pask && 'is-copied'" @click="doIt(panel, 'pask')"><span x-text="lbl('pask', 'Ask Claude')"></span></button></template>
+        <template x-if="panelKind !== 'meeting' && panelKind !== 'rv'"><button class="btn btn-claude" :class="copied.pask && 'is-copied'" @click="doIt(panel, 'pask')"><span x-text="lbl('pask', 'Ask Claude')"></span></button></template>
       </div>
     </div>
   </template>

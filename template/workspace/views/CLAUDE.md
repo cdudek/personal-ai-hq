@@ -94,8 +94,8 @@ The prompt holds `<<<PLAN ... >>>`, one line per proposal: `- [keep|add|done|nex
 
 ## Review view (`kind: "review"`, Friday, `routines/review.md`)
 
-`data/review-YYYY-Www.json`, rendered to `views/review-<date>.html` and `views/review.html` (a `sample` date never replaces `review.html`). Keys: `title`, `week`, `generated`, `headline` (`**bold**` allowed), `sources[]`, `start_here {title, why, minutes}`, and one array per section, each item with `id` (optional) and `source` (where Claude saw it):
-- `style[]`: `channel`, `rule` (the proposal), `before` (what Claude drafted), `after` (what the user sent)
+`data/review-YYYY-Www.json`, rendered to `views/review-<date>.html` and `views/review.html` (a `sample` date never replaces `review.html`). Keys: `title`, `week`, `generated`, `headline` (`**bold**` allowed; do not repeat "nothing is applied until you decide", the page says it), `sources[]`, `start_here {title, why, minutes}`, and one array per section, each item with `id` (optional) and `source` (where Claude saw it):
+- `style[]`: `channel`, `rule` (the proposal), `before` (what Claude drafted), `after` (what the user sent); all items also take `evidence[]`, `impact`, `change`
 - `glossary[]`: `term`, `kind` (new | correct), `meaning`, `was` (for corrections)
 - `fixes[]`: `issue`, `cause`, `fix`, `file` (the file it changes)
 - `tips[]`: `tip`, `from`, `verdict` (adopt | backlog | discard), `why`, `file`
@@ -106,9 +106,13 @@ Every item shows "Claude suggests" plus Skip / Change / Accept. One "Send to Cla
 
 ## Review decisions from the page
 
-The prompt holds `<<<REVIEW ... >>>`, one line per decided proposal: `- [style|glossary|fixes|tips|routines] id <id> ("<title>"): accept | change | skip`. The paste is the user's confirmation for exactly these lines. `accept`: apply the proposal (style rule to `context/writing-style.md`, term to `context/glossary.md`, fix to the named file, tip verdict via `improve.md`, routine as a new file in `routines/`) and add a dated line to `meta/learnings.md`. `change`: ask the user how to change it, apply nothing yet. `skip`: close it without applying. Proposals without a line stay open. Unknown id: skip the line and tell the user.
+The prompt holds `<<<REVIEW ... >>>`, one line per decided proposal: `- [style|glossary|fixes|tips|routines] id <id> ("<title>"): adopt | park | adjust, your version: "<text>"`. The paste is the user's confirmation for exactly these lines.
+- `adopt`: apply the proposal (style rule to `context/writing-style.md`, term to `context/glossary.md`, fix to the file named in `change.file`, tip verdict via `improve.md`, routine as a new file in `routines/`) and add a dated line to `meta/learnings.md`.
+- `park`: do not apply; keep it in the queue so it comes back in the next review.
+- `adjust`: apply `your version` (typed on the page, cleaned and fenced) instead of Claude's suggestion; without it, ask for his version first.
+- Proposals without a line stay open. Unknown id: skip the line and tell the user.
 
-- A `change` line may carry `instead: "<the user's words>"` (typed on the page, cleaned and fenced). Apply that instead of Claude's suggestion; without it, ask what instead.
+Every review item must carry `evidence: [{quote, source, link, when}]` (the draft vs sent pair, the friction log lines, the tip's original message, the repeated steps with dates), `impact` (one line: what it affects) and `change: {file, before, after}` (the exact text now and after). "Why ›" opens a panel with these; an item without evidence shows a warning there.
 
 ## Labels: priority, domain, topic (required)
 

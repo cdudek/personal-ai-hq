@@ -7,7 +7,11 @@ const PRIOS = ["P0", "P1", "P2", "P3"];
 const SIZES = {XS: 0, S: 1, M: 2, L: 3, XL: 4};
 const STATUSES = ["Not started", "In progress", "Waiting", "Done"];
 const LISTS = {week: "This week", inbox: "Inbox"};
-const ANSWERS = ["accept", "change", "skip"];
+const ANSWERS = ["accept", "change"];
+// review decisions: adopt = Claude writes it, park = comes back next review, adjust = Claude applies "your version"
+const RANSWERS = ["adopt", "park", "adjust"];
+const RFILES = {style: "context/writing-style.md", glossary: "context/glossary.md", fixes: "the file named in the fix", tips: "the file named in the tip", routines: "a new file in routines/"};
+const RTITLES = {style: "Writing style", glossary: "Glossary", fixes: "Fixes from corrections", tips: "Tips", routines: "New routines"};
 // review proposals: [group, data key, title field]
 const RGROUPS = [["style", "style", "rule"], ["glossary", "glossary", "term"], ["fixes", "fixes", "issue"], ["tips", "tips", "tip"], ["routines", "routines_new", "title"]];
 // page order is a rule (views/DESIGN.md, "Two-minute rules"): what blocks you comes first, what you finish comes last.
@@ -60,7 +64,7 @@ document.addEventListener("alpine:init", () => {
     // weekly proposals: one per board or Inbox item; the page keys them by position so equal ids never collide
     const rprops = [];
     for (const [g, k, tf] of RGROUPS) for (const x of d[k] || []) rprops.push({...x, group: g, pid: "r" + rprops.length, ref: clean(x.id || "", 60),
-      ttl: [x.channel, x[tf]].filter(Boolean).join(": ")});
+      ttl: [x.channel, x[tf]].filter(Boolean).join(": "), title: x.title || x.channel || x[tf]});
     const props = d.kind === "review" ? rprops : (d.proposals || []).map((p, i) => ({...p, pid: "p" + i, ref: clean(p.id || p.ref || "", 60),
       k: KINDS[String(p.kind || "keep").toLowerCase()] || "keep"}));
     const key = `brief-edits:${d.kind}:${d.date}`, akey = `brief-answers:${d.kind}:${d.date}`;
@@ -75,7 +79,7 @@ document.addEventListener("alpine:init", () => {
         const saved = store.get(key) || {};
         for (const t of allTasks) if (saved[t.id]) this.edit(t, saved[t.id]);
         const sa = store.get(akey) || {};
-        for (const p of props) if (ANSWERS.includes(sa[p.pid])) this.answers[p.pid] = sa[p.pid];
+        for (const p of props) if ((d.kind === "review" ? RANSWERS : ANSWERS).includes(sa[p.pid])) this.answers[p.pid] = sa[p.pid];
         this.$watch("edits", v => store.set(key, v));
         this.$watch("answers", v => store.set(akey, v));
         document.title = ({weekly: "Weekly · ", review: "Review · "}[d.kind] || "Daily · ") + (d.title || d.date || "");
@@ -282,7 +286,15 @@ document.addEventListener("alpine:init", () => {
       // ---------- weekly: plan answers and capacity ----------
       inPlan(p) { const base = p.k === "keep" || p.k === "add"; return this.answers[p.pid] === "change" ? !base : base; },
       effort(p) { return Number(p.effort_h) || 0; },
-      answer(p, a) { const all = {...this.answers}; if (all[p.pid] === a) delete all[p.pid]; else if (ANSWERS.includes(a)) all[p.pid] = a; this.answers = all; },
+      answer(p, a) { const all = {...this.answers}; if (all[p.pid] === a) delete all[p.pid]; else if ((this.review ? RANSWERS : ANSWERS).includes(a)) all[p.pid] = a; this.answers = all; },
+      undoAnswer(p) { const all = {...this.answers}; delete all[p.pid]; this.answers = all; delete this.notes[p.pid]; },
+      rfile(p) { return p.change?.file || p.file || RFILES[p.group]; },
+      // the proposal text, and the exact before/after of the file for the panel
+      proposal(p) { return p.rule || p.meaning || p.fix || p.why || ""; },
+      openWhy(p) {
+        this.openPanel("rv", {title: p.title, source: "note", pid: p.pid, group: p.group, file: this.rfile(p), before: p.change?.before, after: p.change?.after ?? this.proposal(p),
+          evidence: (p.evidence || []).filter(e => e && e.quote), impact: p.impact, ref: p.ref});
+      },
       rsec(g) { return props.filter(p => p.group === g); },
       // a local link to the latest review page: only review.html or review-<week>.html, never anything else
       reviewHref(l) { return typeof l === "string" && /^review(-[A-Za-z0-9-]{1,32})?\.html$/.test(l) ? l : null; },
@@ -290,19 +302,23 @@ document.addEventListener("alpine:init", () => {
       reviewLines() {
         // "change" carries the user's own words: cleaned, quoted, still inside the fenced block
         return props.filter(p => this.answers[p.pid]).map(p => {
-          const a = this.answers[p.pid], note = a === "change" ? clean(this.notes[p.pid], 300).replace(/"/g, "'") : "";
-          return `- [${p.group}] id ${p.ref || "-"} ("${clean(p.ttl, 80).replace(/"/g, "'")}"): ${a}${a === "change" ? (note ? `, instead: "${note}"` : ", ask me what instead") : ""}`;
+          const a = this.answers[p.pid], note = a === "adjust" ? clean(this.notes[p.pid], 300).replace(/"/g, "'") : "";
+          return `- [${p.group}] id ${p.ref || "-"} ("${clean(p.ttl, 80).replace(/"/g, "'")}"): ${a}${a === "adjust" ? (note ? `, your version: "${note}"` : ", ask me for my version") : ""}`;
         }).join("\n");
       },
       async applyReview() {
         const sig = JSON.stringify(this.answers);
-        const ok = await this.ask("Apply these improvement decisions (views/CLAUDE.md, \"Review decisions from the page\"). I confirm exactly these lines and nothing else; proposals without a line stay open.\n" +
+        const ok = await this.ask("Apply these improvement decisions (views/CLAUDE.md, \"Review decisions from the page\"). I confirm exactly these lines and nothing else; proposals without a line stay open (adopt: write it; park: leave it for the next review; adjust: apply my version).\n" +
           "<<<REVIEW\n" + this.reviewLines() + "\n>>>\nThen rebuild the review view.", "review");
         if (ok) this.sentAns = sig;
       },
       get answered() { return Object.keys(this.answers).length; },
       resetAnswers() { this.answers = {}; this.notes = {}; this.sentAns = null; },
-      callText(p) { const a = this.answers[p.pid]; return a ? {accept: "Accepted", skip: "Skipped", change: "Change"}[a] + " · collected below, sent with \"Send to Claude\"" : ""; },
+      callText(p) {
+        const a = this.answers[p.pid];
+        return {adopt: "Adopt: Claude writes it into " + this.rfile(p), park: "Not now: parked, it comes back in the next review", adjust: "Adjust: Claude applies your version"}[a] || "";
+      },
+      get rvHint() { return "Adopt: Claude writes it into the named file. Not now: parked until the next review. Adjust: you write your version."; },
       get cap() {
         const c = d.capacity || {}, avail = Number(c.available_h) || 40, meet = Number(c.meetings_h) || 0, goal = Number(c.goal_free_h) || 0;
         const planned = props.filter(p => this.inPlan(p)).reduce((a, p) => a + this.effort(p), 0), free = avail - meet - planned;
@@ -369,6 +385,7 @@ document.addEventListener("alpine:init", () => {
       get tomHidden() { return this.weekly ? [] : (d.top_of_mind || []).slice(this.limit({id: "tom"})); },
       get panelKicker() {
         if (this.panelKind === "tom") return "Top of mind";
+        if (this.panelKind === "rv") return "Why · " + (RTITLES[this.panel.group] || "");
         if (this.panelKind === "task") return "Board · " + LISTS[this.eff(this.panel).list];
         if (this.panelKind === "meeting") return "Meeting" + (this.panel.between ? " · 1:1" : "");
         return this.label(this.panel.source);
