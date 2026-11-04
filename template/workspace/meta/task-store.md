@@ -41,7 +41,7 @@ The one place tasks live. Routines never name the tool: they say "the task store
 | How important? | Priority | P0, P1, P2, P3 |
 | How big? | Size | S, M, L |
 | Where from? | Source | {{SOURCE_VALUES}} |
-| Waiting on whom? | Waiting on | set only in section Waiting |
+| Waiting on whom? | Waiting on | a person (the task tool's id from `context/people/`); set only in section Waiting |
 | When is it closed? | Closed when | the done scenario in words |
 
 ## Saved views

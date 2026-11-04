@@ -10,7 +10,7 @@ updated: {{SETUP_DATE}}
 Goal: one short page that bridges yesterday and today, plus a task store that matches reality. The brief is a conversation: propose changes, write them only after the user confirms. When the run is scheduled and nobody answers, write the brief and leave every proposal open.
 
 ## 0. Read
-`CLAUDE.md`, `index.md`, `context/me.md`, `context/goals.md`, `context/glossary.md`, `meta/chat-cursor.md`, yesterday's `daily/` note, `meta/task-store.md` and the adapter it names (`routines/stores/<store>.md`), `context/areas/index.md`.
+`CLAUDE.md`, `index.md`, `context/me.md`, `context/goals.md`, `context/glossary.md`, `meta/chat-cursor.md`, yesterday's `daily/` note, `meta/task-store.md` and the adapter it names (`routines/stores/<store>.md`), `context/areas/index.md`, and the frontmatter (`name`, `aliases`, `ids`, `relation`, `close`) of `context/people/*.md`: the id table for matching people (`routines/people.md`).
 
 ## 1. Collect (since the last brief; on the first run, the last 24 hours)
 Follow the tool routing in `CLAUDE.md`. Skip every row that says "none":
@@ -47,13 +47,15 @@ For each item, decide:
 
 Close items by the done signals in `inbox/CLAUDE.md`. Write the raw items to `inbox/YYYY-MM-DD.md` (`- HH:MM [source] text`). Apply any standing handling rules the user added to `CLAUDE.md` (for example how to treat invoices).
 
+People in every source (chat authors, mentions, DM partners, ticket and code actors, mail senders, attendees) are matched by id through `context/people/` (`routines/people.md`, "Matching people elsewhere"), not by name. That is how Needs me and Waiting on name the right person, and how two people with the same first name stay apart. Close people get their name first in the line.
+
 ## 3. Re-plan
-Compare "This week" with what came in. Propose concrete swaps, for example: "New from X: Y, due Thursday. Move into This week and push Z?" New tasks go to the Inbox of the task store with Area (by the tie-break), Priority, Size, Source and a `closed when:` line, tagged `ai`. Check each open task's `closed when:` against what came in and propose closing the ones that happened.
+Compare "This week" with what came in. Propose concrete swaps, for example: "New from X: Y, due Thursday. Move into This week and push Z?" A task that waits on a person goes to Waiting with Waiting on set to that person's id for the task tool from `context/people/` (`ids`; never matched by first name; no id or two candidates means ask under "Claude asks" and leave it empty). New tasks go to the Inbox of the task store with Area (by the tie-break), Priority, Size, Source and a `closed when:` line, tagged `ai`. Check each open task's `closed when:` against what came in and propose closing the ones that happened.
 
 ## 4. Context gaps
 Look for unknown terms, projects, documents, milestones, people and recurring themes. Check plurals, acronyms and casing first, and check the references in `CLAUDE.md`. Classify each find before asking:
 - **a) Term or acronym:** `context/glossary.md`.
-- **b) Person:** `context/people/`.
+- **b) Person:** `context/people/`. Someone with no profile (no id or email match): resolve their ids first (`routines/people.md`, mode New person), then ask "New person: [Name], [role], [evidence]. Add a profile?". On yes create the stub with the resolved ids and their sources, `close: false`.
 - **c) Document, milestone or goal:** the matching file in `context/` (`projects/`, `topics/`, `goals.md`).
 - **d) New project or recurring theme:** run the initiative test from `context/areas/index.md`. If it passes, ask: "New initiative? [X] (outcome, end date, area by the tie-break). Add to Top of mind?" On yes: create the Top of mind task and the Initiative option in the task store, plus a context note in `context/projects/`. If it fails, it is a normal task or an idea (`ideas/`).
 - **e) Fits no area by the tie-break:** do not force it. Log `- YYYY-MM-DD brief: area misfit: <what> -> proposes new or split area` to `meta/friction.md`, so the Friday improve loop proposes a new or split area.

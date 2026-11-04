@@ -1,0 +1,121 @@
+---
+type: topic
+summary: People mapping - find the close team, resolve identities across tools, keep a derived Current picture per person
+status: draft
+updated: {{SETUP_DATE}}
+---
+
+# Routine: people (map, resolve, refresh)
+
+Goal: Claude knows who the user's close team is, every person's identity in every tool, and what is running between the user and each of them, so briefs, 1:1 prep, Waiting on and the task store match people reliably. Profiles are `context/people/<slug>.md`; schema below.
+
+## Privacy rules (also in `CLAUDE.md`)
+
+- Only what the user can already see: their DMs, channels they are in, threads they are part of, repos and projects they have access to.
+- Never their private mail, never their DMs with other people.
+- Facts only. Claude writes no performance judgements, no opinions, no moods.
+- Personnel matters stay in the user's own words, in "How we work", never paraphrased by Claude.
+- Work content only. Nothing from `journal/` or private lists.
+- The workspace stays local: a profile never goes into chat, a ticket, a code review or a shared page.
+
+## Profile schema
+
+Frontmatter of `context/people/<slug>.md`:
+
+```yaml
+type: person
+name: full name
+summary: one line for the index
+role: title or function
+relation: manager | report | skip-level | peer | stakeholder | freelancer | external
+contract: permanent | freelance | unknown
+team: team name
+areas: [list, from context/areas]
+close: true | false
+aliases: [nicknames; disambiguate same first names, e.g. two people called Alex]
+ids:
+  email:
+  slack_id:
+  slack_handle:
+  github:
+  linear:
+  asana:
+  hubspot_owner:   # only sales and CS people
+sources: {slack_id: "chat user search 2026-11-04", ...}   # id -> where it came from
+last_1on1: YYYY-MM-DD
+status: draft | current
+updated: YYYY-MM-DD
+```
+
+Body sections:
+- **Role and what they own.**
+- **How we work:** the user's words only. Claude may propose a line under "Claude asks"; it is written only after the user says yes, in the user's wording.
+- **Claude asks:** open questions (ambiguous ids, relation, close or not).
+- **Current:** derived, close people only, fully rewritten on every refresh (see Refresh). Never edited by hand, never kept across refreshes.
+
+Rules: an empty id means not resolved yet. Never guess an id. Every id has a `sources` entry. Changing `close`, `relation`, `contract` or any id needs the user's yes (workspace rule 1); `updated` and `Current` are Claude's to rewrite.
+
+## Mode 1: Map (first run, also in setup)
+
+Propose the close team from evidence. Only read, write nothing yet.
+
+Evidence, last 30 days unless noted:
+- **Calendar:** recurring 1:1s (title "1:1", "1-1", "1on1", "One-on-One", "Name / <user>"; two attendees; recurring).
+- **Chat:** DM frequency, people the user writes with most.
+- **Tickets:** teams and projects the user leads, and who works in them.
+- **Code:** frequent reviewers on the user's PRs, and whose PRs the user reviews.
+- **Org:** people reporting to the user (the manager and report relations; your data warehouse's people table if you have one, see Resolve).
+
+Show the list, one person per line: `**Name:** relation guess, evidence (e.g. "weekly 1:1, 41 DMs, reviews 6 of my PRs")`. People who already have a profile are marked. Ask: "Who is close? Who is missing?" Also propose `relation`, `contract`, `team`, `areas` per person.
+
+Write `close: true` (and the confirmed relation, contract, team, areas) only after the user confirms, person by person or as a list. Everyone else keeps `close: false`.
+
+## Mode 2: Resolve identities
+
+For every person with an empty id (close people first, then the rest). Match by email first, then full name. Ambiguous (two people called Alex, nickname only) means: ask under "Claude asks", never guess.
+
+- **Chat:** search users by name or email; take the chat user id (`slack_id` or the tool's equivalent), the handle and the email.
+- **Tickets:** list the ticket tool's users filtered by email or name; take the user id or login (`linear` field).
+- **Tasks:** the users of the workspace named in `meta/task-store.md`; take the user id (`asana` field). This is the id the task store's "Waiting on" property uses.
+- **Code:** the login (`github` field). Use the code connector or the CLI; if you have a data warehouse engineering or people table with author logins and teams, it also gives `team` and who leads a team.
+- **CRM owner:** only for sales and customer-success people (the CRM's owners list); the `hubspot_owner` field.
+
+The `ids` key names come from the common tools and stand for whatever you run in that category: `slack_id` and `slack_handle` for any chat tool, `github` for code, `linear` for tickets, `asana` for tasks. A tool not covered goes in as an extra key. A key for a tool you do not use stays empty.
+
+Write the ids into the profile and one `sources` line per id: `slack_id: "chat user search 2026-11-04"`. An id found but contradicting an existing one is not overwritten: ask under "Claude asks". Rewriting `updated` is fine; the ids themselves are a "compile" write, so show the table (name, id per tool, source) and write after the user's yes. In a scheduled run with nobody answering, write nothing and leave the table in the note.
+
+## Mode 3: Refresh "Current"
+
+For close people. Monthly (inside `routines/refresh.md`) and before every 1:1 (`routines/meeting-prep.md` 3a). Read-only sources, so it needs no confirmation: it rewrites only the derived "Current" section and `updated`. Use ids from the frontmatter; never search by first name.
+
+Rewrite `## Current` completely, with the date, in this shape:
+
+```
+## Current
+_Refreshed YYYY-MM-DD from: chat, tickets, code, tasks, mail, calendar (name any source that failed)_
+- **You owe:** unanswered messages from them, open promises, PRs or issues where they wait on the user. Deep link each.
+- **They owe:** their open promises, answers the user waits for. Deep link each.
+- **Tickets:** their active issues and projects.
+- **Code:** their open PRs; PRs waiting on the user.
+- **Threads (30 days):** shared threads, one line each, deep link.
+- **Meetings:** recurring meetings with them, with next date.
+```
+
+Rules: last 30 days. Deep links as in `routines/radar.md`. Facts only, no judgement. Set `last_1on1` from the last 1:1 on the calendar. An empty line says "none found"; a failed source says so.
+
+## Mode 4: New person
+
+The brief's context gap class (b) (`routines/brief.md` step 4) finds someone unknown. Resolve their ids first (Mode 2 for that one person), then ask: "New person: [Name], [role], [evidence]. Add a profile?" On yes create `context/people/<slug>.md` from the schema with the resolved ids and sources, `close: false`, `status: draft`. Same-first-name slug: `firstname-lastname`, or `firstname-team` when the last name is unknown, and add an alias.
+
+## Matching people elsewhere
+
+Other routines match by id, not by name:
+- Chat authors, DM partners and mentions: `slack_id`.
+- Code reviewers and authors: `github`.
+- Ticket assignees and commenters: `linear`.
+- Waiting on in the task store: the `asana` id (the task tool's user id).
+- Mail: `email`.
+Not in any profile: treat as unknown, do not guess a match; it becomes a class (b) context gap.
+
+## Friction
+When the user corrects a mapping, an id or a close decision, append to `meta/friction.md`: `- YYYY-MM-DD people: <what went wrong> -> <what they wanted>`.

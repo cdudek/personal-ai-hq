@@ -35,3 +35,6 @@ Leadership sync, 1:1 with a direct report, board or investor meeting, customer o
 - **Me:** own growth and outside presence. Talks, writing, network.
 
 Example tie-break: 1 about a specific person: Team. 2 about a named customer, partner or investor: Customers. 3 direction or the numbers: Strategy. 4 running the company: Company. 5 pure bureaucracy: Admin. 6 for yourself: Me.
+
+## Which people matter (setup's "Map your colleagues")
+Relations that matter: the leadership team (direct reports), co-founders and board contacts (stakeholders), key advisers and investors (external). Mark the few people you meet weekly as close. Identities that matter: mail and chat first, then tasks; code and ticket logins only for people who work there. Personnel matters stay in your own words in "How we work".

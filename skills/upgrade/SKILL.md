@@ -35,6 +35,13 @@ Follow `${CLAUDE_PLUGIN_ROOT}/skills/_shared/version-check.md` first for the wor
 8. Write `Y` to `<workspace>/.hq-version`, then `python3 scripts/build_index.py`, then commit in the workspace: `git add -A && git commit -m "upgrade: X -> Y"`. Never push.
 9. If `views/data/` has JSON from the old version, re-render the latest daily and weekly with `python3 scripts/render_view.py <file>` and report any LINK CHECK or LABEL CHECK lines.
 
+## Migration 0.3.0 -> 0.3.1: people mapping
+
+Runs when `X` is older than 0.3.1. `routines/people.md` arrives with the sync in step 4 (a system file). `context/people/*` is yours and is never overwritten.
+
+1. For each existing profile in `context/people/` that lacks the `ids` block, show the new frontmatter (see `routines/people.md`) as a proposal and add it on a yes, keeping the body. Do not invent ids or relations.
+2. If no profile has `close: true`, offer to run `routines/people.md` mode Map now (propose the close team from evidence, resolve identities). The root `CLAUDE.md` gains a "People" section with the privacy rules: show it as a proposal (step 7).
+
 ## Migration 0.2.0 -> 0.3.0: board.md moves to a cloud task store
 
 Runs when `X` is older than 0.3.0 and `<workspace>/board.md` exists (or `meta/task-store.md` has no `store`). Nothing is written to the task tool or deleted before the user confirms the mapping.

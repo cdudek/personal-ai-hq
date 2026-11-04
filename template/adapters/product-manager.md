@@ -34,3 +34,6 @@ Product sync, roadmap review, stakeholder 1:1, customer interview, sprint planni
 - **Me:** own growth and outside presence. Talks, writing, learning.
 
 Example tie-break: 1 about a specific person: Team. 2 for someone outside product and tech: Company. 3 what or why we build: Product. 4 how it ships: Delivery. 5 pure bureaucracy: Admin. 6 for yourself: Me.
+
+## Which people matter (setup's "Map your colleagues")
+Relations that matter: manager, the engineering and design leads you work with daily (peers), stakeholders in sales, marketing and support who feed or consume the roadmap, reports if you lead any. Identities that matter: chat, tickets (the ticket tool users are the people who own the work), tasks, code login for the engineering lead. Customers and interview participants are not people profiles.

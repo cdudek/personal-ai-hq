@@ -49,6 +49,7 @@ def cell(s: str) -> str:
 
 
 TYPES = {"person", "project", "topic", "goal", "glossary", "decision", "me", "style", "source", "idea", "learning"}
+RELATIONS = {"manager", "report", "skip-level", "peer", "stakeholder", "freelancer", "external"}
 STATUSES = {"current", "draft", "superseded", "open", "doing", "done", "parked"}
 
 
@@ -90,11 +91,15 @@ def build_folder(d: Path) -> str:
             out.append(f"- [[{p.relative_to(ROOT).with_suffix('').as_posix()}|{p.stem}]]{summary}")
         out += ["", "## By month", ""] + [f"- {m}: {n}" for m, n in sorted(months.items(), reverse=True)]
     elif files:
-        out += ["## Files", "", "| File | Summary | Type | Status | Updated |", "|---|---|---|---|---|"]
+        people = rel == "context/people"  # people also show role, relation and the close flag
+        out += ["## Files", "", "| File | Summary | Type | Status | Updated |" + (" Role | Relation | Close |" if people else ""), "|---|---|---|---|---|" + ("---|---|---|" if people else "")]
         for p in files:
             fm = frontmatter(p)
             link = f"[[{p.relative_to(ROOT).with_suffix('').as_posix()}\\|{p.stem}]]"  # \\| = pipe escaped for Obsidian tables
-            out.append(f"| {link} | {cell(fm['summary'])} | {only(fm.get('type', ''), TYPES)} | {only(fm.get('status', ''), STATUSES)} | {date_or_blank(fm.get('updated', ''))} |")
+            row = f"| {link} | {cell(fm['summary'])} | {only(fm.get('type', ''), TYPES)} | {only(fm.get('status', ''), STATUSES)} | {date_or_blank(fm.get('updated', ''))} |"
+            if people:
+                row += f" {cell(fm.get('role', ''))} | {only(fm.get('relation', ''), RELATIONS)} | {only(fm.get('close', ''), {'true', 'false'})} |"
+            out.append(row)
     return "\n".join(out) + "\n"
 
 

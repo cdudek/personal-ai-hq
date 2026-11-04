@@ -15,7 +15,7 @@ Top of mind (the initiatives themselves, one task each, linking to a ticket proj
 
 ## Properties (fixed): one per question
 
-Section, Completed, Due, Area, Initiative, OKR (optional), Priority P0-P3, Size S-L, Source, Waiting on (only in Waiting), Closed when. Nothing is stored twice. Claude's reason for a priority is a task comment, not a field. Every task Claude creates carries the tag or label `ai` where the tool has one.
+Section, Completed, Due, Area, Initiative, OKR (optional), Priority P0-P3, Size S-L, Source, Waiting on (only in Waiting; the person's id comes from `context/people/<slug>.md`, `ids`, never from a first name), Closed when. Nothing is stored twice. Claude's reason for a priority is a task comment, not a field. Every task Claude creates carries the tag or label `ai` where the tool has one.
 
 ## Operations (every adapter implements)
 

@@ -32,8 +32,12 @@ The user's open items also go to the Inbox of the task store with `closed when:`
 ## 3a. 1:1s: what runs between you
 Only for meetings explicitly marked as a 1:1 in the title ("1:1", "1-1", "1on1", "One-on-One", "Name / <user>"). Not for any other small meeting.
 
+Match the attendee to a profile in `context/people/` by email or id (never by first name; two candidates means ask). Then:
+1. Read the profile's "Current" section first and use it as the starting point.
+2. Refresh it (`routines/people.md`, mode Refresh) when it is older than 7 days or missing, then use the fresh one. No profile or no ids: resolve them first (mode Resolve), or say so in one line and use names.
+
 Look at the last 14 days between the user and that person:
-- chat DMs and threads where both wrote, mail threads with them, tickets and PRs where one waits for the other, earlier 1:1 notes, their page in `context/people/`.
+- chat DMs and threads where both wrote, mail threads with them, tickets and PRs where one waits for the other, earlier 1:1 notes, their page in `context/people/` (ids give exact matches in each tool).
 - **you owe:** unanswered messages from them, open promises from the last 1:1, PRs or tickets where they wait on the user.
 - **they owe:** their open promises, answers the user waits for.
 - **threads:** 3-5 running topics, one line each, each with its deep link.

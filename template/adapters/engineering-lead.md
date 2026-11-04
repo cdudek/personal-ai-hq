@@ -36,3 +36,6 @@ Daily standup, team 1:1, sprint planning, retro, architecture review, incident r
 - **Me:** own growth and outside presence.
 
 Example tie-break: 1 about a specific person: Team. 2 for someone outside engineering: Company. 3 running systems or incidents: Platform. 4 building and shipping: Delivery. 5 what or why: Product. 6 pure bureaucracy: Admin. 7 for yourself: Me.
+
+## Which people matter (setup's "Map your colleagues")
+Relations that matter: reports and skip-levels (the largest group), manager, product and design partners (peers), freelancers (set `contract: freelance`). Identities that matter most: code login (reviewers and authors drive radar), tickets, chat, tasks. A data warehouse engineering or people table with author logins and teams, if you have one, resolves code logins and teams in one query. Contract type matters: permanent and freelance people are handled differently, so record it.

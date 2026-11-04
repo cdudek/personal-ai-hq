@@ -72,6 +72,10 @@ The other direction: things the user sent that still wait for someone else. Only
 
 Each line: who the user waits for, what they asked (short quote), since when, deep link. Suggested next step: "nudge <name>" (offer a draft) or "drop it". A line disappears as soon as the answer arrives. These are not tasks in the task store.
 
+## People (every source)
+
+Resolve every person in a line through `context/people/` ids (`routines/people.md`, "Matching people elsewhere"): code reviewers and authors, chat authors and DM partners, ticket commenters, mail senders, task assignees. Name them as in the profile. No match: the name as the source shows it, never a guess, and it is a context-gap candidate for the brief.
+
 ## Deep links (every line, every source)
 
 Every item links to the exact thing, so one click opens it. Take the URL the connector returns; never build a list or inbox URL instead.

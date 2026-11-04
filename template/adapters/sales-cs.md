@@ -35,3 +35,6 @@ Discovery call, demo, proposal review, negotiation, onboarding kickoff, QBR, ren
 - **Me:** own growth and outside presence.
 
 Example tie-break: 1 about a specific person on your team: Team. 2 about a named customer under contract: Accounts. 3 about a prospect or a new deal: Pipeline. 4 for someone inside the company: Company. 5 pure bureaucracy: Admin. 6 for yourself: Me.
+
+## Which people matter (setup's "Map your colleagues")
+Relations that matter: manager, reports (reps, success managers), peers in sales, success and marketing, and stakeholders in product and finance. Identities that matter: chat, mail, and the CRM owner (`hubspot_owner`, the CRM's owner id: it ties deals and accounts to the person). Contacts at accounts and prospects are not people profiles: they live in the CRM and are read there; only your colleagues get a profile.

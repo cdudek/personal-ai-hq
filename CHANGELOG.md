@@ -2,6 +2,15 @@
 
 Versions follow semver. Each release is a git tag `vX.Y.Z` with an entry here. `/hq:upgrade` shows the entries between your workspace version and the installed one.
 
+## 0.3.1 (2026-11-04)
+
+- People mapping. `routines/people.md` finds your close team from evidence (recurring 1:1s, chat DM frequency, ticket teams you lead, code reviewers, your reports), resolves every person's identity across your tools (email, chat, code login, ticket user, task user, CRM owner for sales and support) and keeps a derived "Current" section per close person (what you owe, what they owe, their tickets and PRs, shared threads, recurring meetings).
+- Profiles in `context/people/<slug>.md` get a schema: `relation`, `contract`, `team`, `areas`, `close`, `aliases`, `ids` and a `sources` entry per id. A fictional example profile ships in the template; delete it after setup.
+- Setup has a new step "Map your colleagues". Role adapters say which relations matter for the role.
+- Wired in: the brief and radar match people by id (Needs me, Waiting on; Waiting on in the task store uses the task tool's user id), meeting-prep reads and refreshes "Current" before a 1:1, refresh runs a monthly people refresh and lint, improve checks stale or missing ids. The brief's "new person" context gap creates a profile with resolved ids after you confirm. `build_index.py` lists role, relation and the close flag in the people index.
+- Privacy rules (in the routine and the workspace `CLAUDE.md`): only what you can already see, never private mail or others' DMs, facts only, no performance judgements by Claude, personnel matters in your own words, workspace stays local.
+- Upgrade: `routines/people.md` is a system file and arrives with the sync; `context/people/*` stays yours. `/hq:upgrade` offers to add the new fields to existing profiles and to run the map.
+
 ## 0.3.0 (2026-11-04)
 
 - Your tasks live in a cloud task manager you pick in `/hq:setup`: Asana, Notion, Monday or Trello (GitHub Projects works but is not recommended). `board.md` is gone. One mapping file per tool in `routines/stores/`; `meta/task-store.md` holds the ids.

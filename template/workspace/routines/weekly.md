@@ -22,6 +22,7 @@ Goal: start the week with a clear task store and every meeting sorted. Propose f
 - **Chat:** open threads, saved messages
 - **Recurring inputs:** what `CLAUDE.md` lists under "Recurring inputs" that arrived this week
 - **Radar:** run `routines/radar.md`
+- **People:** match every person in the collected items by id (`context/people/`, `routines/people.md`). Unresolved close people or unknown names go under "Claude asks".
 - **Tasks and tickets:** projects and initiatives the user leads or follows: state, health, latest update, anything at risk or overdue
 - **Code (optional, engineering roles):** open PRs older than 5 days, PRs waiting more than 24 hours for a first review, the 3 oldest PRs, trend vs last week. A pattern view, not a per-person list.
 

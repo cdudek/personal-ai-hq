@@ -1,6 +1,6 @@
 ---
 name: setup
-description: Onboarding for the HQ plugin. Interviews the user (name, company, team, role, day to day, goals, tools, writing samples, languages, where tasks live), picks a role adapter, proposes areas and a tie-break, creates the task board in the chosen tool (Asana, Notion, Monday, Trello or GitHub Projects), copies the workspace template to a folder, fills in the rules, context and tool routing, starts a local git repo, creates the scheduled tasks, and offers a first brief. Use when the user says "setup", "set up my AI workspace", "onboard me", "install HQ", "get started", or runs /hq:setup.
+description: Onboarding for the HQ plugin. Interviews the user (name, company, team, role, day to day, goals, tools, writing samples, languages, where tasks live), picks a role adapter, proposes areas and a tie-break, maps colleagues and their identities, creates the task board in the chosen tool (Asana, Notion, Monday, Trello or GitHub Projects), copies the workspace template to a folder, fills in the rules, context and tool routing, starts a local git repo, creates the scheduled tasks, and offers a first brief. Use when the user says "setup", "set up my AI workspace", "onboard me", "install HQ", "get started", or runs /hq:setup.
 ---
 
 # setup
@@ -37,7 +37,7 @@ The ten questions, in this order:
 9. **Writing samples:** paste 2 or 3 messages you sent and like, or say where to find sent items and you will read 10. Anything confidential can be anonymised.
 10. **Where do your tasks live?** Your tasks go in one cloud task manager, not in a file on your computer, so you get comments, history and a phone app. Options: **Asana**, **Notion**, **Monday**, **Trello**, or **GitHub Projects (not recommended: no private personal-task semantics, tied to repositories)**. [the task tool named in question 8 if it is one of these, otherwise Asana]. A different tool: say so; HQ then has no adapter for it, and you pick one of the five.
 
-Before writing anything, show a short summary (name, role, company, team, goals, languages, tools, task store, role adapter, areas, workspace folder) and ask "Write this? [yes]". Change what they correct, then continue.
+Before writing anything, show a short summary (name, role, company, team, goals, languages, tools, task store, role adapter, areas, close team, workspace folder) and ask "Write this? [yes]". Change what they correct, then continue.
 
 ## 2. Pick the role adapter
 
@@ -52,6 +52,18 @@ Every task carries one Area. Propose the set; the user confirms.
 3. Write the tie-break as an ordered list, first match wins, ending with "Me" for the user themselves and with Admin for pure bureaucracy. Say: "Uncommitted ideas stay in `ideas/`, not in the task store."
 4. Propose initiatives only from what is real (goals, projects with an end date, more than one task or longer than a week). Never invent one.
 5. Show areas, tie-break and initiatives, ask "Use this? [yes]", and change what the user corrects.
+
+## 2c. Map your colleagues
+
+Claude needs to know who your close team is and who each person is in every tool, so briefs, 1:1 prep and "waiting on" lines name the right person. Follow `routines/people.md` in the workspace template (`${CLAUDE_PLUGIN_ROOT}/template/workspace/routines/people.md`, copied in step 5); the adapter's "Which people matter" section says which relations count for this role. Ask now, resolve after step 3 when the connectors work.
+
+1. Ask: who is your manager? Who reports to you? Name your peers and the people outside your team you work with weekly. One line each is enough (name, role). Offer "later" for any of these; skipped means no profile yet.
+2. Note the contract type where it matters for how you manage them (permanent, freelance); `unknown` otherwise.
+3. After step 3 (connectors tested): propose your close team from evidence. Read, do not write: recurring 1:1s on the calendar, chat DM frequency (30 days), ticket teams and projects you lead, frequent reviewers on your code, people who report to you (HR or warehouse people table if you have one). Show one line per person with the evidence and a relation guess (manager, report, skip-level, peer, stakeholder, freelancer, external). Ask: "Who is close? Who is missing? Use this? [yes]".
+4. Resolve identities for the confirmed people: chat user, ticket user, task tool user, code login, and the CRM owner only for sales and support colleagues. Match by email first, then full name; two people with the same first name or no clear match means ask, never guess. Record where each id came from.
+5. Show the result as a list (name, relation, ids found, ids missing). Write profiles after a yes (step 5 does the writing); `close: true` only for the people the user confirmed. Remove the sample profile `context/people/example-jordan-rivera.md` once the user's own profiles exist.
+
+A tool that is not connected yet leaves its ids empty; the first `routines/people.md` run fills them later.
 
 ## 3. Connectors: what to switch on
 
@@ -83,10 +95,11 @@ Default `~/ai-workspace`. Check the path: it must not be under `~/Library/Mobile
    - everywhere: `{{SETUP_DATE}}` = today.
    - Append a "Role adapter" block to `context/me.md` with the chosen adapter's routine emphasis and typical meeting types.
 3. If a tool has no row in the folder (for example no code tool), remove that source's mention only if the routine would otherwise fail; the routing "none" already makes routines skip it.
-4. Areas: write `context/areas/index.md` from step 2b (`{{AREAS_TABLE}}` rows `| Area | definition | examples |`, `{{TIE_BREAK}}` as the numbered list) and one `context/areas/<slug>.md` per area (frontmatter `type: topic`, `summary`, `status: draft`; body: definition, examples, people, recurring meetings; each marked "to confirm" where you guessed).
-5. Re-run the grep: only `meta/task-store.md` may still hold `{{` (step 5b fills it).
-6. Create the drop folder if the user wants one, and write the config: `mkdir -p ~/.config/hq && printf '%s\n' "<workspace>" > ~/.config/hq/workspace`.
-7. In Cowork, tell the user to create a project that points at the workspace folder and to put this project instruction in it: "Read CLAUDE.md first, then index.md. Follow the rules there. Routines live in routines/." Scheduled tasks must be created inside that project.
+4. People: for each mapped colleague write `context/people/<slug>.md` from the schema in `routines/people.md` (the confirmed relation, contract, team, areas, `close`, aliases, the ids resolved in step 2c and one `sources` line per id; `status: draft`). Everything the user did not confirm stays empty.
+5. Areas: write `context/areas/index.md` from step 2b (`{{AREAS_TABLE}}` rows `| Area | definition | examples |`, `{{TIE_BREAK}}` as the numbered list) and one `context/areas/<slug>.md` per area (frontmatter `type: topic`, `summary`, `status: draft`; body: definition, examples, people, recurring meetings; each marked "to confirm" where you guessed).
+6. Re-run the grep: only `meta/task-store.md` may still hold `{{` (step 5b fills it).
+7. Create the drop folder if the user wants one, and write the config: `mkdir -p ~/.config/hq && printf '%s\n' "<workspace>" > ~/.config/hq/workspace`.
+8. In Cowork, tell the user to create a project that points at the workspace folder and to put this project instruction in it: "Read CLAUDE.md first, then index.md. Follow the rules there. Routines live in routines/." Scheduled tasks must be created inside that project.
 
 ## 5b. Create the task store
 

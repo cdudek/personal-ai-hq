@@ -27,3 +27,6 @@ Read `context/areas/index.md` and the open tasks of the task store (adapter in `
 - **Initiatives:** tasks that pass the initiative test but have no Initiative (open one); initiatives whose tasks are all done or whose end date passed (close one).
 - **Tie-break:** a rule the user keeps overriding: the corrected wording.
 Each proposal goes into the review page as a `fixes[]` item with the exact change to `context/areas/index.md` or the task store. After a yes, apply it, log it in `meta/learnings.md`, and tick the friction lines.
+
+## People data (Friday, called by `review`)
+Close people with empty ids, ids without a `sources` entry, ids that no longer match (a bounced mail, a chat user that left), "Current" older than 35 days, and names that appeared in the week's items with no profile. Propose `routines/people.md` runs (Resolve, Refresh, New person) under "Claude asks". Never fix an id without the user's yes.
