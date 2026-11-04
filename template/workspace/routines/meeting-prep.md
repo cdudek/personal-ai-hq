@@ -18,6 +18,9 @@ For each attachment and each link in the description, read it with the right con
 If a document cannot be opened (no access, connector missing), list it with "not readable: <reason>". Never summarise a document you did not read.
 
 ## 3. Last time (recurring meetings, or the last meeting with the same people)
+**Always, also when the meeting is off:** off, declined, cancelled or moved meetings still show last time's decisions, open action items (mine and others') and open points, and say where they roll to (the next occurrence, with its date). Never drop the prep because the meeting does not happen. If the notes are partial or garbled, say so in one line.
+Every recurring meeting on the page gets this, not only the first one: check each before writing the page.
+
 Find the previous occurrence:
 - transcript or summary from the notes and meetings tool
 - the running notes doc, if the event has one attached (often the action items live there)

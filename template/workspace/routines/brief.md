@@ -36,6 +36,7 @@ If a source fails, say so in one line and continue. Never invent its content.
 - **Recurring inputs:** read what `CLAUDE.md` lists under "Recurring inputs" when something new arrived. Summarise in 3-5 bullets, link the original, put them under "Context".
 
 ## 1a. Meeting prep
+Off, declined or cancelled meetings keep their card with last time's items and where they roll to (`routines/meeting-prep.md` section 3); never skip them.
 Run `routines/meeting-prep.md` for today's meetings (attached docs, last time's action items, mine and others').
 
 ## 1b. Needs me

@@ -2,6 +2,10 @@
 
 Versions follow semver. Each release is a git tag `vX.Y.Z` with an entry here. `/hq:upgrade` shows the entries between your workspace version and the installed one.
 
+## 0.3.11 (2026-11-04)
+
+- Meeting prep: off, declined or cancelled meetings keep last time's decisions, open action items and open points, and say where they roll to. Every recurring meeting on the page is checked, not only the first.
+
 ## 0.3.10 (2026-11-04)
 
 - Every task carries a context card in its description: What, Why / who waits, State (with dates), Decision or next step, Effort, Links. It is written when a task is created or triaged and refreshed whenever Claude reads newer information. A task that is only a link is incomplete.
