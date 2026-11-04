@@ -8,6 +8,7 @@ Versions follow semver. Each release is a git tag `vX.Y.Z` with an entry here. `
 - Routines: the brief scores new Inbox items with ICE; the weekly plan sets MoSCoW and ranks by Priority, then ICE; `/hq:task` picks by Priority, due, ICE, blocks someone, age, size; the Friday review checks ICE drift.
 - Pages: the task panel shows MoSCoW and ICE (with I, C, E) and lets you stage MoSCoW and Size changes; the task tables get sortable MoSCoW and ICE columns.
 - Asana: the eight shared `HQ · ` fields (Priority, Size, Source, MoSCoW, Impact, Confidence, Ease, ICE) are now a prerequisite. Setup and `/hq:upgrade` check the shared field library; if any are missing they stop and tell you to create exactly those first (click path and field spec in `routines/stores/asana-fields.md`), or, in Claude Code with an `ASANA_API_TOKEN` environment variable, offer to create them once for your organisation. The token is optional and never printed. Notion, Monday, Trello and GitHub Projects get the same properties as description lines or mapped fields.
+- `HQ · Source` has 17 options: Slack, Mail, Meeting, Asana, Linear, GitHub, Jira, HubSpot, Google Drive, Miro, Figma, Notion, Confluence, LinkedIn, Data, Voice, Me (Me last), each with a meaning in `routines/stores/README.md`; the pages label them.
 - `/hq:upgrade` runs the migration 0.3.5 -> 0.3.6 first thing: field check, record ids, offer to score open tasks.
 
 ## 0.3.5 (2026-11-04)

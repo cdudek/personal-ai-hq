@@ -38,7 +38,7 @@ The one place tasks live. Routines never name the tool: they say "the task store
 | How much is it worth? | ICE: Impact, Confidence, Ease (1-10 each) and ICE (= Impact x Confidence x Ease, 1-1000) | Claude's scoring proposal for Inbox items and new tasks, used to propose a Priority; computed, never typed by hand |
 | Is it in scope? | MoSCoW | Must, Should, Could, Won't: scope within an initiative or the week, set in the weekly plan; Won't = explicitly out this cycle |
 | How big? | Size | t-shirt XS, S, M, L, XL (rough effort) |
-| Where from? | Source | {{SOURCE_VALUES}} |
+| Where from? | Source | {{SOURCE_VALUES}} (default: Slack, Mail, Meeting, Asana, Linear, GitHub, Jira, HubSpot, Google Drive, Miro, Figma, Notion, Confluence, LinkedIn, Data, Voice, Me; meanings in `routines/stores/README.md`) |
 | Waiting on whom? | Description line `Waiting on: <name>` | a person (the task tool's id from `context/people/` when known); only in section Waiting |
 | When is it closed? | Description line `Closed when: <scenario>` | the done scenario in words |
 

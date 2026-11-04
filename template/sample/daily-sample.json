@@ -437,7 +437,7 @@
         "confidence": 7,
         "ease": 4,
         "ice": 224,
-        "source": "me",
+        "source": "voice",
         "closed_when": "3 runs without friction",
         "added": "2026-11-03",
         "section": "This week",

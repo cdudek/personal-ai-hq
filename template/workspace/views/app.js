@@ -2,7 +2,7 @@
 // The page never writes files: board edits and plan answers are staged here and handed to Claude as one prompt.
 // Pasting that prompt is the user's confirmation that workspace rule 4 asks for.
 const LABEL = {github:"GitHub",linear:"Linear",slack:"Slack",gmail:"Gmail",calendar:"Calendar",meet:"Google Meet",demodesk:"Demodesk",
-  wispr:"Wispr Flow",asana:"Asana",miro:"Miro",hubspot:"HubSpot",gdocs:"Google Docs",posthog:"PostHog",aios:"Workspace",board:"Board",note:"Note",me:"Me",meeting:"Meeting"};
+  wispr:"Wispr Flow",asana:"Asana",miro:"Miro",hubspot:"HubSpot",gdocs:"Google Docs",posthog:"PostHog",aios:"Workspace",board:"Board",note:"Note",jira:"Jira",figma:"Figma",notion:"Notion",confluence:"Confluence",linkedin:"LinkedIn",data:"Data",me:"Me",meeting:"Meeting"};
 const PRIOS = ["P0", "P1", "P2", "P3"];
 const SIZES = {XS: 0, S: 1, M: 2, L: 3, XL: 4};
 const SIZE_NAMES = Object.keys(SIZES);
@@ -10,7 +10,7 @@ const MOSCOWS = ["Must", "Should", "Could", "Won't"];
 // derived from the task store: Done = completed, Waiting = section Waiting, else Open
 const STATUSES = ["Open", "Waiting", "Done"];
 // the store writes sources as Slack, Mail, Meeting, ...; icons and labels are keyed by the lower-case names below
-const SRC_ALIAS = {mail: "gmail", meeting: "meet"};
+const SRC_ALIAS = {mail: "gmail", meeting: "meet", "google drive": "gdocs", voice: "wispr"};
 const normSource = s => { const k = String(s || "").toLowerCase(); return SRC_ALIAS[k] || k; };
 const LISTS = {week: "This week", inbox: "Inbox"};
 const ANSWERS = ["accept", "change"];

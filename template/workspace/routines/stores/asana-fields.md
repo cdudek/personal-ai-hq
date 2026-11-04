@@ -28,8 +28,8 @@ Options are listed in the order to create them. Every field goes into the organi
 - Description: `T-shirt size, a rough effort guess: XS under an hour, S half a day, M a day or two, L most of a week, XL more than a week (split it).`
 
 **HQ · Source**
-- Type: single select. Options: Slack, Mail, Meeting, Asana, Linear, GitHub, Me.
-- Description: `Where the task came from.`
+- Type: single select. Options: Slack, Mail, Meeting, Asana, Linear, GitHub, Jira, HubSpot, Google Drive, Miro, Figma, Notion, Confluence, LinkedIn, Data, Voice, Me (Me last).
+- Description: `The tool the task came from. Asana = someone assigned or commented in another Asana project; GitHub = PRs, issues, reviews (GitHub Projects too); Google Drive = comments or assignments in Docs, Sheets, Slides; HubSpot = tickets, deals, mentions; Meeting = calendar events and transcripts (Meet, Demodesk, Wispr notetaker, Granola); Voice = Wispr dictation or Scratchpad; Data = warehouse or dashboard alerts; Me = own capture (self-message, typed).`
 
 **HQ · MoSCoW**
 - Type: single select. Options: Must, Should, Could, Won't.
