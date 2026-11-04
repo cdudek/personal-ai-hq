@@ -44,8 +44,11 @@ Run `routines/meeting-prep.md` for the next 7 days. Summarise it as:
 
 If a meeting is unclear, ask instead of guessing.
 
+## 4b. Documents per initiative
+For every initiative in Top of mind, list the documents changed in its topic folder in `research/` last week (`git log --since="1 week ago" --name-only -- "research/<folder>"`, or file mtime). One line each: file, what changed. Put them under the initiative's `updates[]` in the weekly data and `docs[]` on its Top of mind entry. An initiative whose folder has not changed in 4 weeks is a candidate for "Paused". An initiative without a topic folder goes under "Claude asks".
+
 ## 5. Context gaps
-As in `brief.md`, max 3 questions.
+As in `brief.md`, max 3 questions (including the new topic folder or document question, step d2).
 
 ## 6. Write
 **Labels (required):** every item in Needs attention, Replies and reviews, Waiting on others, Task proposals and on the board gets `priority` and `area` (from the task store; else blocking or due today = P0, due this week = P1, otherwise P2 or P3; area by the tie-break in `context/areas/index.md`), plus `initiative` and `okr` when they apply. Board items also carry `id` and `url` from the task store. The renderer prints `LABEL CHECK` for anything missing; fix it and render again.

@@ -11,7 +11,7 @@ Proposals first, apply after a yes. Every change is logged in `log.md`.
 
 ## 1. Context refresh
 - Read the last 4 weeks of `daily/` and `weekly/` notes and the decisions.
-- Propose updates to `goals.md`, `projects/`, `people/` and the glossary: what changed, what is done, what is new.
+- Propose updates to `goals.md`, the initiative topic READMEs in `research/`, `people/` and the glossary: what changed, what is done, what is new.
 - Move pages that have been in `draft` for 30+ days to `current` after the user confirms, or delete them.
 
 ## 1b. People
@@ -26,6 +26,15 @@ List:
 - broken `[[links]]`
 - `sources/` items never compiled
 - files without `summary:`
+
+## 2b. Documents home lint
+For every topic folder in `research/` (not `_template`):
+- README opens with the CURRENT DOCUMENT callout and the file it points at exists
+- README status is `active`, `complete` or `parked`; a complete or parked folder outside `_archive/` is proposed for moving (after a yes)
+- every file in `output/` has the frontmatter from `research/CLAUDE.md` (status, version, last_updated, audience)
+- every open initiative in the task store has a topic folder, and its Top of mind task carries `Topic folder: <name>`; folder names in tasks still exist (renamed or archived: update)
+- README "Shared links" hold no local path
+Findings are proposals; change only after a yes.
 
 ## 3. Reorganise
 - Split pages over about 800 words or with 2 subjects.

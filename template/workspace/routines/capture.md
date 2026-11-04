@@ -15,7 +15,7 @@ Sort each capture into one of these:
 | task for the agent | Agent section of the task store |
 | tip for the system itself ("we should also...", a workflow post, a tool someone recommends) | `meta/tips.md` (evaluated Friday by `review`) |
 | idea (not committed to yet; it becomes a task only when the user commits) | `ideas/YYYY-MM-DD-kebab-title.md` (frontmatter as in `ideas/CLAUDE.md`) |
-| link, video, article, file | `sources/_incoming/` (processed by `ingest`) |
+| link, video, article, file | `sources/_incoming/` (processed by `ingest`); research material for a known initiative goes straight to that topic folder's `working/` in `research/` |
 | shopping | `lists/shopping.md` |
 | journal note | `journal/YYYY-MM-DD.md` |
 | fact about a person, project or term | propose a `context/` change and save only on yes |

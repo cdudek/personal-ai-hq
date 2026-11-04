@@ -5,6 +5,7 @@
   hq_sync.py plan <template> <workspace>           classify every system file
   hq_sync.py apply <template> <workspace> <rel>... copy those files (rel = "safe" copies all safe/new ones)
 
+apply refuses (exit 1) when the workspace has a .hq-author file.
 plan prints one "<status> <path>" per line: new | safe | edited | same | obsolete.
   safe = the user did not edit it, overwrite. edited = the user changed it, show the diff and ask.
 """
@@ -20,7 +21,7 @@ MANIFEST = ".hq-manifest.json"
 
 
 def system_files(root: Path) -> set[str]:
-    out = {str(p.relative_to(root)) for d in ("routines", "scripts", "views/vendor", "views/icons")
+    out = {str(p.relative_to(root)) for d in ("routines", "scripts", "views/vendor", "views/icons", "research/_template")
            for p in (root / d).rglob("*") if p.is_file() and p.name != "index.md" and "__pycache__" not in p.parts}  # index.md is generated
     out |= {f"views/{v}" for v in VIEWS if (root / "views" / v).exists()}
     out |= {str(p.relative_to(root)) for p in root.glob("*/CLAUDE.md")}  # per-folder rule files, not the root one
@@ -63,6 +64,8 @@ def plan(tpl: Path, ws: Path) -> list[tuple[str, str]]:
 
 
 def apply(tpl: Path, ws: Path, rels: list[str]) -> None:
+    if (ws / ".hq-author").exists():  # the author's workspace is the source of the template, never overwrite it from the plugin
+        raise SystemExit("refusing to apply: this workspace has a .hq-author file, so it is the author reference. Update the plugin only; never sync template files into it.")
     status = {r: s for s, r in plan(tpl, ws)}
     chosen = [r for r, s in status.items() if s in ("safe", "new")] if rels == ["safe"] else rels
     m = load(ws)

@@ -1,0 +1,5 @@
+# Notes
+
+## YYYY-MM-DD
+
+- ...

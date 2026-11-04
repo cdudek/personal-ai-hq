@@ -42,7 +42,7 @@ The prompt starts "Apply these changes to the task store" and holds a `<<<CHANGE
   - attachments[]: `{label, url, source, summary}` for every document or board attached to or linked in the event, summary from actually reading it (see `routines/meeting-prep.md`)
   - links[]: `{label, url, source}` (calendar event, Meet link, docs, Miro board)
 - `board`: `{week: [task], inbox: [task]}`, built from the task store (the tables show This week and Inbox; tasks in Waiting appear in the `waiting` cards with their `waiting_on`)
-  - task (contract, `meta/task-store.md`): `id` (the store's task id, required), `url` (the task's deep link in the store, required once the board exists), `title`, `section` (Top of mind | This week | Waiting | Inbox | Agent), `area` (Product | Engineering | Team | Company | Admin | Me), `initiative`, `priority` (P0–P3), `size` (S | M | L), `source` (Slack | Mail | Meeting | Asana | Linear | GitHub | Me; the page also takes the lower-case names), `okr` (O1–O5), `waiting_on` (person), `closed_when`, `due` (`YYYY-MM-DD`), plus `notes`, `context`, `link` (the source thing: PR, mail, Slack message), `added`, `history[]`, `people[]` (`{name, note}`), `completed`. The Status column is derived: completed = Done, section Waiting = Waiting, else Open. `domain` no longer exists.
+  - task (contract, `meta/task-store.md`): `id` (the store's task id, required), `url` (the task's deep link in the store, required once the board exists), `title`, `section` (Top of mind | This week | Waiting | Inbox | Agent), `area` (Product | Engineering | Team | Company | Admin | Me), `initiative`, `priority` (P0–P3), `size` (S | M | L), `source` (Slack | Mail | Meeting | Asana | Linear | GitHub | Me; the page also takes the lower-case names), `okr` (O1–O5), `waiting_on` (person), `closed_when`, `due` (`YYYY-MM-DD`), `docs[]` (see "Documents"), plus `notes`, `context`, `link` (the source thing: PR, mail, Slack message), `added`, `history[]`, `people[]` (`{name, note}`), `completed`. The Status column is derived: completed = Done, section Waiting = Waiting, else Open. `domain` no longer exists.
 - `sections[]`: id, title, note, empty, and either
   - `type: "board"` with `list: "week" | "inbox"` (renders that board table), or
   - `items[]` (cards): source, title, where, who, when, context, action, tag, tag_kind, urgent, link, plus optional notes, people[], history[], links[] for the panel
@@ -58,6 +58,13 @@ Rules for the data:
 - source is one of: github, linear, slack, gmail, calendar, meet, demodesk, wispr, asana, miro, hubspot, posthog, gdocs, aios, board, me, note.
 - `sections[].note` is the one-line description under the heading (what the list is and its rule). tag_kind is one of: urgent, warn, ok.
 - Links only http(s). Never put `journal/` content into a view.
+
+## Documents (panel)
+
+Tasks, Top of mind entries and cards may carry `docs: [{title, url?, path?, kind: "shared" | "local", updated}]`; the panel shows them under "Documents" (after People and History, before Links).
+- `kind: "shared"` needs an http(s) `url` and renders as a link. A shared entry without a valid http(s) url falls back to local text; `javascript:`, `file:` and other schemes are never links.
+- `kind: "local"` needs a `path` (for example `research/2026-01-15 - Example/output/<file>.md`) and renders as copyable text with a "Copy path" button, never as a link.
+- `updated` is `YYYY-MM-DD`. Source: the initiative's topic README and `output/` in `research/` (`research/CLAUDE.md`). Local paths stay on the page; never in anything shared.
 
 ## Section order
 

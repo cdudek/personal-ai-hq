@@ -2,6 +2,18 @@
 
 Versions follow semver. Each release is a git tag `vX.Y.Z` with an entry here. `/hq:upgrade` shows the entries between your workspace version and the installed one.
 
+## 0.3.2 (2026-11-04)
+
+- Documents home. `<workspace>/research/` holds every document and piece of research, one topic folder per initiative (`YYYY-MM-DD - Topic Name`): `README.md` (CURRENT DOCUMENT callout, status active | complete | parked, question, decisions, latest documents, shared links, earlier work), `notes.md`, `working/`, `output/` (with `_archive/`; frontmatter status, version, last_updated, audience) and `data/` (git-ignored). `research/CLAUDE.md` holds the rules; `research/_template/` is the skeleton; `research/_archive/` takes complete or parked topics. A fictional example topic (Acme) ships in the template; delete it after setup.
+- Initiative = topic folder. The README is the initiative's memory, so `context/projects/` and `context/topics/` are gone. Opening an initiative (after a yes) also creates its folder; closing sets the README to `complete` and proposes moving it to `research/_archive/`.
+- Task store: Top of mind tasks carry `Topic folder: <name>` and the shared links; a task's description holds the shared URL when one exists. Never a local path in a shared place.
+- Setup: no question about where documents live (always `research/`); the tools question now also asks where shared versions go (Google Drive, Notion, Confluence, none, stored in `context/places.md`). New step 5a creates one topic folder per confirmed initiative and the setup summary lists them.
+- Routines: weekly lists documents changed per initiative, the brief asks about a new or unknown folder or document, refresh lints topic READMEs, capture and ingest file research material into the initiative's `working/`.
+- Views: the task panel shows "Documents" from `docs: [{title, url?, path?, kind: shared | local, updated}]`; shared ones are http(s) links, local ones copyable text. Sample pages include one.
+- Author marker: a workspace with a `.hq-author` file is never synced from the plugin. `/hq:upgrade` updates only the plugin, `hq_sync.py apply` refuses, and the version check does not mention workspace sync.
+- Cowork: the `claude plugin` CLI is not available there; update the plugin under Customize > Plugins (README, upgrade and the version-check message say so).
+- Upgrade: `research/CLAUDE.md` and `research/_template/` arrive with the sync. A migration creates `research/`, proposes a mapping from your `context/projects` and `context/topics` pages to topic folders, merges them into the READMEs after your yes, then removes the two folders and fixes links. It also asks where shared versions go.
+
 ## 0.3.1 (2026-11-04)
 
 - People mapping. `routines/people.md` finds your close team from evidence (recurring 1:1s, chat DM frequency, ticket teams you lead, code reviewers, your reports), resolves every person's identity across your tools (email, chat, code login, ticket user, task user, CRM owner for sales and support) and keeps a derived "Current" section per close person (what you owe, what they owe, their tickets and PRs, shared threads, recurring meetings).

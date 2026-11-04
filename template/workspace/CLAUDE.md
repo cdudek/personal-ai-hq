@@ -20,10 +20,10 @@ inputs (chat, mail, meetings, voice, phone)   ->  inbox/      (tasks, daily capt
 files and links the user drops                ->  sources/_incoming/
                        |  ingest / compile
                        v
-context/  (the wiki: me, goals, glossary, people, projects, topics)  <->  index.md per folder
+context/  (the wiki: me, goals, glossary, people, areas, places)  <->  index.md per folder
                        |  query
                        v
-answers, drafts, briefs  ->  good answers get filed back into context/topics/
+answers, drafts, briefs  ->  good answers get filed back into context/ (or the initiative's topic README in research/)
 ```
 
 **Operations** (each one ends with: rebuild indexes, append one line to `log.md`, commit):
@@ -57,7 +57,8 @@ answers, drafts, briefs  ->  good answers get filed back into context/topics/
 
 | Folder | What goes in | Who writes |
 |---|---|---|
-| `context/` | memory: me, goals, glossary, writing style, people (profiles with ids per tool, see `routines/people.md`), projects, topics | Claude, only after the user says yes |
+| `context/` | memory: me, goals, glossary, writing style, people (profiles with ids per tool, see `routines/people.md`), places, areas | Claude, only after the user says yes |
+| `research/` | documents home: one topic folder per initiative or topic (README = memory of the initiative, `output/`, `working/`); rules in `research/CLAUDE.md` | Claude and the user |
 | `inbox/` | raw items, one file per day | Claude (`capture`, `brief`) |
 | `daily/` | daily note: brief, syncs, debrief | Claude |
 | `weekly/` | weekly note: weekly prep, review | Claude |
@@ -79,7 +80,7 @@ answers, drafts, briefs  ->  good answers get filed back into context/topics/
 - **Folders:** lowercase, English, plural, no spaces.
 - **Files:**
   - people: `firstname-lastname.md` (same first name: `firstname-lastname`, or `firstname-team` plus an alias; frontmatter schema in `routines/people.md`)
-  - projects and topics: `kebab-case.md`
+  - topic folders in `research/`: `YYYY-MM-DD - Topic Name/` (see `research/CLAUDE.md`)
   - dated: `YYYY-MM-DD.md`
   - weeks: `YYYY-Www.md`
   - decisions: `YYYY-MM-DD-topic.md`
@@ -94,7 +95,7 @@ answers, drafts, briefs  ->  good answers get filed back into context/topics/
   ---
   ```
   Decisions also get `decided_by`, `review_on` and, if they replace one, `supersedes`.
-- **Links:** `[[people/firstname-lastname]]`, `[[projects/name]]`. The folder works as an Obsidian vault.
+- **Links:** `[[people/firstname-lastname]]`, `[[areas/name]]`. The folder works as an Obsidian vault.
 - **Decisions:** never overwrite; write a new file that supersedes the old one.
 - **Language:** files in English. Drafts follow `context/writing-style.md` ({{LANGUAGES}}).
 - **Git:** after every change run `git add -A && git commit -m "<routine>: <what>"`. Never push.
@@ -163,6 +164,11 @@ Meeting attachments (docs, boards, tickets linked on calendar events) are read b
 | Anything without a connector | the browser |
 | The user themselves | `context/` |
 | Where files and repos live | `context/places.md` |
+| Documents and research for an initiative | `research/`, the initiative's topic folder |
+
+## Documents
+
+Every document and piece of research for an initiative or task has one home: its topic folder in `research/` (rules, naming, template, shared-version rule: `research/CLAUDE.md`). One initiative = one topic folder; its README is the memory (status, decisions, latest documents, shared links, earlier work). Top of mind tasks carry `Topic folder: <name>` and the shared links; the pages show `docs[]`. **Never put a local path into a shared place** (task tool, tickets, chat, mail, shared docs): link the shared URL.
 
 ## Task store
 

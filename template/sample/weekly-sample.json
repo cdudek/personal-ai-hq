@@ -166,7 +166,21 @@
         "Nov 3: O1 baselines pulled from the warehouse"
       ],
       "link": "https://linear.app/acme/initiative/data-okrs",
-      "area": "Company"
+      "area": "Company",
+      "docs": [
+        {
+          "title": "Pricing options memo (shared doc)",
+          "url": "https://docs.example.com/pricing-options-memo",
+          "kind": "shared",
+          "updated": "2026-01-22"
+        },
+        {
+          "title": "Pricing options memo (local)",
+          "path": "research/2026-01-15 - Example Acme Pricing Review/output/2026-01-22-pricing-options-memo.md",
+          "kind": "local",
+          "updated": "2026-01-22"
+        }
+      ]
     },
     {
       "title": "Partner API",

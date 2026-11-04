@@ -26,6 +26,7 @@ Open tasks in the project with section, completed, due date and all custom field
 - **Create:** task with name, notes (`closed when: ...`), project, section, custom fields, tag `ai`.
 - **Move section:** add the task to the section within the project.
 - **Set property:** update the custom field value (enum option by id).
+- **Documents:** when a shared URL exists for a document, put it in the task description or as a comment link. Top of mind initiative tasks carry in the description `Topic folder: <folder name>` (a name, not a path) and the shared links. Never write a local path into the task tool.
 - **Complete:** mark completed.
 - **Comment:** add a comment (story) to the task.
 - **Add option:** add an enum option to the Area, Initiative, OKR or Source field. Retire an Initiative option by disabling it (do not delete: tasks keep the value).

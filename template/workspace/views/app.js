@@ -113,6 +113,14 @@ document.addEventListener("alpine:init", () => {
       people(w) { return Array.isArray(w) ? w.map(p => (typeof p === "string" ? {name: p} : p)) : []; },
       meta(x) { return [x.where, this.names(x.who), x.when].filter(Boolean).join(" · "); },
       whereWho(x) { return [x.where, this.names(x.who)].filter(Boolean).join(" · "); },
+      // docs[]: shared = http(s) link only (without a valid url it falls back to local text); local = copyable text, never a link
+      docsOf(x) {
+        return (x.docs || []).map(d => {
+          const href = d.kind === "shared" ? this.url(d.url) : null;
+          return {title: String(d.title || d.path || d.url || "Document"), kind: href ? "shared" : "local", href, path: String(d.path || d.url || ""), updated: d.updated || ""};
+        }).filter(d => d.href || d.path);
+      },
+      async copyPath(p) { this.toast((await copyText(p)) ? "Path copied." : "Could not copy."); },
       linksOf(x) { return (x.links || []).filter(l => this.url(l.url)); },
       dd(name) {
         const k = Object.keys(AREAS).find(n => n.toLowerCase() === String(name || "").toLowerCase());

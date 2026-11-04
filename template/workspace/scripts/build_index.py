@@ -11,7 +11,7 @@ from collections import Counter
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-SKIP_DIRS = {".git", "scripts", ".obsidian"}
+SKIP_DIRS = {".git", "scripts", ".obsidian", "research"}
 SKIP_FILES = {"CLAUDE.md", "AGENTS.md", "index.md"}
 TIME_DIRS = {"inbox", "daily", "weekly", "journal"}  # dated files: show recent only
 PRIVATE_DIRS = {"journal"}  # never put summaries of these in an index

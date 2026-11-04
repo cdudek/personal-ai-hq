@@ -10,12 +10,21 @@ Follow `${CLAUDE_PLUGIN_ROOT}/skills/_shared/version-check.md` first for the wor
 ## What is system and what is yours
 
 - **System (this skill may update):** `routines/`, `scripts/`, `views/` code (`template.html`, `app.css`, `app.js`, `vendor/`, `icons/`, `CLAUDE.md`, `DESIGN.md`, `README.md`, `styleguide.template.html`), `SYSTEM.md`, and the `CLAUDE.md` rule file in each top-level folder (not the root one).
-- **Yours (never touched):** root `CLAUDE.md`, `index.md`, `context/`, `inbox/`, `daily/`, `weekly/`, `journal/`, `meta/`, `decisions/`, `ideas/`, `principles/`, `lists/`, `sources/`, `views/data/` and every rendered view page. Your tasks are not in the workspace: they live in your task store (`meta/task-store.md`).
+- **System, research:** `research/CLAUDE.md` and `research/_template/` (the topic skeleton).
+- **Yours (never touched):** the topic folders in `research/` (everything except `CLAUDE.md`, `_template/`), root `CLAUDE.md`, `index.md`, `context/`, `inbox/`, `daily/`, `weekly/`, `journal/`, `meta/`, `decisions/`, `ideas/`, `principles/`, `lists/`, `sources/`, `views/data/` and every rendered view page. Your tasks are not in the workspace: they live in your task store (`meta/task-store.md`).
+
+## Author workspace
+
+If `<workspace>/.hq-author` exists, this workspace is the author reference. `/hq:upgrade` then updates only the plugin (step 0), says "Plugin updated. This workspace has a .hq-author file, so no template files were synced." and stops. It never runs `hq_sync.py apply` (the script refuses anyway) and never writes `.hq-version`.
+
+## Cowork
+
+The `claude plugin` CLI is not available in Cowork's cloud session. Update the plugin there under Customize > Plugins (open the `hq` plugin and update it, or re-add the marketplace `cdudek/personal-ai-hq`), start a new session, then run `/hq:upgrade` to bring the workspace along.
 
 ## Steps
 
-0. **Update the plugin first.** Installed version `Y` = `version` in `${CLAUDE_PLUGIN_ROOT}/.claude-plugin/plugin.json`. Latest `Z`: fetch `https://raw.githubusercontent.com/cdudek/personal-ai-hq/main/.claude-plugin/plugin.json` (`curl -fsS --max-time 3`; on failure assume `Z` = `Y`). If `Z` is newer than `Y` and you can run Bash with the `claude` CLI, run `claude plugin marketplace update cdudek`, then `claude plugin update hq@cdudek`. If the CLI says a restart is needed (it does), say: "HQ updated to Z. Restart Claude Code, then run /hq:upgrade again to bring your workspace along", and stop. If you cannot run the CLI (for example in Cowork), print the two commands for the user to run, `/plugin marketplace update cdudek` and then updating `hq` in `/plugin`, and stop.
-1. Find the workspace (shared file). Installed version `Y` = `version` in `${CLAUDE_PLUGIN_ROOT}/.claude-plugin/plugin.json`; workspace version `X` = first line of `<workspace>/.hq-version` (missing = `0.1.0`). If `X` is not older than `Y`, say "already on Y" and stop.
+0. **Update the plugin first.** Installed version `Y` = `version` in `${CLAUDE_PLUGIN_ROOT}/.claude-plugin/plugin.json`. Latest `Z`: fetch `https://raw.githubusercontent.com/cdudek/personal-ai-hq/main/.claude-plugin/plugin.json` (`curl -fsS --max-time 3`; on failure assume `Z` = `Y`). If `Z` is newer than `Y` and you can run Bash with the `claude` CLI, run `claude plugin marketplace update cdudek`, then `claude plugin update hq@cdudek`. If the CLI says a restart is needed (it does), say: "HQ updated to Z. Restart Claude Code, then run /hq:upgrade again to bring your workspace along", and stop. If you cannot run the CLI, stop and tell the user how: in Claude Code the two commands `/plugin marketplace update cdudek` and then updating `hq` in `/plugin`; in Cowork Customize > Plugins (see "Cowork" above).
+1. Find the workspace (shared file). If it has `.hq-author`, stop as described in "Author workspace". Installed version `Y` = `version` in `${CLAUDE_PLUGIN_ROOT}/.claude-plugin/plugin.json`; workspace version `X` = first line of `<workspace>/.hq-version` (missing = `0.1.0`). If `X` is not older than `Y`, say "already on Y" and stop.
 2. Show the `CHANGELOG.md` entries from the plugin folder for every version after `X` up to `Y`, short.
 3. Classify the system files. `T` is `${CLAUDE_PLUGIN_ROOT}/template/workspace`:
 
@@ -34,6 +43,18 @@ Follow `${CLAUDE_PLUGIN_ROOT}/skills/_shared/version-check.md` first for the wor
 7. Changes to the root `CLAUDE.md` or `context/` that the new version expects are listed in the changelog entry; show them as a proposal and apply only on a yes.
 8. Write `Y` to `<workspace>/.hq-version`, then `python3 scripts/build_index.py`, then commit in the workspace: `git add -A && git commit -m "upgrade: X -> Y"`. Never push.
 9. If `views/data/` has JSON from the old version, re-render the latest daily and weekly with `python3 scripts/render_view.py <file>` and report any LINK CHECK or LABEL CHECK lines.
+
+## Migration 0.3.1 -> 0.3.2: documents home (`research/`)
+
+Runs when `X` is older than 0.3.2. `research/CLAUDE.md` and `research/_template/` arrive with the sync in step 4 (system files). Nothing is moved or deleted before the user confirms the mapping.
+
+1. **Create the home.** If `<workspace>/research/` has no `_archive/`, create it (`mkdir -p research/_archive && touch research/_archive/.gitkeep`). Append `research/*/data/*` and `!research/*/data/.gitkeep` to the workspace `.gitignore` if missing.
+2. **Map existing pages.** List `context/projects/*.md` and `context/topics/*.md` (ignore `index.md`). For each page propose a topic folder: an initiative of the task store gets `research/YYYY-MM-DD - <Initiative>/` (date = the page's first date or today), a standalone project or topic gets its own folder. Show the mapping as a list (page -> folder, "merge" or "new") and ask "Use this mapping? [yes]". Apply the user's corrections.
+3. **Create and merge.** For each confirmed folder: copy `research/_template` to the new name, then merge the page into the README: the page body goes under "Where it stands" / "Decisions" / "Key findings" (keep every fact and its source), links to documents go under "Shared links" (shared URLs) or "Earlier work" (named folders elsewhere, by name). Fill question, status `active`, started. Never copy a local path into "Shared links".
+4. **Initiatives without a page.** For every open initiative in the task store with no folder yet, offer to create an empty topic folder the same way (after a yes). Add `Topic folder: <name>` to its Top of mind task description through the adapter (`Documents` in the Write section) after a yes.
+5. **Remove the old folders** only after the user checks the READMEs: `git rm -r context/projects context/topics` (content stays in git history). Fix every `[[projects/...]]` and `[[topics/...]]` link (grep) to point at the topic folder, and propose the new root `CLAUDE.md` rows ("Documents" section, `research/` folder row, `context/` row without projects and topics) as a proposal (step 7).
+6. **Shared destination.** Ask once "Where do shared versions of documents go? [Google Drive, Notion, Confluence, none]" and add `Shared versions: <answer>` to `context/places.md`.
+7. Show the result: the topic folders created, one line each, and check each README has the CURRENT DOCUMENT callout.
 
 ## Migration 0.3.0 -> 0.3.1: people mapping
 

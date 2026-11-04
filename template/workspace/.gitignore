@@ -1,2 +1,4 @@
 .DS_Store
 .hq-update-check
+research/*/data/*
+!research/*/data/.gitkeep

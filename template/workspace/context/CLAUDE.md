@@ -7,9 +7,9 @@ Memory. Read by every routine. Write only after the user says yes (see top-level
 - `glossary.md`: terms, abbreviations, internal names. One line each: `**term**: meaning (source, date)`. Before adding: check plurals, acronyms, casing.
 - `writing-style.md`: the voice file. Every drafting routine reads it. Changes only via `review` with approval; append a dated line to its "Learned" section.
 - `areas/`: `index.md` (areas, tie-break, initiative test) and one file per area. The areas of the task store live here, not in the tool.
-- `places.md`: where files, repos and projects live. Read it before searching the disk.
+- `places.md`: where files, repos, documents and the shared destination live. Read it before searching the disk.
 - `people/`: one profile per person with ids per tool, `relation`, `close` and a derived "Current" section. Schema, privacy rules and who may change what: `routines/people.md`. Ids and `close` change only after the user's yes; "Current" is rewritten by Claude on every refresh.
-- `projects/`, `topics/`: one file per item, frontmatter required, link with `[[...]]`.
+- Initiatives and projects are not in `context/`: each has a topic folder in `research/` whose README is its memory (`research/CLAUDE.md`).
 
 Pages are compiled from `sources/` and the inbox. Every fact links its source: `(source: [[sources/...]])` or `(<name>, YYYY-MM-DD)`.
 

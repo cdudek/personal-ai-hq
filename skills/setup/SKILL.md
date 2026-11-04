@@ -33,7 +33,7 @@ The ten questions, in this order:
 5. **Your day to day** in two or three lines. Example: "Roadmap reviews, 1:1s with five people, customer calls, a weekly board update".
 6. **Goals this quarter,** 3 to 5, with a link to the source document if there is one. Example: "Ship the partner API by December; cut onboarding time in half".
 7. **Languages** for work and which one for which channel. [English everywhere]
-8. **Tools, one category at a time** (chat, mail, calendar, tasks and tickets, code, docs and files, CRM, notes and meetings, whiteboard): name the product or "none". Also: is there a company data gateway? Optional. Then ask where captures come from (a DM to yourself in the work chat, a private drop folder, a voice notes app) and any fixed handling rules ("receipts go to finance"). [none]
+8. **Tools, one category at a time** (chat, mail, calendar, tasks and tickets, code, docs and files, CRM, notes and meetings, whiteboard): name the product or "none". Also: where do you share finished documents with colleagues (Google Drive, Notion, Confluence, none)? That answer is only about shared versions; your working documents always live in the workspace (`research/`). Also: is there a company data gateway? Optional. Then ask where captures come from (a DM to yourself in the work chat, a private drop folder, a voice notes app) and any fixed handling rules ("receipts go to finance"). [none]
 9. **Writing samples:** paste 2 or 3 messages you sent and like, or say where to find sent items and you will read 10. Anything confidential can be anonymised.
 10. **Where do your tasks live?** Your tasks go in one cloud task manager, not in a file on your computer, so you get comments, history and a phone app. Options: **Asana**, **Notion**, **Monday**, **Trello**, or **GitHub Projects (not recommended: no private personal-task semantics, tied to repositories)**. [the task tool named in question 8 if it is one of these, otherwise Asana]. A different tool: say so; HQ then has no adapter for it, and you pick one of the five.
 
@@ -90,7 +90,7 @@ Default `~/ai-workspace`. Check the path: it must not be under `~/Library/Mobile
    - `context/goals.md`: the goals, each with its source link.
    - `context/glossary.md`: the adapter's glossary seeds plus company terms the user mentioned, each marked "to confirm" until confirmed.
    - `context/writing-style.md`: `{{STYLE_RULES}}` from the writing samples: tone, length, greeting and closing, bullets, language per channel, words used and avoided, each rule with a short quote. Mark the file `status: draft` until the user confirms.
-   - `context/places.md`: the workspace path and where code and documents live.
+   - `context/places.md`: the workspace path, where code and other documents live, and `{{SHARED_DEST}}` = where shared versions go (Google Drive, Notion, Confluence, or "none, no shared destination yet").
    - `meta/chat-cursor.md`: `{{PHONE_WORK_CHANNEL}}` (or "not used").
    - everywhere: `{{SETUP_DATE}}` = today.
    - Append a "Role adapter" block to `context/me.md` with the chosen adapter's routine emphasis and typical meeting types.
@@ -101,12 +101,21 @@ Default `~/ai-workspace`. Check the path: it must not be under `~/Library/Mobile
 7. Create the drop folder if the user wants one, and write the config: `mkdir -p ~/.config/hq && printf '%s\n' "<workspace>" > ~/.config/hq/workspace`.
 8. In Cowork, tell the user to create a project that points at the workspace folder and to put this project instruction in it: "Read CLAUDE.md first, then index.md. Follow the rules there. Routines live in routines/." Scheduled tasks must be created inside that project.
 
+## 5a. Documents home (`research/`)
+
+The template copy already created `<workspace>/research/` with `CLAUDE.md` (the rules), `_template/` (the topic skeleton: README with the CURRENT DOCUMENT callout, status, question, output index; `notes.md`; `working/`; `output/` with `_archive/`; `data/`) and `_archive/`. Documents never live anywhere else, so do not ask where to keep them. Check those three exist; if the copy skipped them, copy them from `${CLAUDE_PLUGIN_ROOT}/template/workspace/research/`.
+
+1. For every initiative the user confirmed in step 2b, create a topic folder: `cp -R "research/_template" "research/YYYY-MM-DD - Initiative Name"` (today's date, name in Title Case with real spaces), then fill its README: title, question (the initiative's outcome), `Status: active`, `Started`, and "Earlier work" with any document the user named (by name, not path, unless it is a local file the user wants listed).
+2. Delete the sample topic `research/2026-01-15 - Example Acme Pricing Review/` once the user's first topic exists (or right away if they have no initiative yet and say so).
+3. Remember the names: step 5b puts `Topic folder: <name>` into each Top of mind task.
+4. Naming, status, `output/` frontmatter, versioning and the shared-versions rule are in `research/CLAUDE.md`. With Drive or Notion as the shared destination, the same structure works as subfolders or subpages there: one per topic, with `output` documents inside. Local stays the home.
+
 ## 5b. Create the task store
 
 Read `routines/stores/<store>.md` (the adapter for the tool from question 10) and `routines/stores/README.md`.
 
 1. Test the connector with one read. Say which operations you could verify. Do not claim an operation works before you have used it.
-2. Create the board by the adapter's "Create the board": the five sections, the properties (Area options from step 2b, Initiative options from the confirmed initiatives, Priority P0 to P3, Size S/M/L, Source with the user's tools plus Me, Waiting on, Closed when, optional OKR from the goals). Create the confirmed initiatives as Top of mind tasks.
+2. Create the board by the adapter's "Create the board": the five sections, the properties (Area options from step 2b, Initiative options from the confirmed initiatives, Priority P0 to P3, Size S/M/L, Source with the user's tools plus Me, Waiting on, Closed when, optional OKR from the goals). Create the confirmed initiatives as Top of mind tasks, each with `Topic folder: <name>` (from step 5a) in its description; never a local path.
 3. Anything the connector cannot do: print the exact manual steps from the adapter (in the tool's own words, numbered, one action each), wait for the user to say done, then read the ids back. If the user wants to do it all later, leave the ids as `none` and say that `/hq:task` and the briefs will ask for them.
 4. Fill `meta/task-store.md`: `store`, `board_name`, `board_url`, `board_id`, every id under `fields` and `sections`, `{{AREA_VALUES}}` and the other value lists, `{{SAVED_VIEWS}}` (the adapter's recipe, or "none"). Re-run the grep: no `{{` may remain anywhere.
 5. Read the board back and show the user the link. Nothing is moved or created beyond this without a yes.
@@ -147,6 +156,7 @@ Show this block, filled in:
 > **You're set.**
 > **Your workspace:** `<path>` (a local git repo, never pushed)
 > **Your tasks:** `<board url>` in `<tool>`, with the areas `<list>`
+> **Your documents:** `<workspace>/research/`, one topic folder per initiative: `<list of folder names>` (shared versions go to `<destination>`)
 > **Try first:** `/hq:brief` (today's brief), `/hq:task` (what to do next), `/hq:inbox` (what needs you and what you wait on)
 > **Still missing:** each connector that did not work, with how to add it (Claude Code: `/mcp`; Cowork: Settings > Connectors). Everything else works without it.
 > **Schedule:** the tasks you created (or the ones to add by hand), with times. They only run while the computer is awake and the app is open.

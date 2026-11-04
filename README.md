@@ -25,6 +25,14 @@ Then `/hq:brief`. Not sure yet? `/hq:demo` shows sample pages first and needs no
 
 Customize > Plugins > Add marketplace, enter `cdudek/personal-ai-hq`, then Install. Or run `scripts/build-zip.sh` and use Add > Upload plugin with `dist/hq-<version>.zip`. Unverified: whether Cowork accepts the root-level plugin source; if the marketplace route fails, use the zip.
 
+## Your documents: `research/`
+
+Every document and piece of research for an initiative lives in one place: a topic folder in `<workspace>/research/`, named `YYYY-MM-DD - Topic Name`. `/hq:setup` creates `research/` (rules in `research/CLAUDE.md`, a `_template/` skeleton, `_archive/`) and one topic folder per initiative you confirm. A topic folder has a `README.md` that opens with a "CURRENT DOCUMENT" callout and is the memory of the initiative (status, decisions, latest documents, shared links), plus `notes.md`, `working/`, `output/` (with `_archive/`) and `data/` (git-ignored). Tasks carry `Topic folder: <name>`, the pages show a task's documents, and shared versions (Google Drive, Notion, Confluence) are linked by URL, never by local path. Coming from 0.3.1? `/hq:upgrade` merges your `context/projects` and `context/topics` pages into topic READMEs after you confirm the mapping.
+
+## Updating
+
+`/hq:upgrade` updates the plugin and then your workspace. In Cowork the `claude plugin` CLI is not available in the cloud session: update the plugin under Customize > Plugins, start a new session, then run `/hq:upgrade`. A workspace with a `.hq-author` file is the author reference: `/hq:upgrade` updates only the plugin there and never syncs template files into it.
+
 ## Pick your task manager
 
 Your tasks live in one tool you already use, not in a file: Asana, Notion, Monday or Trello. GitHub Projects works too but is not recommended (no private personal-task semantics, tied to repositories). `/hq:setup` asks where your tasks live, proposes areas (for example Product, Team, Company, Admin, Me) and a tie-break rule from your role, creates one private board with the sections Top of mind, This week, Waiting, Inbox and Agent, and one property per question (Area, Initiative, Priority, Size, Source, Waiting on, Closed when). Where the connector cannot create something, setup prints the exact manual steps. You steer by commenting on a task, dragging it or ticking it off; the next brief reads it. Coming from 0.2.0? `/hq:upgrade` moves `board.md` into the tool once.

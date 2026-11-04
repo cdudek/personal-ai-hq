@@ -9,4 +9,6 @@ updated: {{SETUP_DATE}}
 
 - **This workspace:** {{WORKSPACE_PATH}}
 - **Code and projects:** {{CODE_PATH}}
-- **Documents:** {{DOCS_PATH}}
+- **Documents home:** `research/` in this workspace, one topic folder per initiative (rules: `research/CLAUDE.md`)
+- **Other documents:** {{DOCS_PATH}}
+- **Shared versions:** {{SHARED_DEST}}

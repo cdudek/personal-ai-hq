@@ -29,8 +29,9 @@ Section, Completed, Due, Area, Initiative, OKR (optional), Priority P0-P3, Size 
 
 - **Rank:** the user drags; Claude never reorders a task the user moved.
 - **Input:** a comment on a task ("next week", "delegate to X", "P0") is an instruction; each brief reads all comments since its last run and acts on them. Dragging sets rank. Ticking off is done.
-- **New initiative:** proposed when tasks pass the initiative test (`context/areas/index.md`); created only after a yes (Top of mind task plus a new Initiative option).
-- **Closing an initiative:** proposed when all its tasks are done or the end date passed; after a yes, complete the Top of mind task and retire the option.
+- **New initiative:** proposed when tasks pass the initiative test (`context/areas/index.md`); created only after a yes (Top of mind task with `Topic folder: <name>`, a new Initiative option, and its topic folder in `research/`).
+- **Closing an initiative:** proposed when all its tasks are done or the end date passed; after a yes, complete the Top of mind task, retire the option and set the topic README status to `complete` (moving the folder to `research/_archive/` is a second yes).
+- **Documents:** a task's description or link holds the shared URL when one exists. Top of mind tasks carry `Topic folder: <folder name>` (a name, not a path) plus shared links. Never write a local path into the task tool (`research/CLAUDE.md`, Shared versions).
 - **Tickets:** engineering work stays in the ticket tool. The task store holds only the user's own tasks and links to the tickets.
 - **Writes:** changes to the task store only after the user confirms, except new Inbox tasks from triage and Claude's own Agent tasks.
 - **Missing tool capability:** if the connector cannot do an operation, say so once and give the exact manual step; never pretend it worked. Say "Saved" only after reading the result back.
