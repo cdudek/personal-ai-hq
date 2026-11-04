@@ -1,6 +1,6 @@
 {
   "name": "hq",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "description": "Personal AI HQ for Claude: a local second brain, your own cloud task manager, daily and weekly briefing pages, and a loop that learns from your corrections.",
   "author": { "name": "Calvin Dudek" },
   "homepage": "https://github.com/cdudek/personal-ai-hq",

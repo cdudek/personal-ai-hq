@@ -2,6 +2,13 @@
 
 Versions follow semver. Each release is a git tag `vX.Y.Z` with an entry here. `/hq:upgrade` shows the entries between your workspace version and the installed one.
 
+## 0.3.3 (2026-11-04)
+
+- Task store, no schema edits. The standard connectors cannot create custom fields or add select options, so nothing that changes over time depends on one. Initiatives are containers, not a field: an Asana project `🤖 <Initiative>` (tasks multi-homed with `🤖 Board`), a page in a Notion Initiatives database, a Monday board, a Trello card, a GitHub milestone. Created and closed by Claude after your yes; the description holds outcome, end date, OKR, `Topic folder: <name>` and links. Top of mind has one task per open initiative linking to it.
+- Properties: an existing field of the tool is reused if setup finds one (nothing assumed, any values mapped, e.g. Asana Priority High/Medium/Low); every other property (Area, Size, Source, Waiting on, Closed when, OKR) is a line at the top of the task description. Claude never creates fields or options; no API token, scripts, browser or manual setup step in any adapter. `meta/task-store.md` gains `initiatives` and a field mapping.
+- Setup step 5b and the adapters (`routines/stores/*`) follow this; the Chrome fallback is gone.
+- Upgrade 0.3.2 -> 0.3.3: after confirmation, turns Initiative field values into initiative containers, attaches the tasks, and writes the other properties into description lines.
+
 ## 0.3.2 (2026-11-04)
 
 - Sources check first: every brief, weekly and inbox run checks its required connectors before any other output and flags failures at the top with the fix.

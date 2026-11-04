@@ -22,7 +22,7 @@ Details are in `CLAUDE.md` and `routines/`.
 Rules for the task store (the tool and its ids are in `meta/task-store.md`):
 
 - You read it in your task manager and in the views. Input: comment on a task, drag it, tick it off, or tell Claude in chat. Asking "what's next?" runs `routines/next.md`.
-- Every task carries a `closed when` value and one Area (`context/areas/index.md`).
+- Every task carries a `Closed when:` description line and one Area (`context/areas/index.md`).
 - A Top-of-mind item links to its ticket, project or research folder when one exists.
 
 ## The four parts

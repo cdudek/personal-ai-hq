@@ -1,6 +1,6 @@
 ---
 type: topic
-summary: Task store adapter for Asana (private project, sections, custom fields, multi-homing)
+summary: Task store adapter for Asana (🤖 Board for sections, one project per initiative, description lines)
 status: current
 updated: {{SETUP_DATE}}
 ---
@@ -9,35 +9,37 @@ updated: {{SETUP_DATE}}
 
 Model: `routines/stores/README.md`. Config and ids: `meta/task-store.md`.
 
-## Connector and fallback
-Use the Asana connector (Claude Code: `/mcp`; Cowork: Settings > Connectors). Before relying on it, list the tools it exposes in this session and test one read. Which operations it covers (creating custom fields, sections, multi-homing, reading comments) varies by connector version and is not assumed here. For anything it cannot do, use Claude in Chrome on app.asana.com. If neither works, setup prints the manual steps.
+## Connector
+The standard Asana connector only (Claude Code: `/mcp`; Cowork: Settings > Connectors). No API token, no scripts, no browser. Before relying on it, list the tools it exposes in this session and test one read. It can create projects and sections, add tasks to projects (multi-homing), read and write task descriptions and comments, and add an existing custom field to a project; it cannot create custom fields or select options, so this adapter never does. If a call fails, say so in one line and carry on without it.
 
 ## Create the board
-1. One private project "<board_name>" in the user's workspace (private to the user). Team tasks can only be multi-homed from projects in the same workspace or organisation, so use the company workspace when team tasks matter.
-2. Board layout with these sections, in order: Top of mind, This week, Waiting, Inbox, Agent.
-3. Custom fields (single select unless noted), added to the project: Area, Initiative, OKR (optional), Priority (P0-P3), Size (S, M, L), Source, Waiting on (people), Closed when (text). Custom fields need a paid Asana plan; on a free plan, use tags with a prefix (`area:Product`) and put the rest in the description, and say so in `meta/task-store.md`.
-4. If the connector cannot create sections or fields, setup gives the exact manual steps (Project > Customize > Add field) and waits for the user to confirm, then reads the field ids back.
-5. Saved views (by Area, by Initiative, This week P0-P1, Waiting by person, Inbox by Source; recorded in `meta/task-store.md`) are set up by hand; do not assume the connector creates them.
+1. One private project `🤖 <board_name>` (default `🤖 Board`) in the user's workspace. Team tasks can only be multi-homed from projects in the same workspace or organisation, so use the company workspace when team tasks matter.
+2. Sections, in order: Top of mind, This week, Waiting, Inbox, Agent.
+3. Properties. Look in the workspace's existing custom field library for fields that match Area, Priority, Size or Source. Do not assume one exists or which values it has. Add each match to the board project, read its options, and record field id, option ids and the mapping to our values in `meta/task-store.md` (`fields`, "Field mapping"). For Priority, map whatever is found: a High/Medium/Low field gives P0 and P1 = High, P2 = Medium, P3 = Low, and P0 also gets due today; the description line keeps the exact P0 to P3. Every property without a match is a description line (README, "Properties"). Never create a field or an option.
+4. Tag `ai` (create if missing; tags are not custom fields).
+5. Initiatives: for each confirmed initiative create its project (Write, "Create an initiative project") and its Top of mind task, linking to it.
+6. Views: Asana saved views are not assumed available. Tell the user the useful filters (by project = initiative, This week, Inbox) in one line; they are optional.
 
 ## Read
-Open tasks in the project with section, completed, due date and all custom fields, in rank order (the order within the section). Comments since a date: the stories of type comment on each open task after that date. Also read tasks assigned to the user elsewhere (team tasks).
+Open tasks of the board project with name, completed, due date, notes (the description), memberships (projects and section), any mapped custom fields, tags and permalink, in rank order. Initiative = the task's membership in a project named `🤖 <X>` other than the board (X is the initiative). Area, Size, Source, Waiting on, Closed when (and Priority exactly) come from the description lines; OKR from the initiative project's description. Comments since a date: stories of type comment on each open task after that date. Also tasks assigned to the user elsewhere (team tasks).
 
 ## Write
-- **Create:** task with name, notes (`closed when: ...`), project, section, custom fields, tag `ai`.
-- **Move section:** add the task to the section within the project.
-- **Set property:** update the custom field value (enum option by id).
-- **Documents:** when a shared URL exists for a document, put it in the task description or as a comment link. Top of mind initiative tasks carry in the description `Topic folder: <folder name>` (a name, not a path) and the shared links. Never write a local path into the task tool.
-- **Complete:** mark completed.
-- **Comment:** add a comment (story) to the task.
-- **Add option:** add an enum option to the Area, Initiative, OKR or Source field. Retire an Initiative option by disabling it (do not delete: tasks keep the value).
+- **Create:** a task with name, the board project and, when it belongs to an initiative, that initiative's project as home (multi-home), section, tag `ai`, due date if known, and mapped fields where `meta/task-store.md` lists them. The description starts with the property line, then (Waiting only) `Waiting on: <name>`, then `Closed when: <scenario>`.
+- **Move section:** add the task to the section within the board project.
+- **Set property:** rewrite the description line (or update a mapped field by option id).
+- **Initiative of a task:** add the task to, or remove it from, the initiative's project.
+- **Create an initiative project** (after the user's yes): a private project `🤖 <Initiative>`, description with outcome, end date, OKR if any, `Topic folder: <name>` (a name, never a path) and shared links. Add its Top of mind task in the board, linking to it. Write name, id and url to `initiatives:` in `meta/task-store.md`.
+- **Close an initiative** (after the user's yes): complete its Top of mind task and mark the project complete (archive) through the connector; remove it from `initiatives:`.
+- **Documents:** put a shared URL in the task description or as a comment link. Never write a local path into the task tool.
+- **Complete:** mark completed. **Comment:** add a comment (story).
 
 ## Team tasks
-Multi-home: add the team task to the user's board project in the right section. One task, one comment thread; never copy it. Set the user's own fields (Area, Priority) on it; these show only in the board project.
+Multi-home: add the team task to the board project in the right section. One task, one comment thread; never copy it. Write the property line on it; it shows in the board project's view of the task.
 
 ## Deep link format
-`https://app.asana.com/0/<project id>/<task id>`; the task's own permalink from the API wins if it differs.
+`https://app.asana.com/0/<project id>/<task id>`; the task's own permalink wins if it differs.
 
 ## Limits
-- Custom fields and multi-homing need a paid plan; multi-homing only within one organisation.
-- Rank is the order in the section; the API can place a task before or after another one, but a task the user dragged must not be moved.
-- Saved views and rules are set up by hand.
+- Multi-homing needs one organisation (and, for some features, a paid plan). If a project cannot hold the task, say so once and use a link.
+- Rank is the order in the section; the user drags, Claude never reorders a task the user moved.
+- No custom field is ever created: the connector cannot, and everything that changes over time is a project or description text.

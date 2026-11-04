@@ -16,7 +16,7 @@ Read `meta/task-store.md`: it names the tool and holds the ids. Follow the adapt
 
 - No argument, or `next`: run `routines/next.md`.
 - `list [section]`: show the open tasks in rank order, grouped by section (or one section), each as one line: priority, title, area, initiative, due, deep link. Read only.
-- `add <text>`: create a task in Inbox with Area (by the tie-break in `context/areas/index.md`), Priority, Size, Source `Me`, a `closed when` value and tag `ai`. Show what you set and the link.
+- `add <text>`: create a task in Inbox with Area (by the tie-break in `context/areas/index.md`), Priority, Size, Source `Me`, a `Closed when:` description line and tag `ai`. Show what you set and the link.
 - `move <task> <section>`, `set <task> <property> <value>`, `done <task>`: find the task by title or id (ask if more than one matches), make the change through the adapter, read it back and confirm in one line. `done` also adds a comment with how it was closed. Never reorder a task the user moved.
 - `capture <text>`, or any free text that is none of the above: run `routines/capture.md` with that text. Say in one line that you filed it as a capture.
 

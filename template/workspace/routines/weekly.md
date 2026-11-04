@@ -30,7 +30,7 @@ Run "Required sources" in `CLAUDE.md`: one cheap read per required source. The f
 - **Code (optional, engineering roles):** open PRs older than 5 days, PRs waiting more than 24 hours for a first review, the 3 oldest PRs, trend vs last week. A pattern view, not a per-person list.
 
 ## 3. Task proposals
-Top of mind holds every initiative that is really active (no fixed number; if it passes about 10, ask which ones to park). Propose a new one when a subject keeps coming up in meetings, chat or tickets for 2+ weeks and passes the initiative test (`context/areas/index.md`); creating it means a Top of mind task plus an Initiative option, only after a yes. Propose closing one when all its tasks are done, the end date passed, or nothing has happened for 3 weeks (complete the task, retire the option, after a yes).
+Top of mind holds every initiative that is really active (no fixed number; if it passes about 10, ask which ones to park). Propose a new one when a subject keeps coming up in meetings, chat or tickets for 2+ weeks and passes the initiative test (`context/areas/index.md`); creating it means an initiative container plus a Top of mind task, only after a yes. Propose closing one when all its tasks are done, the end date passed, or nothing has happened for 3 weeks (complete the task and close the container, after a yes).
 
 For each section (Top of mind, This week, Waiting, Inbox), tag each task: [Keep], [Add], [Remove], [Mark done] or [Rollover]. The proposals come from:
 - goals

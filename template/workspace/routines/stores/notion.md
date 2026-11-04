@@ -1,6 +1,6 @@
 ---
 type: topic
-summary: Task store adapter for Notion (one database, select and person properties)
+summary: Task store adapter for Notion (task database plus Initiatives database, description lines)
 status: current
 updated: {{SETUP_DATE}}
 ---
@@ -9,27 +9,29 @@ updated: {{SETUP_DATE}}
 
 Model: `routines/stores/README.md`. Config and ids: `meta/task-store.md`.
 
-## Connector and fallback
-Use the Notion connector (Claude Code: `/mcp`; Cowork: Settings > Connectors). List the tools it exposes in this session and test one read before relying on it. Whether it can create databases, change property options or read comments is not assumed. Fallback: Claude in Chrome on notion.so. If neither works, setup prints the manual steps.
+## Connector
+The standard Notion connector only (Claude Code: `/mcp`; Cowork: Settings > Connectors). No API token, no scripts, no browser. List the tools it exposes in this session and test one read. Creating pages and databases and adding rows is what it does; whether it can read comments is not assumed. Claude never edits an existing database's properties or options afterwards.
 
 ## Create the board
-1. One database "<board_name>" on a page the user alone can see (a private page, not a teamspace page). Full-page database, one row per task. One database; no relation properties are needed.
-2. Properties: Name (title), Section (select: Top of mind, This week, Waiting, Inbox, Agent), Done (checkbox), Due (date), Area (select), Initiative (select), OKR (select, optional), Priority (select P0-P3), Size (select S, M, L), Source (select), Waiting on (person), Closed when (text), Rank (number), AI (checkbox).
-3. Section is a select, not Notion's Status property: select options can be changed through the API, Status options and groups cannot be set up reliably that way.
-4. If the connector cannot create the database or its properties, setup gives the exact manual steps and then reads the property ids back.
-5. Saved views: database views filtered and grouped per saved view in `meta/task-store.md`; set up by hand.
+1. On a page only the user can see (private, not a teamspace page), create two databases in the create call, with their properties defined once: **Initiatives** (Name, Status select Open/Closed, Outcome, End date, OKR, Topic folder, Links as text) and the task database "<board_name>" with Name (title), Section (select: Top of mind, This week, Waiting, Inbox, Agent), Done (checkbox), Due (date), Rank (number), AI (checkbox) and Initiative (relation to Initiatives). Properties exist only so Notion can sort and filter; all of them are fixed at creation and never changed.
+2. Existing-field reuse: if the user already has a task database they want to use, take it and map its properties as in the README (Priority, Area, Size, Source if present); do not add or edit any property in it. Without a relation property, the initiative is a line `Initiative: <page link>`.
+3. Area, Size, Source, Priority, Waiting on and Closed when are description lines in the page body (README, "Properties"), unless a mapped property exists.
+4. If the connector cannot create databases at all, say so once and propose another tool; do not ask for manual steps.
+
+## Initiatives
+An initiative is a page in the Initiatives database (outcome, end date, OKR, `Topic folder: <name>`, links in the page), related to its tasks through the Initiative relation. The API creates pages, so no option editing is ever needed. Close it by setting Status to Closed.
 
 ## Read
 Query the database for rows where Done is unchecked, sorted by Section then Rank. Comments since a date: page comments on each open row after that date (if the connector exposes comments; otherwise the user's input comes by chat and the adapter says so in the brief's Sources line).
 
 ## Write
-- **Create:** a row with Name, Section, properties, Closed when, AI checked, Rank after the last row of the section.
-- **Move:** set Section and Rank. **Set:** update the property. **Complete:** check Done.
+- **Create:** a row with Name, Section, Initiative relation, AI checked, Rank after the last row of the section, and the property lines at the top of the page body (Closed when included).
+- **Move:** set Section and Rank. **Set:** rewrite the body line. **Complete:** check Done.
 - **Comment:** add a page comment on the row.
-- **Add option:** add a select option to the property.
+- **Create or close an initiative:** add a page to Initiatives, or set its Status to Closed (after the user's yes).
 
 ## Team tasks
-Create a row with the link to the team's task in Source and in the page body; never copy its content.
+Create a row with the link to the team's task in the page body; never copy its content.
 
 ## Deep link format
 The row's page URL (`https://www.notion.so/<page id without dashes>`).

@@ -71,8 +71,8 @@ For every tool named in step 1, say which connector to enable and how, one line 
 
 - **Claude Code:** `/mcp` lists connectors; add a missing one with `claude mcp add` (see the tool's own docs) or install the tool's plugin from `/plugin`.
 - **Cowork and Claude Desktop:** Settings > Connectors (or Customize > Connectors), pick the tool, sign in.
-- Common ones: Slack, Gmail, Google Calendar, Google Drive and Docs, Linear, Asana, Monday, Trello, Jira and Confluence (Atlassian), GitHub (or the `gh` CLI), Notion, HubSpot, Miro, Granola, Fireflies. The connector for the task store chosen in question 10 is required for step 5b; if there is none, the browser (Claude in Chrome) or manual steps cover it.
-- No connector for a tool: the browser (Claude in Chrome) covers it, slower. Mark it in the routing as "browser".
+- Common ones: Slack, Gmail, Google Calendar, Google Drive and Docs, Linear, Asana, Monday, Trello, Jira and Confluence (Atlassian), GitHub (or the `gh` CLI), Notion, HubSpot, Miro, Granola, Fireflies. The connector for the task store chosen in question 10 is required for step 5b; if there is none, the task store falls back to a local note and `/hq:setup` says so once.
+- No connector for a tool: mark it in the routing as "none" (or "browser" if the user explicitly wants Claude in Chrome for it); the task store never uses the browser.
 
 Test each enabled connector with one read (today's calendar, one mail, one ticket) and list what works and what is missing. A missing one is not a blocker: routing says "none" and routines skip it. Never claim a connector exists without checking that its tools are available in this session.
 
@@ -115,9 +115,9 @@ The template copy already created `<workspace>/research/` with `CLAUDE.md` (the 
 Read `routines/stores/<store>.md` (the adapter for the tool from question 10) and `routines/stores/README.md`.
 
 1. Test the connector with one read. Say which operations you could verify. Do not claim an operation works before you have used it.
-2. Create the board by the adapter's "Create the board": the five sections, the properties (Area options from step 2b, Initiative options from the confirmed initiatives, Priority P0 to P3, Size S/M/L, Source with the user's tools plus Me, Waiting on, Closed when, optional OKR from the goals). Create the confirmed initiatives as Top of mind tasks, each with `Topic folder: <name>` (from step 5a) in its description; never a local path.
-3. Anything the connector cannot do: print the exact manual steps from the adapter (in the tool's own words, numbered, one action each), wait for the user to say done, then read the ids back. If the user wants to do it all later, leave the ids as `none` and say that `/hq:task` and the briefs will ask for them.
-4. Fill `meta/task-store.md`: `store`, `board_name`, `board_url`, `board_id`, every id under `fields` and `sections`, `{{AREA_VALUES}}` and the other value lists, `{{SAVED_VIEWS}}` (the adapter's recipe, or "none"). Re-run the grep: no `{{` may remain anywhere.
+2. Create the board by the adapter's "Create the board": the five sections, the properties as the adapter says: look for existing fields that match Area, Priority, Size and Source (assume none and no value set), add and map those found, and make every other property a description line; never create a field or option. Create each confirmed initiative as the adapter's container (description: outcome, end date, OKR from the goals if any, `Topic folder: <name>` from step 5a, shared links; never a local path) plus its Top of mind task.
+3. Anything the connector cannot do: say so once, use the adapter's fallback (a description line or a link) and carry on. There is no manual step and nothing blocks.
+4. Fill `meta/task-store.md`: `store`, `board_name`, `board_url`, `board_id`, `fields` (only the existing fields found, with ids) and `initiatives` (name to container id and url), `sections`, `{{FIELD_MAPPING}}` (value mapping of each existing field, or "none: every property is a description line"), `{{AREA_VALUES}}` and the other value lists, `{{SAVED_VIEWS}}` (the adapter's recipe, or "none"). Re-run the grep: no `{{` may remain anywhere.
 5. Read the board back and show the user the link. Nothing is moved or created beyond this without a yes.
 
 ## 6. Git, indexes, first commit

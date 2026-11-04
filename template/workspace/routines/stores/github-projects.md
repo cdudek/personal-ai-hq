@@ -11,23 +11,25 @@ Model: `routines/stores/README.md`. Config and ids: `meta/task-store.md`.
 
 **Why not recommended:** GitHub Projects is built for repository work, not for private personal tasks. A task you can comment on must be an issue in a repository (draft items have no comments), so personal tasks end up inside a repo and visible to its collaborators. Use it only when you already live in GitHub and accept that. Prefer Asana, Notion, Monday or Trello.
 
-## Connector and fallback
-Use the `gh` CLI (`gh project ...` and `gh issue ...`); it needs the `project` scope (`gh auth refresh -s project`). The GitHub connector or MCP server may cover Projects only in part; list its tools in this session before relying on it. Fallback: Claude in Chrome on github.com. If none works, setup prints the manual steps.
+## Connector
+The `gh` CLI (`gh project ...`, `gh issue ...`), which is GitHub's standard interface; it needs the `project` scope (`gh auth refresh -s project`). No API token handling by Claude, no extra scripts, no browser. List what works in this session and test one read.
 
 ## Create the board
-1. A user-owned Project (v2), visibility private, named "<board_name>". Items are issues in one private repository you create for this ("<board_name>-tasks"); that repository is the place for the comment threads.
-2. Fields: Status (single select, built in): Top of mind, This week, Waiting, Inbox, Agent, Done. Single-select fields: Area, Initiative, OKR (optional), Priority (P0-P3), Size (S, M, L), Source. Text: Closed when. Date: Due. Waiting on: the issue assignee field is taken by the user, so use a text field.
-3. If the CLI or connector cannot create a field, setup gives the exact manual steps and reads the field ids back.
-4. Saved views: project views (table or board) with filters, set up by hand.
+1. A user-owned Project (v2), visibility private, "<board_name>". Items are issues in one private repository you create for this ("<board_name>-tasks").
+2. Use the built-in Status field with the options Top of mind, This week, Waiting, Inbox, Agent, Done only if it already has them or `gh` can set them when the project is created; otherwise use the section as a description line (`Section: ...`) and say so in `meta/task-store.md`. Never edit field options later.
+3. Properties are description lines in the issue body (README, "Properties"); reuse existing project fields that match, with a recorded mapping.
+
+## Initiatives
+An initiative is a milestone `🤖 <Initiative>` in the tasks repository (description: outcome, end date, OKR, `Topic folder: <name>`, links; due date = end date). Its tasks are the issues assigned to it. Close the milestone after the user's yes.
 
 ## Read
 `gh project item-list` for open items with all fields in board order; issue comments since a date with `gh issue view --comments` or the API.
 
 ## Write
-- **Create:** an issue in the repo, add it to the project, set fields, label `ai`.
-- **Move:** set Status. **Set:** `gh project item-edit`. **Complete:** set Status Done and close the issue.
+- **Create:** an issue in the repo with the property lines in the body and its initiative milestone, add it to the project, label `ai` if the label exists.
+- **Move:** set Status (or the `Section:` line). **Set:** rewrite the body line. **Complete:** set Status Done and close the issue.
 - **Comment:** `gh issue comment`.
-- **Add option:** single-select options are changed in the project settings (the CLI has no command for it; setup or the user does it by hand, or the GraphQL API).
+- **Create or close an initiative:** create or close the milestone (after the user's yes).
 
 ## Team tasks
 Create an issue that links to the team's task; never copy its content.

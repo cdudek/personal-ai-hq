@@ -24,7 +24,7 @@ Input: a link or text from the user, from the chat DM to themselves, from the dr
 ## Area drift (Friday, called by `review`)
 Read `context/areas/index.md` and the open tasks of the task store (adapter in `meta/task-store.md`), plus the `area misfit` lines in `meta/friction.md` and the tasks whose Area the user changed this week. Propose, never apply without a yes:
 - **Misfits:** two or more `area misfit` lines, or an area that is the catch-all for most tasks: a new area or a split, with a name, one-line definition and the tasks that would move.
-- **Initiatives:** tasks that pass the initiative test but have no Initiative (open one); initiatives whose tasks are all done or whose end date passed (close one).
+- **Initiatives:** tasks that pass the initiative test but have no initiative container (open one); initiatives whose tasks are all done or whose end date passed (close one).
 - **Tie-break:** a rule the user keeps overriding: the corrected wording.
 Each proposal goes into the review page as a `fixes[]` item with the exact change to `context/areas/index.md` or the task store. After a yes, apply it, log it in `meta/learnings.md`, and tick the friction lines.
 

@@ -44,6 +44,17 @@ The `claude plugin` CLI is not available in Cowork's cloud session. Update the p
 8. Write `Y` to `<workspace>/.hq-version`, then `python3 scripts/build_index.py`, then commit in the workspace: `git add -A && git commit -m "upgrade: X -> Y"`. Never push.
 9. If `views/data/` has JSON from the old version, re-render the latest daily and weekly with `python3 scripts/render_view.py <file>` and report any LINK CHECK or LABEL CHECK lines.
 
+## Migration 0.3.2 -> 0.3.3: initiatives become containers, properties become lines
+
+Runs when `X` is older than 0.3.3. The new `meta/task-store.md` shape, `routines/stores/*` and the routines arrive with the sync in step 4. Nothing is written to the task tool before the user confirms. Only the standard connector is used: no API token, no scripts, no browser, no manual step.
+
+1. **Read the store.** Through the adapter, list the open tasks with every property. Note which of Area, Initiative, OKR, Priority, Size, Source, Waiting on, Closed when were custom fields (`meta/task-store.md` `fields` has ids) and which initiatives exist (Initiative field values, plus the Top of mind tasks).
+2. **Initiatives.** For each Initiative value, propose its container by the adapter (Asana project `🤖 <Initiative>`, Notion page, Monday board, Trello card, GitHub milestone) with a description from its Top of mind task and `research/` README (outcome, end date, OKR, `Topic folder: <name>`, links) and attach its tasks to it (Asana: add the task to the project; others: the `Initiative:` line or relation). Show the list, one line per initiative with its task count, and ask "Create these N initiative containers and attach the tasks? [yes]".
+3. **Properties.** For each property that is a custom field the user's connector cannot manage (Initiative, OKR, Waiting on, Closed when, and Area, Size, Source if not an existing field of the workspace), write its value into the description lines (`Area: ... · Size: ... · Source: ... · Priority: ...`, `Waiting on: <name>`, `Closed when: <scenario>`) on each task, keeping the existing text below. Priority keeps its field if it is an existing workspace field (record the mapping), else it becomes a line. Show a sample of 3 tasks first and ask "Convert all N tasks like this? [yes]".
+4. **Verify and record.** Read the tasks back: count, initiative, and each line present. Fill `meta/task-store.md` (`fields`: only the existing fields still used; `initiatives`; the "Field mapping" section). Report differences and fix them first.
+5. **Old fields.** Do not delete or edit the old custom fields (Claude cannot, and they do no harm). Tell the user once that they can remove the unused ones in the tool at their leisure; nothing depends on it.
+6. Run `/hq:brief` once so the pages carry the new data.
+
 ## Migration 0.3.1 -> 0.3.2: documents home (`research/`)
 
 Runs when `X` is older than 0.3.2. `research/CLAUDE.md` and `research/_template/` arrive with the sync in step 4 (system files). Nothing is moved or deleted before the user confirms the mapping.
@@ -71,12 +82,12 @@ Runs when `X` is older than 0.3.0 and `<workspace>/board.md` exists (or `meta/ta
 2. **Read `board.md`.** Every task line (`- [ ] <task> · id · P0-P3 · size · domain · status · closed when · source · link · added`), its indented notes, the Top of mind initiatives and the `domains` map. Tasks under "Done (this week)" are listed but not migrated.
 3. **Areas and tie-break.** Run the setup step "2b. Areas and the task store" (`${CLAUDE_PLUGIN_ROOT}/skills/setup/SKILL.md`), with the role adapter's defaults and the old `domains` as the starting point. Write `context/areas/index.md` and `context/areas/<slug>.md` from the template.
 4. **Show the mapping before any write**, one line per task, in a list (not a wide table):
-   - section: Top of mind initiative -> a Top of mind task plus an Initiative option; This week -> This week; Inbox -> Inbox; Agent -> Agent; status Waiting -> Waiting, with Waiting on from the notes if named.
+   - section: Top of mind initiative -> an initiative container plus a Top of mind task; This week -> This week; Inbox -> Inbox; Agent -> Agent; status Waiting -> Waiting, with Waiting on from the notes if named.
    - priority P0-P3 stays; size XS becomes S, S/M/L stay; source maps to the Source list (unknown -> Me).
-   - domain -> Area (by the tie-break) and Initiative (the Top of mind item it belongs to, if any).
-   - `closed when` -> Closed when; `link` and notes -> the task description; `added` -> a first comment "migrated from board.md, added YYYY-MM-DD".
+   - domain -> Area (by the tie-break, as a description line) and initiative (the container of the Top of mind item it belongs to, if any).
+   - `closed when` -> the `Closed when:` description line; `link` and notes -> the task description; `added` -> a first comment "migrated from board.md, added YYYY-MM-DD".
    Ask "Migrate these N tasks like this? [yes]" and apply the user's corrections.
-5. **Create the board** with the adapter's "Create the board" (as in setup step 5b, manual steps where the connector cannot), fill `meta/task-store.md` from the template (copy it from `<T>/meta/task-store.md` first), then create the tasks. Tag every task `ai`.
+5. **Create the board** with the adapter's "Create the board" (as in setup step 5b; no manual steps), fill `meta/task-store.md` from the template (copy it from `<T>/meta/task-store.md` first), then create the tasks. Tag every task `ai`.
 6. **Verify:** read the board back through the adapter and check the count and that each title, section, Area and Priority match the mapping. Report any difference and fix it before going on.
 7. **Remove `board.md`** only after the verify passes and the user says yes: `git rm board.md`. The old content stays in git history. Remove every other mention of it in the user's own files as a proposal: the root `CLAUDE.md` rows and rule 4 (see the "Task store" section in the new template `CLAUDE.md`) and `context/` pages that link it.
 8. The view pages need new data: tell the user to run `/hq:brief` once so the pages carry task links; old data files with `domain` still render with a LABEL CHECK note.
