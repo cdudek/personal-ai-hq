@@ -22,10 +22,10 @@ Lists are sections, so an initiative is not a list. An initiative is a card in T
 
 ## Read
 Open cards per list in card order, with labels or custom fields, due date and description. Comments since a date: card comment actions after that date.
-Context card: read `What:`, `Why / who waits:`, `State:`, `Decision or next step:`, `Effort:` and `Links:` from the description lines below `Closed when:` (view fields `what`, `why`, `state`, `decision`); a task without `What:` and `State:` is incomplete and gets fixed by the brief.
+Context card: read its lines from the description below `Closed when:` (`routines/stores/README.md`, "Context card"; view fields `what`, `why`, `state`, `decision`).
 
 ## Write
-- **Create:** card in a list with the property lines and Initiative line in the description, label `ai` if the board has one. Then the context card (`routines/stores/README.md`, "Context card"): `What:`, `Why / who waits:`, `State:` (with dates), `Decision or next step:`, `Effort:`, `Links:`, one line each, below the `Closed when:` line. Update `State:` (and the other lines) on every move, comment or change, and when newer information is read.
+- **Create:** card in a list with the property lines and Initiative line in the description, label `ai` if the board has one. Then the context card below the `Closed when:` line (`routines/stores/README.md`, "Context card"), kept current on every move, comment or change.
 - **Move:** move the card to a list. **Set:** rewrite the description line. **Complete:** set due complete and move to Done.
 - **Comment:** add a card comment.
 - **Create or close an initiative:** add or archive its Top of mind card (after the user's yes).

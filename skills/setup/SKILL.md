@@ -9,7 +9,7 @@ Goal: a working private workspace in about 20 minutes. Never push anything anywh
 
 ## 0. Check the basics
 
-- Is a workspace already configured? Read `~/.config/hq/workspace`, or the old `~/.config/personal-ai-os/workspace` if that is missing. If it exists and the folder has `CLAUDE.md`, ask: continue with that workspace (go to step 7 to repair or extend), or create a new one.
+- Is a workspace already configured? Read `~/.config/hq/workspace`, or the old `~/.config/personal-ai-os/workspace` if that is missing. If it exists and the folder has `CLAUDE.md`, ask: continue with that workspace (step 5b adds a missing task store, step 7 the scheduled tasks), or create a new one.
 - `python3 --version` and `git --version` must work. If not, tell the user what to install and stop.
 
 ## 1. Interview
@@ -71,7 +71,7 @@ For every tool named in step 1, say which connector to enable and how, one line 
 
 - **Claude Code:** `/mcp` lists connectors; add a missing one with `claude mcp add` (see the tool's own docs) or install the tool's plugin from `/plugin`.
 - **Cowork and Claude Desktop:** Settings > Connectors (or Customize > Connectors), pick the tool, sign in.
-- Common ones: Slack, Gmail, Google Calendar, Google Drive and Docs, Linear, Asana, Monday, Trello, Jira and Confluence (Atlassian), GitHub (or the `gh` CLI), Notion, HubSpot, Miro, Granola, Fireflies. The connector for the task store chosen in question 10 is required for step 5b; if there is none, the task store falls back to a local note and `/hq:setup` says so once.
+- Common ones: Slack, Gmail, Google Calendar, Google Drive and Docs, Linear, Asana, Monday, Trello, Jira and Confluence (Atlassian), GitHub (or the `gh` CLI), Notion, HubSpot, Miro, Granola, Fireflies. The connector for the task store chosen in question 10 is required for step 5b. If it is missing or fails its test, say which one to switch on and how, finish the other steps, and tell the user to run `/hq:setup` again once it works (step 0 then continues at 5b). There is no local task file.
 - No connector for a tool: mark it in the routing as "none" (or "browser" if the user explicitly wants Claude in Chrome for it); the task store never uses the browser.
 
 Test each enabled connector with one read (today's calendar, one mail, one ticket) and list what works and what is missing. A missing one is not a blocker: routing says "none" and routines skip it. Never claim a connector exists without checking that its tools are available in this session.
@@ -115,8 +115,8 @@ The template copy already created `<workspace>/research/` with `CLAUDE.md` (the 
 Read `routines/stores/<store>.md` (the adapter for the tool from question 10) and `routines/stores/README.md`.
 
 1. Test the connector with one read. Say which operations you could verify. Do not claim an operation works before you have used it.
-2. Create the board by the adapter's "Create the board": the five sections, the properties as the adapter says: Asana: the eight shared HQ fields are a prerequisite, so first run the check in `routines/stores/asana-fields.md` (look in the shared field library for `HQ · Priority`, `HQ · Size`, `HQ · Source`, `HQ · MoSCoW`, `HQ · Impact`, `HQ · Confidence`, `HQ · Ease`, `HQ · ICE`): (a) found: add them to the board and record the ids; (b) any missing: STOP and tell the user to create exactly those fields first, with the click path and the field blocks from that file, ideally as shared library fields so the whole organisation reuses them; if an `ASANA_API_TOKEN` environment variable exists (Claude Code only; read from the environment, never printed) offer to create them once for the organisation instead, as an option and never required; re-check the library and continue only when all eight exist; (c) description lines instead of fields only if the user explicitly says to skip the fields. Area is never a column: it follows from the task's initiative (its project description), else the `Area:` description line. Other tools: look for existing fields or columns that match Area, Priority, Size, MoSCoW, Impact, Confidence, Ease, ICE and Source (assume none and no value set), add and map those found, and make every other property a description line; never create a field or option. Create each confirmed initiative as the adapter's container (description: outcome, end date, OKR from the goals if any, `Topic folder: <name>` from step 5a, shared links; never a local path) plus its Top of mind task.
-3. Anything the connector cannot do: say so once, use the adapter's fallback (a description line or a link) and carry on. There is no manual step and nothing blocks.
+2. Create the board by the adapter's "Create the board": the five sections, the properties as the adapter says: Asana: the eight shared `HQ ·` fields are a prerequisite, so first run "Check first" in `routines/stores/asana-fields.md` (found: add them to the board and record the ids; any missing: stop, tell the user exactly which ones to create first and follow "Create the missing fields" there, then re-check; continue only when all eight exist; description lines instead only if the user explicitly says to skip the fields). Area is never a column: it follows from the task's initiative (its project description), else the `Area:` description line. Other tools: look for existing fields or columns that match Area, Priority, Size, MoSCoW, Impact, Confidence, Ease, ICE and Source (assume none and no value set), add and map those found, and make every other property a description line; never create a field or option. Create each confirmed initiative as the adapter's container (description: outcome, end date, OKR from the goals if any, `Topic folder: <name>` from step 5a, shared links; never a local path) plus its Top of mind task.
+3. Anything the connector cannot do: say so once, use the adapter's fallback (a description line or a link) and carry on. Apart from the Asana fields above, there is no manual step and nothing blocks.
 4. Fill `meta/task-store.md`: `store`, `board_name`, `board_url`, `board_id`, `fields` (for Asana the eight HQ fields with their ids and option ids; for other tools only the existing fields found) and `initiatives` (name to container id and url; each initiative container is created by the adapter's "Create an initiative project", which for Asana adds all eight `HQ ·` fields to it), `sections`, `{{FIELD_MAPPING}}` (value mapping of each existing field, or "none: every property is a description line"), `{{AREA_VALUES}}` and the other value lists, `{{SAVED_VIEWS}}` (the adapter's recipe, or "none"). Re-run the grep: no `{{` may remain anywhere.
 5. Read the board back and show the user the link. Nothing is moved or created beyond this without a yes.
 
@@ -134,7 +134,7 @@ git add -A
 git commit -m "setup: initial workspace"
 ```
 
-Never add a remote, never push. If `views/template.html` is missing, say that the view pages need the files synced into the template (the brief still works as a note).
+If the commit fails because git does not know who you are, ask for a name and email and set them for this folder only (`git config user.name`, `git config user.email`), then commit again. Never add a remote, never push. If `views/template.html` is missing, say that the view pages need the files synced into the template (the brief still works as a note).
 
 ## 7. Scheduled tasks
 

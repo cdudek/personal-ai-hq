@@ -17,7 +17,7 @@ Goal: start the week with a clear task store and every meeting sorted. Propose f
 - the role adapter notes in `context/me.md` (routine emphasis), if present
 
 ## 1a. Sources check (before any other output)
-Run "Required sources" in `CLAUDE.md`: one cheap read per required source. The first lines of the reply name every failed source with the reason and the exact fix; a working source gets no line. Failed sources go into `sources[]` with `ok: false`. A substitute must be labelled "substitute". If a source marked critical there is down, ask once whether to wait or go ahead.
+Run "Required sources" in `CLAUDE.md` (it holds the rules: one cheap read per source, failures first with the exact fix, `sources[]` with `ok: false`, ask once when a critical source is down).
 
 ## 2. Collect
 - **Calendar:** the next 7 days (title, attendees, description)
@@ -39,7 +39,7 @@ For each section (Top of mind, This week, Waiting, Inbox), tag each task: [Keep]
 - meetings
 - last week's plan vs actual, which shows how much room to leave for unplanned work
 
-Rank the proposals by Priority, then ICE (highest first). For every This week item and per initiative propose a MoSCoW (Must, Should, Could, Won't: scope within the week or the initiative; Won't = explicitly out this cycle) and show it next to the proposal. Score any open task that has no ICE yet (`routines/brief.md`, "ICE scoring"). The user's answers write MoSCoW to the task store; the rank inside a section stays theirs. Each proposal shows the task's What sentence, State, who waits since when, effort and what happens if it is not done (its context card); a task without a card is completed from its source first. Every question that asks the user to choose (next task, which one to continue, triage, weekly proposals, anything under "Claude asks") shows, per option: the What sentence, the State, who waits since when, effort (XS-XL) and what happens if it waits. Then Claude's recommendation with one reason. Never offer bare names, ids, PR numbers or ticket numbers as choices. If a task has no context card, read its source and fix the task first.
+Rank the proposals by Priority, then ICE (highest first). For every This week item and per initiative propose a MoSCoW (Must, Should, Could, Won't: scope within the week or the initiative; Won't = explicitly out this cycle) and show it next to the proposal. Score any open task that has no ICE yet (`routines/brief.md`, "ICE scoring"). The user's answers write MoSCoW to the task store; the rank inside a section stays theirs. Each proposal shows the task's context card (What, State, who waits since when, effort, what happens if it is not done); a task without a card is completed from its source first. Every question that asks you to choose follows rule 10 in `CLAUDE.md` ("Context for every choice").
 
 ## 4. Meeting prep
 Run `routines/meeting-prep.md` for the next 7 days. Summarise it as:
@@ -56,7 +56,7 @@ For every initiative in Top of mind, list the documents changed in its topic fol
 As in `brief.md`, max 3 questions (including the new topic folder or document question, step d2).
 
 ## 6. Write
-**Labels (required):** every item in Needs attention, Replies and reviews, Waiting on others, Task proposals and on the board gets `priority` and `area` (from the task store; else blocking or due today = P0, due this week = P1, otherwise P2 or P3; area by the tie-break in `context/areas/index.md`), plus `initiative` and `okr` when they apply. Board items also carry `id` and `url` from the task store. The renderer prints `LABEL CHECK` for anything missing; fix it and render again.
+**Labels (required):** every item gets `priority` and `area`, and board items also `id` and `url` from the task store; the rules and the list of items are in `views/CLAUDE.md`, "Labels". The renderer prints `LABEL CHECK` for anything missing; fix it and render again.
 
 `weekly/YYYY-Www.md`, section "Weekly prep", in this order:
 1. Task proposals

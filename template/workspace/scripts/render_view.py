@@ -163,7 +163,6 @@ def main(path: str) -> None:
     dated.write_text(html, encoding="utf-8")
     if date != "sample":  # the sample must never replace the real latest view
         (OUT / f"{kind}.html").write_text(html, encoding="utf-8")
-    render_styleguide()
     print(dated)
     if lp := label_problems(data):
         print(f"LABEL CHECK: {len(lp)} item(s) missing priority or area (the page shows a dashed placeholder). Fill them from the task store or the rules (views/CLAUDE.md, Labels) and render again:")
@@ -171,14 +170,6 @@ def main(path: str) -> None:
     if problems := link_problems(data):
         print(f"LINK CHECK: {len(problems)} item(s) without a deep link to the specific thing. Fix the data and render again:")
         print("\n".join("  - " + p for p in problems))
-
-
-def render_styleguide() -> None:
-    # visual reference for views/DESIGN.md, rebuilt with every render so it never drifts from app.css
-    src = OUT / "styleguide.template.html"
-    if src.exists():
-        css = PARTS["__CSS__"].read_text(encoding="utf-8")
-        (OUT / "styleguide.html").write_text(src.read_text(encoding="utf-8").replace("__CSS__", fonts_css() + css, 1), encoding="utf-8")
 
 
 def self_check() -> None:

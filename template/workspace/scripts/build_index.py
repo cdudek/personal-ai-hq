@@ -11,7 +11,7 @@ from collections import Counter
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-SKIP_DIRS = {".git", "scripts", ".obsidian", "research"}
+SKIP_DIRS = {".git", "scripts", ".obsidian", "research", "vendor", "icons", "data"}  # research has its own READMEs; the rest hold no notes
 SKIP_FILES = {"CLAUDE.md", "AGENTS.md", "index.md"}
 TIME_DIRS = {"inbox", "daily", "weekly", "journal"}  # dated files: show recent only
 PRIVATE_DIRS = {"journal"}  # never put summaries of these in an index
@@ -26,7 +26,7 @@ def frontmatter(path: Path) -> dict:
         for line in m.group(1).splitlines():
             if ":" in line and not line.startswith(" "):
                 k, v = line.split(":", 1)
-                meta[k.strip()] = v.split("#")[0].strip().strip('"')
+                meta[k.strip()] = re.split(r"\s#", v)[0].strip().strip('"')  # a YAML comment needs a space before #; "PR #88" stays
         text = text[m.end():]
     if not meta.get("summary"):
         first = next((l for l in text.splitlines() if l.strip()), "")

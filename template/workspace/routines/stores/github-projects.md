@@ -24,10 +24,10 @@ An initiative is a milestone `🤖 <Initiative>` in the tasks repository (descri
 
 ## Read
 `gh project item-list` for open items with all fields in board order; issue comments since a date with `gh issue view --comments` or the API.
-Context card: read `What:`, `Why / who waits:`, `State:`, `Decision or next step:`, `Effort:` and `Links:` from the description lines below `Closed when:` (view fields `what`, `why`, `state`, `decision`); a task without `What:` and `State:` is incomplete and gets fixed by the brief.
+Context card: read its lines from the description below `Closed when:` (`routines/stores/README.md`, "Context card"; view fields `what`, `why`, `state`, `decision`).
 
 ## Write
-- **Create:** an issue in the repo with the property lines in the body and its initiative milestone, add it to the project, label `ai` if the label exists. Then the context card (`routines/stores/README.md`, "Context card"): `What:`, `Why / who waits:`, `State:` (with dates), `Decision or next step:`, `Effort:`, `Links:`, one line each, below the `Closed when:` line. Update `State:` (and the other lines) on every move, comment or change, and when newer information is read.
+- **Create:** an issue in the repo with the property lines in the body and its initiative milestone, add it to the project, label `ai` if the label exists. Then the context card below the `Closed when:` line (`routines/stores/README.md`, "Context card"), kept current on every move, comment or change.
 - **Move:** set Status (or the `Section:` line). **Set:** rewrite the body line. **Complete:** set Status Done and close the issue.
 - **Comment:** `gh issue comment`.
 - **Create or close an initiative:** create or close the milestone (after the user's yes).

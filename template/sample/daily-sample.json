@@ -4,25 +4,6 @@
   "title": "Tuesday, 4 November",
   "generated": "7:31 AM",
   "headline": "One blocker and two decisions before noon. Roadmap review at 10:00 AM needs prep.",
-  "stats": [
-    {
-      "label": "Needs me",
-      "value": 4,
-      "urgent": true
-    },
-    {
-      "label": "Meetings today",
-      "value": 4
-    },
-    {
-      "label": "Done yesterday",
-      "value": 6
-    },
-    {
-      "label": "New in inbox",
-      "value": 5
-    }
-  ],
   "top_of_mind": [
     {
       "title": "OKRs T3/2026",
@@ -160,7 +141,6 @@
           "source": "meet"
         }
       ],
-      "recurring": true,
       "attachments": [
         {
           "label": "Roadmap Q1 draft",
@@ -356,7 +336,6 @@
         "source": "me",
         "closed_when": "board shows final numbers for all O1 KRs",
         "notes": "Top-50 baseline 28 %, target 50 %",
-        "added": "2026-11-02",
         "history": [
           "2026-11-02 added from OKR session",
           "2026-11-03 baselines pulled from the warehouse"
@@ -400,7 +379,6 @@
         "source": "github",
         "closed_when": "reply posted and review re-requested",
         "link": "https://github.com/acme/web/pull/812",
-        "added": "2026-11-03",
         "context": "\"The aggregation runs per request. Can we move it to the nightly job and cache per partner?\"",
         "section": "This week",
         "due": "2026-11-06",
@@ -426,7 +404,6 @@
         "closed_when": "reply sent with the split",
         "link": "https://mail.google.com/mail/u/0/#all/19a2f0c9",
         "notes": "Due Thursday, for the board deck",
-        "added": "2026-11-03",
         "section": "This week",
         "area": "Admin",
         "url": "https://app.asana.com/0/1200000000000000/1210000000000003"
@@ -443,7 +420,6 @@
         "ice": 224,
         "source": "voice",
         "closed_when": "3 runs without friction",
-        "added": "2026-11-03",
         "section": "This week",
         "area": "Me",
         "initiative": "Personal AI HQ",
@@ -462,7 +438,6 @@
         "source": "github",
         "closed_when": "change folder approved, PR merged",
         "notes": "Waiting for the gated apply",
-        "added": "2026-11-02",
         "link": "https://github.com/acme/partner-api/issues/12",
         "section": "This week",
         "area": "Delivery",
@@ -484,7 +459,6 @@
         "source": "slack",
         "closed_when": "you replied in the thread with two slots",
         "link": "https://acme.slack.com/archives/CSAMPLE06/p1793600000000001",
-        "added": "2026-11-04",
         "context": "\"Can we kick off the GTM process next week? I'd bring Mia.\"",
         "people": [
           {
@@ -508,7 +482,6 @@
         "source": "meet",
         "closed_when": "message sent to Sam",
         "notes": "From the Data OKR review",
-        "added": "2026-11-03",
         "link": "https://docs.google.com/document/d/sample-data-okr-review",
         "section": "Inbox",
         "area": "Delivery",
@@ -527,7 +500,6 @@
         "ice": 280,
         "source": "demodesk",
         "closed_when": "signal logged in the API project",
-        "added": "2026-11-03",
         "link": "https://demodesk.example/recording/sample-northwind",
         "section": "Inbox",
         "area": "Delivery",
@@ -547,7 +519,6 @@
         "source": "linear",
         "closed_when": "comment on WEB-1402 with the decision",
         "link": "https://linear.app/acme/issue/WEB-1402",
-        "added": "2026-11-03",
         "section": "Inbox",
         "okr": "O3",
         "area": "Company",
@@ -565,7 +536,6 @@
         "ice": 224,
         "source": "wispr",
         "closed_when": "filed in ideas/ or dropped",
-        "added": "2026-11-03",
         "section": "Inbox",
         "area": "Product",
         "url": "https://app.asana.com/0/1200000000000000/1210000000000010"

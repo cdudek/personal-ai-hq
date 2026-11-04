@@ -7,7 +7,7 @@ updated: {{SETUP_DATE}}
 
 # Routine: radar (what needs me?)
 
-Use it inside `brief` and `sync`, or on its own any time ("Follow routines/radar.md"). It only reads; nothing is written to the task store without confirmation. Skip every source the tool routing marks "none"; say which were skipped.
+Use it inside `brief` and `sync`, or on its own any time ("Follow routines/radar.md"). It only reads; nothing is written to the task store without confirmation. Skip every source the tool routing marks "none"; say which were skipped. Run on its own (`/hq:inbox`), it starts with "Required sources" in `CLAUDE.md`; inside `brief` or `sync` that check has already run.
 
 ## 1. Code: pull requests that need the user
 

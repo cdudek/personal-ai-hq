@@ -2,6 +2,20 @@
 
 Versions follow semver. Each release is a git tag `vX.Y.Z` with an entry here. `/hq:upgrade` shows the entries between your workspace version and the installed one.
 
+## 0.4.0 (2026-11-04)
+
+Cleanup release. No data migration: `/hq:upgrade` only syncs the changed system files and offers the Asana step below if you are on 0.3.6 or older.
+
+- Page security: a link can no longer carry spaces or angle brackets into a copied prompt, `clean()` can no longer be tricked into rebuilding `<<<` or `>>>`, and the staged-edit whitelist now allows exactly the fields the page edits (priority, MoSCoW, size, done or reopen, move, drop). The page carries a Content-Security-Policy: no network, data images and fonts only.
+- Page wording: "Paste in Claude" instead of "Paste in Cowork"; removed an internal tool name from the meeting prompt.
+- Upgrade: files that already matched the plugin are remembered, so a later plugin change is no longer shown as "edited" by you. New migration 0.3.6 -> 0.3.7 adds the eight HQ fields to existing Asana initiative projects. Migrations are listed newest first and run oldest first.
+- Fixed references to a style guide file that never shipped; `build_index.py` no longer cuts a summary at `#` and skips vendor, icons and data folders.
+- One source for repeated rules: the context card (`routines/stores/README.md`), the choice rule (workspace `CLAUDE.md`, rule 10), labels (`views/CLAUDE.md`), sources check (workspace `CLAUDE.md`), Source values (`routines/stores/README.md`).
+- `routines/sync.md` now re-renders the daily page, so "Refresh with Claude" changes it. `/hq:inbox` runs the sources check.
+- Setup: no local task file fallback, git identity step, re-run path to the task board. README and `docs/reference.md`: Cowork versus Claude Code, failure paths, uninstall.
+- Removed unused sample fields (`stats`, `added`, `recurring`, `last_unplanned_h`) and dead code.
+- New for maintainers: `docs/architecture.md`, `scripts/check-version.sh`, `hq_sync.py selftest`; `release.sh` also bumps `.hq-version`; the zip includes `docs/reference.md`.
+
 ## 0.3.12 (2026-11-04)
 
 - Page: items about the task board show the task tool's logo instead of a three-letter "Boa" abbreviation.

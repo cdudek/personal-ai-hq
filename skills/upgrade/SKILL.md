@@ -9,7 +9,7 @@ Follow `${CLAUDE_PLUGIN_ROOT}/skills/_shared/version-check.md` first for the wor
 
 ## What is system and what is yours
 
-- **System (this skill may update):** `routines/`, `scripts/`, `views/` code (`template.html`, `app.css`, `app.js`, `vendor/`, `icons/`, `CLAUDE.md`, `DESIGN.md`, `README.md`, `styleguide.template.html`), `SYSTEM.md`, and the `CLAUDE.md` rule file in each top-level folder (not the root one).
+- **System (this skill may update):** `routines/`, `scripts/`, `views/` code (`template.html`, `app.css`, `app.js`, `vendor/`, `icons/`, `CLAUDE.md`, `DESIGN.md`, `README.md`), `SYSTEM.md`, and the `CLAUDE.md` rule file in each top-level folder (not the root one).
 - **System, research:** `research/CLAUDE.md` and `research/_template/` (the topic skeleton).
 - **Yours (never touched):** the topic folders in `research/` (everything except `CLAUDE.md`, `_template/`), root `CLAUDE.md`, `index.md`, `context/`, `inbox/`, `daily/`, `weekly/`, `journal/`, `meta/`, `decisions/`, `ideas/`, `principles/`, `lists/`, `sources/`, `views/data/` and every rendered view page. Your tasks are not in the workspace: they live in your task store (`meta/task-store.md`).
 
@@ -22,6 +22,8 @@ If `<workspace>/.hq-author` exists, this workspace is the author reference. `/hq
 The `claude plugin` CLI is not available in Cowork's cloud session. Update the plugin there under Customize > Plugins (open the `hq` plugin and update it, or re-add the marketplace `cdudek/personal-ai-hq`), start a new session, then run `/hq:upgrade` to bring the workspace along.
 
 ## Steps
+
+Migrations (below the steps) are listed newest first; run the ones that apply from the oldest to the newest.
 
 0. **Update the plugin first.** Installed version `Y` = `version` in `${CLAUDE_PLUGIN_ROOT}/.claude-plugin/plugin.json`. Latest `Z`: fetch `https://raw.githubusercontent.com/cdudek/personal-ai-hq/main/.claude-plugin/plugin.json` (`curl -fsS --max-time 3`; on failure assume `Z` = `Y`). If `Z` is newer than `Y` and you can run Bash with the `claude` CLI, run `claude plugin marketplace update cdudek`, then `claude plugin update hq@cdudek`. If the CLI says a restart is needed (it does), say: "HQ updated to Z. Restart Claude Code, then run /hq:upgrade again to bring your workspace along", and stop. If you cannot run the CLI, stop and tell the user how: in Claude Code the two commands `/plugin marketplace update cdudek` and then updating `hq` in `/plugin`; in Cowork Customize > Plugins (see "Cowork" above).
 1. Find the workspace (shared file). If it has `.hq-author`, stop as described in "Author workspace". Installed version `Y` = `version` in `${CLAUDE_PLUGIN_ROOT}/.claude-plugin/plugin.json`; workspace version `X` = first line of `<workspace>/.hq-version` (missing = `0.1.0`). If `X` is not older than `Y`, say "already on Y" and stop.
@@ -39,7 +41,7 @@ The `claude plugin` CLI is not available in Cowork's cloud session. Update the p
    python3 "<T>/scripts/hq_sync.py" apply "<T>" "<workspace>" safe
    ```
 5. For each `edited` file show `diff -u <workspace file> <template file>` and ask: keep mine, take the new one, or merge. Take the new one with `hq_sync.py apply "<T>" "<workspace>" <relative path>`. For `obsolete` files ask before deleting. Never decide for the user.
-6. Run the migrations below for every version between `X` and `Y` that has one, in order, before step 7.
+6. Run the migrations below for every version between `X` and `Y` that has one, oldest first, before step 7. A version without a migration needs nothing beyond step 4.
 7. Changes to the root `CLAUDE.md` or `context/` that the new version expects are listed in the changelog entry; show them as a proposal and apply only on a yes.
 8. Write `Y` to `<workspace>/.hq-version`, then `python3 scripts/build_index.py`, then commit in the workspace: `git add -A && git commit -m "upgrade: X -> Y"`. Never push.
 9. If `views/data/` has JSON from the old version, re-render the latest daily and weekly with `python3 scripts/render_view.py <file>` and report any LINK CHECK or LABEL CHECK lines.
@@ -53,11 +55,18 @@ Runs when `X` is older than 0.3.10. The new routines, adapters and view code arr
 3. Ask "Add context cards to all N open tasks like this? [yes]". On yes write the cards through the adapter, below the property, `Waiting on:` and `Closed when:` lines, and show a count. On no leave the tasks as they are; the brief completes the cards task by task when it reads their sources.
 4. Re-render the latest views (step 9); the task panel now shows What, State and Decision or next step when the data carries `what`, `state`, `decision`.
 
+## Migration 0.3.6 -> 0.3.7: HQ fields on every initiative project (Asana only)
+
+Runs when `X` is older than 0.3.7 and `meta/task-store.md` has `store: asana`. Initiative projects made before 0.3.7 hold none of the eight `HQ ·` fields, so their tasks show other columns than the board.
+
+1. List the projects under `initiatives:` in `meta/task-store.md`.
+2. For each, add the eight fields recorded under `fields:` to the project through the connector (a field already on it is skipped). Show the list first and ask "Add the HQ fields to these N initiative projects? [yes]".
+
 ## Migration 0.3.5 -> 0.3.6: HQ fields MoSCoW and ICE, sizes XS-XL
 
 Runs when `X` is older than 0.3.6. The new `routines/`, view code and `routines/stores/asana-fields.md` arrive with the sync in step 4. Standard connector for everything except the optional token path.
 
-1. **Asana only: check the fields before anything else.** Follow `routines/stores/asana-fields.md`, "Check first": look in the shared field library for all eight (`HQ · Priority`, `HQ · Size`, `HQ · Source`, `HQ · MoSCoW`, `HQ · Impact`, `HQ · Confidence`, `HQ · Ease`, `HQ · ICE`). Missing ones: stop, name exactly those, have the user create them first (by hand, click path in that file; or the optional one-time creation with `ASANA_API_TOKEN` in Claude Code, offered, never required, never printed). Re-check, continue only when all eight exist. Description lines instead only when the user explicitly says to skip.
+1. **Asana only: check the fields before anything else.** Follow `routines/stores/asana-fields.md`: "Check first", then "Create the missing fields" for any of the eight `HQ ·` fields that are missing. Continue only when all eight exist (description lines instead only when the user explicitly says to skip them).
 2. Add the found fields to the board project and record ids and option ids in `meta/task-store.md` (`fields`); update its property table to the new template rows (Priority, ICE, MoSCoW, Size XS-XL). An existing `HQ · Size` that lacks XS or XL: tell the user to add the two options in Asana (a person with permission; Claude cannot).
 3. Other tools: add MoSCoW, ICE (Impact, Confidence, Ease, score) and Size XS-XL the way the adapter now says (description lines or existing fields).
 4. Offer to score the open Inbox and This week tasks with ICE (`routines/brief.md`, "ICE scoring"): show 3 as a sample and ask "Score all N tasks like this? [yes]". Never overwrite a Priority.

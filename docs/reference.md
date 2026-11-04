@@ -19,13 +19,13 @@ Customize > Plugins > Add marketplace, enter `cdudek/personal-ai-hq`, then Insta
 
 Every document and piece of research for an initiative lives in one place: a topic folder in `<workspace>/research/`, named `YYYY-MM-DD - Topic Name`. `/hq:setup` creates `research/` (rules in `research/CLAUDE.md`, a `_template/` skeleton, `_archive/`) and one topic folder per initiative you confirm. A topic folder has a `README.md` that opens with a "CURRENT DOCUMENT" callout and is the memory of the initiative (status, decisions, latest documents, shared links), plus `notes.md`, `working/`, `output/` (with `_archive/`) and `data/` (git-ignored). Tasks carry `Topic folder: <name>`, the pages show a task's documents, and shared versions (Google Drive, Notion, Confluence) are linked by URL, never by local path. Coming from 0.3.1? `/hq:upgrade` merges your `context/projects` and `context/topics` pages into topic READMEs after you confirm the mapping.
 
-## Updating
-
-`/hq:upgrade` updates the plugin and then your workspace. In Cowork the `claude plugin` CLI is not available in the cloud session: update the plugin under Customize > Plugins, start a new session, then run `/hq:upgrade`. A workspace with a `.hq-author` file is the author reference: `/hq:upgrade` updates only the plugin there and never syncs template files into it.
-
 ## Pick your task manager
 
-Your tasks live in one tool you already use, not in a file: Asana, Notion, Monday or Trello. GitHub Projects works too but is not recommended (no private personal-task semantics, tied to repositories). `/hq:setup` asks where your tasks live, proposes areas (for example Product, Team, Company, Admin, Me) and a tie-break rule from your role, creates one private board with the sections Top of mind, This week, Waiting, Inbox and Agent, and one property per question (Area, Initiative, Priority, Size, Source, Waiting on, Closed when). Where the connector cannot create something, setup prints the exact manual steps. You steer by commenting on a task, dragging it or ticking it off; the next brief reads it. Coming from 0.2.0? `/hq:upgrade` moves `board.md` into the tool once. Each task carries Priority (what first), ICE (Claude's Impact x Confidence x Ease score, which proposes the Priority), MoSCoW (scope within the week or an initiative) and a t-shirt Size (XS-XL). With Asana, eight shared `HQ · ` fields hold these; setup checks for them and, if they are missing, has you create them once for your whole organisation (field spec and click path in `template/workspace/routines/stores/asana-fields.md`; an `ASANA_API_TOKEN` in Claude Code can do it for you, never required).
+Your tasks live in one tool you already use, not in a file: Asana, Notion, Monday or Trello. GitHub Projects works too but is not recommended (no private personal-task semantics, tied to repositories). `/hq:setup` asks where your tasks live, proposes areas (for example Product, Team, Company, Admin, Me) and a tie-break rule from your role, and creates one private board with the sections Top of mind, This week, Waiting, Inbox and Agent. An initiative is its own project, page, board, card or milestone, never a field. You steer by commenting on a task, dragging it or ticking it off; the next brief reads it.
+
+Each task answers one question per property: Priority (what first, P0-P3), ICE (what it is worth: Claude's Impact x Confidence x Ease score, which proposes the Priority), MoSCoW (in scope this week or initiative), Size (XS-XL), Source (the tool it came from; the 17 values are in `template/workspace/routines/stores/README.md`). Waiting on, Closed when and a short context card are lines in the task description. The model is `template/workspace/routines/stores/README.md`, one adapter per tool sits next to it.
+
+With Asana, eight shared `HQ · ` fields hold the properties. Setup checks for them and, if they are missing, has you create them once for your whole organisation (field spec and click path in `template/workspace/routines/stores/asana-fields.md`; an `ASANA_API_TOKEN` in Claude Code can do it for you, never required). Coming from 0.2.0? `/hq:upgrade` moves `board.md` into the tool once.
 
 ## Set up
 
@@ -52,9 +52,9 @@ Scheduled tasks (created by setup): brief weekdays 7:27, weekly Monday 6:57, rev
 
 ## Updates
 
-HQ is versioned with semver. Each release is a git tag `vX.Y.Z` with an entry in `CHANGELOG.md`.
+HQ is versioned with semver. Each release is a git tag `vX.Y.Z` with an entry in `CHANGELOG.md`. A workspace with a `.hq-author` file is the author reference: `/hq:upgrade` updates only the plugin there and never syncs template files into it.
 
-`/hq:upgrade` is the one command you need. In Claude Code it updates the plugin itself (`claude plugin marketplace update cdudek`, `claude plugin update hq@cdudek`), asks you to restart, and on the second run brings your workspace along. Where it cannot run commands (Cowork) it prints the two slash commands (`/plugin marketplace update cdudek`, then update `hq` in `/plugin`) for you. You can also enable auto-update for the `cdudek` marketplace in `/plugin` > Marketplaces. The workspace step shows what changed, updates system files only (routines, view code, scripts, folder rule files) and never your data (context, inbox, daily, weekly, journal, meta). If you edited a system file, it shows the diff and asks.
+`/hq:upgrade` is the one command you need. In Claude Code it updates the plugin itself (`claude plugin marketplace update cdudek`, `claude plugin update hq@cdudek`), asks you to restart, and on the second run brings your workspace along. Where it cannot run commands it prints the two slash commands (`/plugin marketplace update cdudek`, then update `hq` in `/plugin`) for you. In Cowork the `claude plugin` CLI is not available: update the plugin under Customize > Plugins, start a new session, then run `/hq:upgrade`. You can also enable auto-update for the `cdudek` marketplace in `/plugin` > Marketplaces. The workspace step shows what changed, updates system files only (routines, view code, scripts, folder rule files) and never your data (context, inbox, daily, weekly, journal, meta). If you edited a system file, it shows the diff and asks.
 
 Every skill checks versions at the start and tells you in one line when your workspace or the plugin is behind; it never upgrades by itself. The latest-release check is one request a day to raw.githubusercontent.com and stays silent if it fails. Maintainers: `scripts/release.sh X.Y.Z` bumps both manifests, adds a changelog stub, commits and tags (no push).
 
@@ -64,9 +64,23 @@ Every skill checks versions at the start and tells you in one line when your wor
 - Your tasks live in the task tool you choose, under that tool's own privacy rules; setup creates a private board.
 - Connectors read your data (mail, calendar, chat, tickets). Claude reads it during a run; this plugin sends nothing anywhere itself.
 - Nothing is saved to your context pages without your yes, and nothing is sent or posted for you without your yes.
+- The pages only copy a prompt to your clipboard; you paste it into Claude. They load nothing from the internet and carry no tracking.
 - Respect your company's policy on AI and connectors before you switch them on.
+
+## Cowork and Claude Code
+
+- **Connectors:** Claude Code `/mcp`; Cowork Settings > Connectors. A tool without a connector is skipped and listed under "Sources" with how to switch it on; nothing stops.
+- **Plugin updates:** Claude Code runs them for you; Cowork cannot, see Updates.
+- **Scheduled tasks:** in Cowork create them inside the project that points at the workspace folder. They run only while the computer is awake and the app is open.
+- **Pages:** `/hq:demo` and the brief open the HTML with the system `open` command. Where it cannot open a browser, you get the file path.
+
+## If something fails
+
+- **A connector fails its test in setup:** setup says which one to switch on and finishes the rest; run `/hq:setup` again afterwards and it continues at the task board.
+- **Git asks who you are at the first commit:** setup sets a name and email for the workspace folder only.
+- **The page does not change after "Refresh with Claude":** you have to paste the copied prompt into Claude; the page itself never writes anything.
+- **A skill says the workspace is behind:** run `/hq:upgrade`. It asks before touching a file you edited.
 
 ## Uninstall
 
-`/plugin uninstall hq@cdudek` and `/plugin marketplace remove cdudek`. Delete the workspace folder and `~/.config/hq/` by hand if you want everything gone.
-
+`/plugin uninstall hq@cdudek` and `/plugin marketplace remove cdudek`. Delete the four scheduled tasks (Scheduled in the app), the workspace folder and `~/.config/hq/` by hand if you want everything gone. Your board stays in your task tool: archive or delete it there. The Asana `HQ · ` fields are shared with your organisation; leave them unless nobody uses them.

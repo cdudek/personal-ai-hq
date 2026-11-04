@@ -60,7 +60,7 @@ If no topic can be matched, skip it; never guess one. Role adapters list typical
 - **No action:** broadcasts and all-hands.
 
 ## 5. Output into the view data
-Per meeting, in `meetings[]` (schema in `views/CLAUDE.md`). Always: who (with a one-line note from `context/people/`), why, prep, recurring, attachments[] (label, url, source, summary), action_items.mine[] and action_items.others[] (who, text, status), open_points[], links[], tag (prep category). For 1:1s also `between`, for topic meetings also `topic`.
+Per meeting, in `meetings[]` (schema in `views/CLAUDE.md`). Always: who (with a one-line note from `context/people/`), why, prep, attachments[] (label, url, source, summary), action_items.mine[] and action_items.others[] (who, text, status), open_points[], links[], tag (prep category). For 1:1s also `between`, for topic meetings also `topic`.
 
 ## Friction
 When the user corrects the prep, log it to `meta/friction.md`.

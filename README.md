@@ -49,7 +49,7 @@ The brief, the Monday plan and the Friday review also run on their own while you
 
 ## Your data
 
-Your notes stay on your computer. Your tasks stay on a private board in your tool. Claude only sees what the connectors you switch on can see. Check your company's AI rules before connecting work accounts.
+Your notes stay on your computer. Your tasks stay on a private board in your tool. Claude only sees what the connectors you switch on can see. A tool you have not connected is skipped and listed, nothing breaks. Check your company's AI rules before connecting work accounts.
 
 ## More
 

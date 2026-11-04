@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline' 'unsafe-eval'; style-src 'unsafe-inline'; img-src data:; font-src data:; base-uri 'none'; form-action 'none'">
 <title>Brief</title>
 <style>__CSS__</style>
 </head>
@@ -17,7 +18,7 @@
       <h1 x-text="d.title"></h1>
       <p class="headline" x-show="d.headline"><template x-for="r in rich(d.headline)"><span :class="r.b && 'bold'" x-text="r.t"></span></template></p>
       <p class="meta" x-show="d.last_review"><span x-text="'Last review: ' + d.last_review?.adopted + ' adopted, ' + d.last_review?.open + ' open'"></span> <a class="ext" x-show="reviewHref(d.last_review?.link)" :href="reviewHref(d.last_review?.link)">Open</a></p>
-      <p class="explain" x-show="review">Claude proposes changes to how it works for you. Pick <b>Adopt</b>, <b>Not now</b> or <b>Adjust</b> on each. Nothing changes until you press <b>Send to Claude</b> at the bottom: that copies one prompt with your decisions; paste it in Cowork.</p>
+      <p class="explain" x-show="review">Claude proposes changes to how it works for you. Pick <b>Adopt</b>, <b>Not now</b> or <b>Adjust</b> on each. Nothing changes until you press <b>Send to Claude</b> at the bottom: that copies one prompt with your decisions; paste it in Claude.</p>
       <div class="src-chips" x-show="!daily && srcChips.length">
         <template x-for="c in srcChips"><span class="chip" :class="!c.ok && 'fail'" x-text="c.name + ' · ' + c.text"></span></template>
       </div>
@@ -587,7 +588,7 @@
   <div class="dock" role="status">
     <div class="grow">
       <span class="dock-n" x-text="ansState === 'copied' ? 'Copied, not yet confirmed' : ansState === 'updated' ? 'Decisions changed' : answered + ' of ' + props.length + ' decided'"></span>
-      <span class="dock-s" :class="ansState === 'updated' && 'warn'" x-text="ansState === 'copied' ? 'Paste in Cowork. The next review shows what Claude applied.' : ansState === 'updated' ? 'Copy again so Claude gets the latest.' : 'Nothing changes until you send. Only decided lines are sent.'"></span>
+      <span class="dock-s" :class="ansState === 'updated' && 'warn'" x-text="ansState === 'copied' ? 'Paste in Claude. The next review shows what Claude applied.' : ansState === 'updated' ? 'Copy again so Claude gets the latest.' : 'Nothing changes until you send. Only decided lines are sent.'"></span>
     </div>
     <button class="btn btn-quiet" @click="resetAnswers()" x-show="answered">Undo all</button>
     <button class="btn btn-claude" :class="ansState === 'copied' && copied.review && 'is-copied'" :disabled="!answered" @click="applyReview()"><span x-text="ansState === 'updated' ? 'Copy again' : lbl('review', 'Send to Claude')"></span></button>
@@ -799,14 +800,14 @@
 <div class="dock" x-show="changeCount" x-transition role="status">
   <div class="grow">
     <span class="dock-n" x-text="dockState === 'copied' ? 'Copied, not yet confirmed' : dockState === 'updated' ? 'Changes updated' : changeCount + (changeCount === 1 ? ' task store change on this page' : ' task store changes on this page')"></span>
-    <span class="dock-s" :class="dockState === 'updated' && 'warn'" x-text="dockState === 'copied' ? 'Paste in Cowork. The next brief shows the change.' : dockState === 'updated' ? 'Copy again so Claude gets the latest.' : 'Saved in this browser only. Not applied yet.'"></span>
+    <span class="dock-s" :class="dockState === 'updated' && 'warn'" x-text="dockState === 'copied' ? 'Paste in Claude. The next brief shows the change.' : dockState === 'updated' ? 'Copy again so Claude gets the latest.' : 'Saved in this browser only. Not applied yet.'"></span>
   </div>
   <button class="btn btn-quiet" @click="edits = {}; sentSig = null">Undo all</button>
   <button class="btn btn-claude" :class="dockState === 'copied' && copied.dock && 'is-copied'" @click="applyChanges()"><span x-text="dockState === 'updated' ? 'Copy again' : lbl('dock', 'Send to Claude')"></span></button>
 </div>
 <div class="toast" x-show="toastMsg" x-transition.opacity x-text="toastMsg" role="status"></div>
 <div class="failbox" x-show="fail" role="alert">
-  <b>Could not copy.</b> The prompt is selected below. Press Cmd+C (or Ctrl+C), then paste it in Cowork.
+  <b>Could not copy.</b> The prompt is selected below. Press Cmd+C (or Ctrl+C), then paste it in Claude.
   <textarea x-ref="failTa" readonly x-model="fail" @keydown.escape="fail = ''"></textarea>
   <button class="btn btn-quiet sm" style="margin-top:8px" @click="fail = ''">Close</button>
 </div>

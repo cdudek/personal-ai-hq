@@ -1,6 +1,6 @@
 # Brief design language
 
-The daily and weekly views share one small design language. Goal: every element tells you what it is by its shape, before you read it. Visual reference: `views/styleguide.html` (rebuilt with every render).
+The daily and weekly views share one small design language. Goal: every element tells you what it is by its shape, before you read it. The sample pages (`/hq:demo`) show every atom.
 
 ## Principles
 
@@ -20,7 +20,7 @@ The daily and weekly views share one small design language. Goal: every element 
 | `--ink`, `--ink-2`, `--ink-3` | primary text, secondary text, labels and meta |
 | `--red`, `--amber`, `--green` | signals only |
 | `--claude` | Claude only |
-| `--sans`, `--mono` | Inter (interface, quotes), JetBrains Mono (data). Neither is embedded: the page falls back to the system fonts offline |
+| `--sans`, `--mono` | Inter (interface, quotes), JetBrains Mono (data). Latin subsets are embedded by `render_view.py`, so the page looks the same offline |
 | `--d-*`, `--t-*` | area tints (Product, Engineering, Team, Company, Admin, Me), Linear team keys |
 | `--r-sm` 4, `--r` 8, `--r-lg` 12 | labels, buttons, cards |
 
@@ -50,12 +50,12 @@ Light and dark follow the system setting. Components use tokens only, never hex 
 | Team key | `WEB-638`, key bold in the team colour | which Linear team owns it | urgency, area |
 | Claude suggests | square indigo block, 10 px square before the label | Claude's suggestion, with Decide differently next to Accept | facts |
 | Size | plain mono | effort | |
-| Quote | serif with left rule | someone else's words | Claude's own summaries |
+| Quote | Inter with left rule | someone else's words | Claude's own summaries |
 | Next | "NEXT" eyebrow + text | the one step the user takes | |
 
 ## Buttons
 
-- **Claude button** (indigo, copy glyph): copies a prompt for Cowork. Filled for the main action of a region, tinted for row-level actions. After a click: dashed indigo border and "Copied. Paste in Cowork" for 4 s, never green; Confirmed (green) only when the next brief shows the change.
+- **Claude button** (indigo, copy glyph): copies a prompt for Claude. Filled for the main action of a region, tinted for row-level actions. After a click: dashed indigo border and "Copied. Paste in Claude" for 4 s, never green; Confirmed (green) only when the next brief shows the change.
 - **Quiet button** (outlined): everything else (Update brief, Close, Undo, Move, Drop, links in the panel).
 - **External link**: ink text with an arrow, underline on hover. Opens the source.
 
@@ -78,7 +78,7 @@ Unknown section ids fall back to Plan (boards) or Read (cards). New sections get
 ## Adding something new
 
 1. Does an existing atom already mean this? Use it.
-2. If not, give it a shape no other atom has, add it to this file and to `styleguide.template.html`.
+2. If not, give it a shape no other atom has, add it to this file.
 3. Never add a new colour. If it needs attention, it is a signal.
 
 Times show in 12h format on the page; the data keeps `HH:MM`.
@@ -97,4 +97,4 @@ Priority, area, initiative, topic, always in this order under the title of anyth
 
 Review page (Friday): zone Plan/Improve, eyebrow "IMPROVE". Each proposal is one card: facts in ink, the proposal itself in a "Claude suggests" block, then Skip / Change / Accept (pressed = ink fill; answered cards get an indigo tint, skipped ones fade). One "Send to Claude" sends only decided lines and follows the plan action cycle (pending, copied, decisions changed). Plan vs actual uses plain numbers and one mono bar per source of unplanned work.
 
-Not built from the PDF: embedded Inter / JetBrains Mono webfonts, the Linear team-colour charts (closed by team / by project bars, stale analysis cards), and the Product insights deal charts (pages 14 to 15 of the PDF).
+Not built from the PDF: the Linear team-colour charts (closed by team / by project bars, stale analysis cards), and the Product insights deal charts (pages 14 to 15 of the PDF).

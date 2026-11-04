@@ -22,10 +22,10 @@ Monday has no multi-homing, so an initiative is a separate private board `🤖 <
 
 ## Read
 Items of the board with group, column values, in item order within the group. Comments since a date: the updates on each item after that date.
-Context card: read `What:`, `Why / who waits:`, `State:`, `Decision or next step:`, `Effort:` and `Links:` from the description lines below `Closed when:` (view fields `what`, `why`, `state`, `decision`); a task without `What:` and `State:` is incomplete and gets fixed by the brief.
+Context card: read its lines from the description below `Closed when:` (`routines/stores/README.md`, "Context card"; view fields `what`, `why`, `state`, `decision`).
 
 ## Write
-- **Create:** item in a group, first update with the property lines (Closed when included), `ai` noted in it. Then the context card (`routines/stores/README.md`, "Context card"): `What:`, `Why / who waits:`, `State:` (with dates), `Decision or next step:`, `Effort:`, `Links:`, one line each, below the `Closed when:` line. Update `State:` (and the other lines) on every move, comment or change, and when newer information is read.
+- **Create:** item in a group, first update with the property lines (Closed when included), `ai` noted in it. Then the context card below the `Closed when:` line (`routines/stores/README.md`, "Context card"), kept current on every move, comment or change.
 - **Move:** move the item to a group. **Set:** rewrite the first update's line. **Complete:** move to Done.
 - **Comment:** post an update on the item.
 - **Create or close an initiative:** create or archive the initiative board (after the user's yes).

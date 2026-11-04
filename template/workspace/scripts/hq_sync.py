@@ -4,6 +4,7 @@
   hq_sync.py manifest <workspace>                  record hashes of the system files as installed
   hq_sync.py plan <template> <workspace>           classify every system file
   hq_sync.py apply <template> <workspace> <rel>... copy those files (rel = "safe" copies all safe/new ones)
+  hq_sync.py selftest                              check the logic on a temporary copy
 
 apply refuses (exit 1) when the workspace has a .hq-author file.
 plan prints one "<status> <path>" per line: new | safe | edited | same | obsolete.
@@ -16,7 +17,7 @@ import sys
 from datetime import date
 from pathlib import Path
 
-VIEWS = ["template.html", "app.css", "app.js", "CLAUDE.md", "DESIGN.md", "README.md", "styleguide.template.html"]
+VIEWS = ["template.html", "app.css", "app.js", "CLAUDE.md", "DESIGN.md", "README.md"]
 MANIFEST = ".hq-manifest.json"
 
 
@@ -69,6 +70,9 @@ def apply(tpl: Path, ws: Path, rels: list[str]) -> None:
     status = {r: s for s, r in plan(tpl, ws)}
     chosen = [r for r, s in status.items() if s in ("safe", "new")] if rels == ["safe"] else rels
     m = load(ws)
+    for rel, s in status.items():  # a file that already matches was never edited: remember it, so a later template change reads as "safe", not "edited"
+        if s == "same":
+            m.setdefault(rel, digest(ws / rel))
     for rel in chosen:
         if rel not in system_files(tpl):
             raise SystemExit(f"not a system file: {rel}")
@@ -80,7 +84,33 @@ def apply(tpl: Path, ws: Path, rels: list[str]) -> None:
     save(ws, m)
 
 
+def selftest() -> None:
+    import tempfile
+    with tempfile.TemporaryDirectory() as d:
+        tpl, ws = Path(d, "tpl"), Path(d, "ws")
+        for root in (tpl, ws):
+            (root / "routines").mkdir(parents=True)
+            (root / "routines" / "a.md").write_text("one\n")
+            (root / "routines" / "b.md").write_text("one\n")
+        (tpl / "routines" / "c.md").write_text("new\n")
+        (ws / "routines" / "b.md").write_text("mine\n")  # edited by the user, no manifest yet
+        st = dict((r, s) for s, r in plan(tpl, ws))
+        assert st == {"routines/a.md": "same", "routines/b.md": "edited", "routines/c.md": "new"}, st
+        apply(tpl, ws, ["safe"])
+        (tpl / "routines" / "a.md").write_text("two\n")  # the plugin changes a file the user never touched
+        st = dict((r, s) for s, r in plan(tpl, ws))
+        assert st["routines/a.md"] == "safe" and st["routines/b.md"] == "edited", st
+        (ws / ".hq-author").write_text("")
+        try:
+            apply(tpl, ws, ["safe"])
+        except SystemExit:
+            return print("selftest ok")
+        raise AssertionError("apply must refuse in an author workspace")
+
+
 if __name__ == "__main__":
+    if sys.argv[1:] == ["selftest"]:
+        sys.exit(selftest())
     cmd, args = sys.argv[1], [Path(a) for a in sys.argv[2:]]
     if cmd == "manifest":
         save(args[0], {r: digest(args[0] / r) for r in system_files(args[0])})

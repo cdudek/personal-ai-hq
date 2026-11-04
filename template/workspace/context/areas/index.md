@@ -7,7 +7,7 @@ updated: {{SETUP_DATE}}
 
 # Areas
 
-Every task carries exactly one Area. The task store holds only the field; the definitions live here, one file per area (`context/areas/<slug>.md`: definition, examples, people, recurring meetings).
+Every task carries exactly one Area. The task store holds only the area's name (in the initiative's description, or an `Area:` line on the task); the definitions live here, one file per area (`context/areas/<slug>.md`: definition, examples, people, recurring meetings).
 
 ## Areas
 
