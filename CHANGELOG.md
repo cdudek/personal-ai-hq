@@ -2,6 +2,10 @@
 
 Versions follow semver. Each release is a git tag `vX.Y.Z` with an entry here. `/hq:upgrade` shows the entries between your workspace version and the installed one.
 
+## 0.3.7 (2026-11-04)
+
+- Asana: every new initiative project gets all eight HQ fields, so its tasks show and filter the same columns as the board.
+
 ## 0.3.6 (2026-11-04)
 
 - New task properties: **MoSCoW** (Must, Should, Could, Won't: scope within the week or an initiative, set in the weekly plan), **ICE** (Impact, Confidence, Ease, each 1-10, and the computed score; Claude's scoring proposal for new tasks, used to propose a Priority), and t-shirt **Size XS-XL**. One property per question: Priority = what first, ICE = how much it is worth, MoSCoW = in scope, Size = how big.
