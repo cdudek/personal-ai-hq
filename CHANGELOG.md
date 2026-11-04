@@ -2,6 +2,10 @@
 
 Versions follow semver. Each release is a git tag `vX.Y.Z` with an entry here. `/hq:upgrade` shows the entries between your workspace version and the installed one.
 
+## 0.3.9 (2026-11-04)
+
+- People: emails come from calendar attendees and mail first, then chat. Relationships are inferred from titles, the engineering org table, ticket teams, calendar organisers, mail cc direction, CRM teams and contract rules, each proposal with likely / possible / unknown and its evidence; the user confirms.
+
 ## 0.3.8 (2026-11-04)
 
 - New initiatives get all eight HQ fields everywhere they are created: setup, upgrade, the brief's new-initiative question and the adapter.

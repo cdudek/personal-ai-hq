@@ -64,9 +64,26 @@ Evidence, last 30 days unless noted:
 - **Chat:** DM frequency, people the user writes with most.
 - **Tickets:** teams and projects the user leads, and who works in them.
 - **Code:** frequent reviewers on the user's PRs, and whose PRs the user reviews.
+- **Mail:** people the user writes with most (sent and received, last 90 days), and cc patterns: who copies the user in, who the user copies in.
+- **Calendar beyond 1:1s:** who organises the recurring meetings the user attends, who appears in the user's team meetings, skip-level pattern (a 1:1 with someone's manager).
 - **Org:** people reporting to the user (the manager and report relations; your data warehouse's people table if you have one, see Resolve).
 
 Show the list, one person per line: `**Name:** relation guess, evidence (e.g. "weekly 1:1, 41 DMs, reviews 6 of my PRs")`. People who already have a profile are marked. Ask: "Who is close? Who is missing?" Also propose `relation`, `contract`, `team`, `areas` per person.
+
+### Inferring the relationship
+
+Propose `relation` (manager | report | skip-level | peer | stakeholder | freelancer | external) from every signal you have, and say how sure you are: **likely** (two or more signals agree), **possible** (one signal), **unknown** (none: ask).
+
+- **Titles:** chat profile title, mail signature, calendar display name (e.g. "Engineering Lead", "PM").
+- **Engineering org:** your data warehouse's engineering or people table if you have one (login, team, pod, role, lead flag): same team as the user, team lead, role.
+- **Tickets:** lead or member of the teams the user leads.
+- **Calendar:** who organises the 1:1 (a manager usually organises with their reports), team meetings the user runs, meetings with someone's manager (skip-level).
+- **Mail:** cc direction (people who copy the user in on decisions are often stakeholders or a manager; people the user copies in on asks are often reports).
+- **CRM:** owner team, for sales and support people only.
+- **Contract:** freelancer when the workspace rules say so (e.g. invoices from that person), external when the email domain is not the company's.
+- **Context:** what `context/me.md` and the person's existing profile already say.
+
+Show one line per person: `**Name:** report (likely): team lead per warehouse, weekly 1:1 you organise, 38 chat messages, cc'd on 12 mails`. Conflicting signals are named, not resolved silently. Write only what the user confirms.
 
 Write `close: true` (and the confirmed relation, contract, team, areas) only after the user confirms, person by person or as a list. Everyone else keeps `close: false`.
 
@@ -74,6 +91,7 @@ Write `close: true` (and the confirmed relation, contract, team, areas) only aft
 
 For every person with an empty id (close people first, then the rest). Match by email first, then full name. Ambiguous (two people called Alex, nickname only) means: ask under "Claude asks", never guess.
 
+- **Email:** first from calendar attendees (the most reliable work address), then mail headers, then the chat profile. People outside chat (freelancers, external contacts) get their email from calendar and mail. Record the source.
 - **Chat:** search users by name or email; take the chat user id (`slack_id` or the tool's equivalent), the handle and the email.
 - **Tickets:** list the ticket tool's users filtered by email or name; take the user id or login (`linear` field).
 - **Tasks:** the users of the workspace named in `meta/task-store.md`; take the user id (`asana` field). This is the id the task store's "Waiting on" property uses.
