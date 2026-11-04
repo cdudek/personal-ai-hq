@@ -16,6 +16,9 @@ Goal: start the week with a clear task store and every meeting sorted. Propose f
 - the task store: open tasks and comments since the last weekly (follow `meta/task-store.md` and its adapter), and `context/areas/index.md`
 - the role adapter notes in `context/me.md` (routine emphasis), if present
 
+## 1a. Sources check (before any other output)
+Run "Required sources" in `CLAUDE.md`: one cheap read per required source. The first lines of the reply name every failed source with the reason and the exact fix; a working source gets no line. Failed sources go into `sources[]` with `ok: false`. A substitute must be labelled "substitute". If a source marked critical there is down, ask once whether to wait or go ahead.
+
 ## 2. Collect
 - **Calendar:** the next 7 days (title, attendees, description)
 - **Notes and meetings:** last week's meetings and voice notes

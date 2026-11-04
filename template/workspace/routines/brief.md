@@ -12,6 +12,9 @@ Goal: one short page that bridges yesterday and today, plus a task store that ma
 ## 0. Read
 `CLAUDE.md`, `index.md`, `context/me.md`, `context/goals.md`, `context/glossary.md`, `meta/chat-cursor.md`, yesterday's `daily/` note, `meta/task-store.md` and the adapter it names (`routines/stores/<store>.md`), `context/areas/index.md`, and the frontmatter (`name`, `aliases`, `ids`, `relation`, `close`) of `context/people/*.md`: the id table for matching people (`routines/people.md`).
 
+## 0a. Sources check (before any other output)
+Run "Required sources" in `CLAUDE.md`: one cheap read per required source. The first lines of the reply name every failed source with the reason and the exact fix; a working source gets no line. Failed sources go into `sources[]` with `ok: false`. A substitute must be labelled "substitute". If a source marked critical there is down, ask once whether to wait or go ahead.
+
 ## 1. Collect (since the last brief; on the first run, the last 24 hours)
 Follow the tool routing in `CLAUDE.md`. Skip every row that says "none":
 - **Calendar:** today and tomorrow

@@ -144,6 +144,18 @@ Filled in by setup. One route per kind of data; do not use a second connector fo
 
 A row that says "none" is skipped by every routine. Anything without a connector: use the browser.
 
+## Required sources (check first, flag early)
+
+Every brief, weekly and inbox run starts with a sources check, before any other output. Connector problems are flagged at the top of the first message, never discovered at the end.
+
+Required sources: every connector in the tool routing table. Mark the ones the brief cannot run without as critical (for example calendar and the task store).
+
+1. Load the tools; if a server is still connecting, search again before reporting it missing. Make one cheap read call per source to prove it works.
+2. The first lines of the reply are the check: one line per failed source with the reason and the exact fix. A source that works needs no line.
+3. Failed sources also go into `sources[]` with `ok: false` and the reason; the brief page shows them at the top.
+4. A substitute is allowed but is labelled "substitute" and never replaces the flag.
+5. Never run the whole brief on a missing critical source without saying so first: ask once whether to wait or go ahead.
+
 ## Recurring inputs
 
 Things that arrive on a schedule and belong in the weekly or daily page (a channel that posts metrics every Monday, a monthly insights mail). Add each one here once the user confirmed it: what, where, when, how to find it.

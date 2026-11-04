@@ -4,6 +4,8 @@ Versions follow semver. Each release is a git tag `vX.Y.Z` with an entry here. `
 
 ## 0.3.2 (2026-11-04)
 
+- Sources check first: every brief, weekly and inbox run checks its required connectors before any other output and flags failures at the top with the fix.
+
 - Documents home. `<workspace>/research/` holds every document and piece of research, one topic folder per initiative (`YYYY-MM-DD - Topic Name`): `README.md` (CURRENT DOCUMENT callout, status active | complete | parked, question, decisions, latest documents, shared links, earlier work), `notes.md`, `working/`, `output/` (with `_archive/`; frontmatter status, version, last_updated, audience) and `data/` (git-ignored). `research/CLAUDE.md` holds the rules; `research/_template/` is the skeleton; `research/_archive/` takes complete or parked topics. A fictional example topic (Acme) ships in the template; delete it after setup.
 - Initiative = topic folder. The README is the initiative's memory, so `context/projects/` and `context/topics/` are gone. Opening an initiative (after a yes) also creates its folder; closing sets the README to `complete` and proposes moving it to `research/_archive/`.
 - Task store: Top of mind tasks carry `Topic folder: <name>` and the shared links; a task's description holds the shared URL when one exists. Never a local path in a shared place.
