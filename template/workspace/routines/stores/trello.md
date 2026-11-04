@@ -10,7 +10,7 @@ updated: {{SETUP_DATE}}
 Model: `routines/stores/README.md`. Config and ids: `meta/task-store.md`.
 
 ## Connector
-The standard Trello connector only (Claude Code: `/mcp`; Cowork: Settings > Connectors). No API token, no scripts, no browser. List its tools and test one read. Creating boards, lists and cards, editing descriptions and adding comments is assumed; custom fields and labels are not used, so no Power-Up is needed. If the board already has labels or custom fields that match Priority, Area, Size or Source, reuse them and record the mapping in `meta/task-store.md`.
+The standard Trello connector only (Claude Code: `/mcp`; Cowork: Settings > Connectors). No API token, no scripts, no browser. List its tools and test one read. Creating boards, lists and cards, editing descriptions and adding comments is assumed; custom fields and labels are not used, so no Power-Up is needed. If the board already has labels or custom fields that match Priority, Area, Size, Source, MoSCoW, Impact, Confidence, Ease or ICE (number fields are set as numbers), reuse them and record the mapping in `meta/task-store.md`.
 
 ## Create the board
 1. One private board "<board_name>".

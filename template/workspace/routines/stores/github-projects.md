@@ -17,7 +17,7 @@ The `gh` CLI (`gh project ...`, `gh issue ...`), which is GitHub's standard inte
 ## Create the board
 1. A user-owned Project (v2), visibility private, "<board_name>". Items are issues in one private repository you create for this ("<board_name>-tasks").
 2. Use the built-in Status field with the options Top of mind, This week, Waiting, Inbox, Agent, Done only if it already has them or `gh` can set them when the project is created; otherwise use the section as a description line (`Section: ...`) and say so in `meta/task-store.md`. Never edit field options later.
-3. Properties are description lines in the issue body (README, "Properties"); reuse existing project fields that match, with a recorded mapping.
+3. Properties are description lines in the issue body (README, "Properties"; Size XS-XL, MoSCoW and `ICE: I x C x E = score` included; a Number project field may hold Impact, Confidence, Ease and ICE if the user already has them); reuse existing project fields that match, with a recorded mapping.
 
 ## Initiatives
 An initiative is a milestone `🤖 <Initiative>` in the tasks repository (description: outcome, end date, OKR, `Topic folder: <name>`, links; due date = end date). Its tasks are the issues assigned to it. Close the milestone after the user's yes.

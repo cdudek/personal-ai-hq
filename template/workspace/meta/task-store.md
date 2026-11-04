@@ -21,7 +21,7 @@ sections:
 
 The one place tasks live. Routines never name the tool: they say "the task store" and follow `routines/stores/{{STORE}}.md`. The rules shared by every tool are in `routines/stores/README.md`.
 
-- `fields:` lists the properties that are existing custom fields of the tool, found at setup (name, id, and how its values map to ours). Every property not listed is a line at the top of the task description. Nothing in this system creates fields or options.
+- `fields:` lists the properties that are existing custom fields of the tool, found at setup (name, id, and how its values map to ours). Every property not listed is a line at the top of the task description. The routines never create fields or options. For Asana the eight shared `HQ · ` fields are a prerequisite (`routines/stores/asana-fields.md`).
 - `initiatives:` maps each open initiative to its container in the tool (project, page, board, card or milestone: id and url), filled when it is created.
 
 ## One property per question
@@ -34,8 +34,10 @@ The one place tasks live. Routines never name the tool: they say "the task store
 | Which responsibility? | Area (description line) | {{AREA_VALUES}} |
 | Which initiative? | The task's initiative container (the tool's adapter says which) | {{INITIATIVE_VALUES}} |
 | Which OKR? | On the initiative container (optional) | {{OKR_VALUES}} |
-| How important? | Priority (a listed field with its mapping, else a description line) | P0, P1, P2, P3 |
-| How big? | Size | S, M, L |
+| What do we work on first? | Priority (a listed field with its mapping, else a description line) | P0, P1, P2, P3: the order of work, set by rules or by the user |
+| How much is it worth? | ICE: Impact, Confidence, Ease (1-10 each) and ICE (= Impact x Confidence x Ease, 1-1000) | Claude's scoring proposal for Inbox items and new tasks, used to propose a Priority; computed, never typed by hand |
+| Is it in scope? | MoSCoW | Must, Should, Could, Won't: scope within an initiative or the week, set in the weekly plan; Won't = explicitly out this cycle |
+| How big? | Size | t-shirt XS, S, M, L, XL (rough effort) |
 | Where from? | Source | {{SOURCE_VALUES}} |
 | Waiting on whom? | Description line `Waiting on: <name>` | a person (the task tool's id from `context/people/` when known); only in section Waiting |
 | When is it closed? | Description line `Closed when: <scenario>` | the done scenario in words |

@@ -28,5 +28,8 @@ Read `context/areas/index.md` and the open tasks of the task store (adapter in `
 - **Tie-break:** a rule the user keeps overriding: the corrected wording.
 Each proposal goes into the review page as a `fixes[]` item with the exact change to `context/areas/index.md` or the task store. After a yes, apply it, log it in `meta/learnings.md`, and tick the friction lines.
 
+## ICE drift (Friday, called by `review`)
+Compare the ICE Claude scored with what the user actually prioritised: tasks whose Priority differs from the one proposed from ICE, tasks moved into or out of This week against the ICE order, scores the user edited. If one score keeps being wrong (Impact over-rated for one kind of task, Ease for another), propose the wording of the scoring rule that would have got it right, as a `fixes[]` item. Proposals only; never change a score or Priority on the user's tasks.
+
 ## People data (Friday, called by `review`)
 Close people with empty ids, ids without a `sources` entry, ids that no longer match (a bounced mail, a chat user that left), "Current" older than 35 days, and names that appeared in the week's items with no profile. Propose `routines/people.md` runs (Resolve, Refresh, New person) under "Claude asks". Never fix an id without the user's yes.

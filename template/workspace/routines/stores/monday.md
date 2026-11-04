@@ -15,7 +15,7 @@ The standard Monday connector or Monday MCP server only (Claude Code: `/mcp`; Co
 ## Create the board
 1. One private board "<board_name>" (kind private).
 2. Groups as sections, in order: Top of mind, This week, Waiting, Inbox, Agent, Done (Monday has no native completed state). Due date uses the board's date column if the board has one; otherwise the due date is a `Due:` description line.
-3. Properties: Monday items have no description, so the property lines are the first update on the item (README, "Properties"), pinned. If the board already has columns that match Area, Priority, Size or Source, reuse them and record the mapping in `meta/task-store.md`; do not add any.
+3. Properties: Monday items have no description, so the property lines (including Size XS-XL, MoSCoW and `ICE: I x C x E = score`) are the first update on the item (README, "Properties"), pinned. If the board already has columns that match Area, Priority, Size, Source, MoSCoW, Impact, Confidence, Ease or ICE (numbers columns hold numbers), reuse them and record the mapping in `meta/task-store.md`; do not add any.
 
 ## Initiatives
 Monday has no multi-homing, so an initiative is a separate private board `🤖 <Initiative>` holding one group "About" with items for outcome, end date, OKR, `Topic folder: <name>` and links. Its Top of mind item on the main board links to it. A task belongs to an initiative through the line `Initiative: <name>` in its first update. Close an initiative by archiving its board (after the user's yes).

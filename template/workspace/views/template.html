@@ -103,6 +103,8 @@
                 <th class="c-check"><span class="sr">Done</span></th>
                 <th class="c-title"><button @click="sortBy('title')" x-text="'Task' + sortMark('title')"></button></th>
                 <th class="c-prio"><button @click="sortBy('priority')" x-text="'Prio' + sortMark('priority')"></button></th>
+                <th class="c-moscow"><button @click="sortBy('moscow')" x-text="'MoSCoW' + sortMark('moscow')"></button></th>
+                <th class="c-ice"><button @click="sortBy('ice')" x-text="'ICE' + sortMark('ice')"></button></th>
                 <th class="c-size"><button @click="sortBy('size')" x-text="'Size' + sortMark('size')"></button></th>
                 <th class="c-status"><button @click="sortBy('status')" x-text="'Status' + sortMark('status')"></button></th>
                 <th class="c-dom"><button @click="sortBy('area')" x-text="'Area' + sortMark('area')"></button></th>
@@ -124,7 +126,9 @@
                       </select>
                       <span class="miss" x-show="!t.priority">no priority</span>
                     </td>
-                    <td class="c-size"><span class="size" x-text="t.size || ''"></span></td>
+                    <td class="c-moscow"><span class="size" x-text="eff(t).moscow"></span></td>
+                    <td class="c-ice"><span class="size" :title="iceParts(t)" x-text="iceText(t)"></span></td>
+                    <td class="c-size"><span class="size" x-text="eff(t).size"></span></td>
                     <td class="c-status"><span class="status" :class="statusClass(eff(t).status)" x-text="eff(t).status"></span></td>
                     <td class="c-dom"><span class="domain" :data-d="dd(t.area)" x-show="t.area" x-text="t.area"></span><span class="miss" x-show="!t.area">no area</span></td>
                     <td class="c-init"><span class="init" x-show="t.initiative" x-text="t.initiative"></span></td>
@@ -133,7 +137,7 @@
                       <span x-text="label(t.source)"></span></span></td>
                   </tr>
                 </template>
-                <tr x-show="!tasks(b.s.list).length"><td colspan="8" class="empty" x-text="b.s.empty || 'Nothing here.'"></td></tr>
+                <tr x-show="!tasks(b.s.list).length"><td colspan="10" class="empty" x-text="b.s.empty || 'Nothing here.'"></td></tr>
               </tbody>
             </table>
           </div>
@@ -633,7 +637,15 @@
           <span class="status" :class="statusClass(eff(panel).status)" x-text="eff(panel).status"></span>
           <span class="domain" :data-d="dd(panel.area)" x-show="panel.area" x-text="panel.area"></span>
           <span class="init" x-show="panel.initiative" x-text="panel.initiative"></span>
-          <span class="size" x-show="panel.size" x-text="'Size ' + panel.size"></span>
+          <select class="size" @change="setMoscow(panel, $event.target.value)" aria-label="MoSCoW">
+            <option value="" :selected="!eff(panel).moscow">MoSCoW: none</option>
+            <template x-for="m in MOSCOWS"><option :value="m" :selected="eff(panel).moscow === m" x-text="'MoSCoW: ' + m"></option></template>
+          </select>
+          <select class="size" @change="setSize(panel, $event.target.value)" aria-label="Size">
+            <option value="" :selected="!eff(panel).size">Size: none</option>
+            <template x-for="s in SIZE_NAMES"><option :value="s" :selected="eff(panel).size === s" x-text="'Size: ' + s"></option></template>
+          </select>
+          <span class="size" x-show="iceText(panel)" x-text="'ICE ' + iceText(panel) + (iceParts(panel) ? ' (' + iceParts(panel) + ')' : '')" title="Impact × Confidence × Ease, set by Claude"></span>
           <span class="spacer"></span>
           <label class="check"><input type="checkbox" :checked="eff(panel).status === 'Done'" @change="setDone(panel, $event.target.checked)"> Done</label>
           <button class="btn btn-quiet sm" @click="toggleMove(panel)" x-text="eff(panel).list === 'week' ? 'Move to Inbox' : 'Move to This week'"></button>

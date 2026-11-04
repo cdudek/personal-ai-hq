@@ -64,6 +64,8 @@
     {
       "id": "1210000000000002",
       "kind": "keep",
+      "moscow": "Must",
+      "ice": 432,
       "title": "Answer caching question on PR #812",
       "why": "Slipped from last week. Blocks the partner endpoint",
       "priority": "P0",
@@ -75,6 +77,8 @@
     {
       "id": "1210000000000009",
       "kind": "keep",
+      "moscow": "Should",
+      "ice": 280,
       "title": "Decide whether partial survey submits count",
       "why": "Blocks the survey KR and O2 targets",
       "priority": "P1",
@@ -85,6 +89,8 @@
     {
       "id": "1210000000000004",
       "kind": "done",
+      "moscow": "Could",
+      "ice": 192,
       "title": "First brief runs in Claude",
       "why": "3 runs went through. Close it",
       "priority": "P1",
@@ -95,6 +101,8 @@
     {
       "id": "1210000000000001",
       "kind": "add",
+      "moscow": "Must",
+      "ice": 224,
       "title": "Finalise O2 and O3 targets",
       "why": "From the Inbox. Planning deadline Friday",
       "priority": "P0",
@@ -105,6 +113,8 @@
     {
       "id": "1210000000000006",
       "kind": "add",
+      "moscow": "Should",
+      "ice": 210,
       "title": "Run the GTM process kick-off",
       "why": "From the Inbox. Jules and Mia, 1 hour",
       "priority": "P2",
@@ -115,6 +125,8 @@
     {
       "id": "1210000000000007",
       "kind": "add",
+      "moscow": "Won't",
+      "ice": 54,
       "title": "Send Sam infra change apply request",
       "why": "From the Inbox. 5 minutes, unblocks data clearance",
       "priority": "P2",
@@ -126,6 +138,8 @@
     {
       "id": "1210000000000010",
       "kind": "next week",
+      "moscow": "Must",
+      "ice": 432,
       "title": "Partner incentive idea: monthly partner report",
       "why": "From the Inbox. No deadline; 3 h would eat a third of the buffer",
       "priority": "P3",
@@ -136,6 +150,8 @@
     {
       "id": "1210000000000005",
       "kind": "remove",
+      "moscow": "Should",
+      "ice": 280,
       "title": "Approve API repo rename",
       "why": "Waiting on others for 2 weeks. Track it in Waiting on others",
       "priority": "P2",
@@ -147,6 +163,8 @@
     {
       "id": "1210000000000003",
       "kind": "done",
+      "moscow": "Could",
+      "ice": 192,
       "title": "Send Q1 budget split to Priya",
       "why": "Sent Thursday",
       "priority": "P1",

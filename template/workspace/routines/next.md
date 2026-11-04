@@ -13,7 +13,7 @@ updated: {{SETUP_DATE}}
    - First, whatever blocks others: PR changes requested, a decision someone waits on.
    - Then deep prep for a meeting starting within 2 hours.
    - Then the oldest "needs me" item.
-   - Then the top ranked task in This week (rank is the order the user set; P0 and P1 first).
+   - Then the top ranked task in This week (rank is the order the user set). Among open tasks the order is: Priority, due date, ICE, blocks someone, age, size (smaller first). A Won't (MoSCoW) task is not offered.
 4. Say it in one line, plus the 2 after it: "Next: <action> (<why now>). Then: <a>, <b>."
 5. Offer to do it now, one item at a time. The user confirms each step; Claude never sends anything without a yes. What "do it" means depends on the item:
    - **A reply:** draft it with `context/writing-style.md`, log it to `meta/drafts.md`, and send after a yes.

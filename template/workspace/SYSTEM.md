@@ -23,6 +23,7 @@ Rules for the task store (the tool and its ids are in `meta/task-store.md`):
 
 - You read it in your task manager and in the views. Input: comment on a task, drag it, tick it off, or tell Claude in chat. Asking "what's next?" runs `routines/next.md`.
 - Every task carries a `Closed when:` description line and one Area (`context/areas/index.md`).
+- One property per question: Priority (what first, P0-P3), ICE (how much it is worth: Impact, Confidence, Ease, score; Claude's proposal), MoSCoW (in scope: Must, Should, Could, Won't; set in the weekly plan), Size (XS-XL).
 - A Top-of-mind item links to its ticket, project or research folder when one exists.
 
 ## The four parts

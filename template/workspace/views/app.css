@@ -255,7 +255,8 @@ table.board{width:100%;border-collapse:collapse;font-size:13.5px}
 .c-title{min-width:220px}
 .c-title>button{all:unset;cursor:pointer;font-weight:600;font-size:14px;line-height:1.35;display:block}
 .c-title>button:focus-visible{outline:2px solid var(--claude)}
-.c-prio,.c-size{width:56px}
+.c-prio,.c-size,.c-moscow,.c-ice{width:56px}
+.c-moscow{width:72px}
 .chg{display:flex;gap:10px;align-items:baseline;font-size:12px;color:var(--claude);margin-top:2px}
 .chg .linkbtn{color:var(--ink);font-size:12px}
 .src{display:inline-flex;align-items:center;gap:7px;white-space:nowrap;color:var(--ink-2);font-size:12.5px}
@@ -574,7 +575,7 @@ footer{font-size:12px;color:var(--ink-3);margin-top:16px}
   .row .acts2 .btn-claude.is-copied{width:auto;padding:0 10px}
   .row .acts2 .btn-claude.is-copied .bt{display:inline}
   .r1,.r2{white-space:normal}
-  .c-size,.c-dom,.c-init,.c-src{display:none}
+  .c-size,.c-moscow,.c-ice,.c-dom,.c-init,.c-src{display:none}
   .c-title{min-width:0}
   .recap .rc{grid-template-columns:24px minmax(0,1fr)}
   .rc .signal{display:none}

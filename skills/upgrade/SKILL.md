@@ -44,6 +44,16 @@ The `claude plugin` CLI is not available in Cowork's cloud session. Update the p
 8. Write `Y` to `<workspace>/.hq-version`, then `python3 scripts/build_index.py`, then commit in the workspace: `git add -A && git commit -m "upgrade: X -> Y"`. Never push.
 9. If `views/data/` has JSON from the old version, re-render the latest daily and weekly with `python3 scripts/render_view.py <file>` and report any LINK CHECK or LABEL CHECK lines.
 
+## Migration 0.3.5 -> 0.3.6: HQ fields MoSCoW and ICE, sizes XS-XL
+
+Runs when `X` is older than 0.3.6. The new `routines/`, view code and `routines/stores/asana-fields.md` arrive with the sync in step 4. Standard connector for everything except the optional token path.
+
+1. **Asana only: check the fields before anything else.** Follow `routines/stores/asana-fields.md`, "Check first": look in the shared field library for all eight (`HQ · Priority`, `HQ · Size`, `HQ · Source`, `HQ · MoSCoW`, `HQ · Impact`, `HQ · Confidence`, `HQ · Ease`, `HQ · ICE`). Missing ones: stop, name exactly those, have the user create them first (by hand, click path in that file; or the optional one-time creation with `ASANA_API_TOKEN` in Claude Code, offered, never required, never printed). Re-check, continue only when all eight exist. Description lines instead only when the user explicitly says to skip.
+2. Add the found fields to the board project and record ids and option ids in `meta/task-store.md` (`fields`); update its property table to the new template rows (Priority, ICE, MoSCoW, Size XS-XL). An existing `HQ · Size` that lacks XS or XL: tell the user to add the two options in Asana (a person with permission; Claude cannot).
+3. Other tools: add MoSCoW, ICE (Impact, Confidence, Ease, score) and Size XS-XL the way the adapter now says (description lines or existing fields).
+4. Offer to score the open Inbox and This week tasks with ICE (`routines/brief.md`, "ICE scoring"): show 3 as a sample and ask "Score all N tasks like this? [yes]". Never overwrite a Priority.
+5. Re-render the latest views (step 9); the task tables now show MoSCoW and ICE.
+
 ## Migration 0.3.2 -> 0.3.3: initiatives become containers, properties become lines
 
 Runs when `X` is older than 0.3.3. The new `meta/task-store.md` shape, `routines/stores/*` and the routines arrive with the sync in step 4. Nothing is written to the task tool before the user confirms. Only the standard connector is used: no API token, no scripts, no browser, no manual step.

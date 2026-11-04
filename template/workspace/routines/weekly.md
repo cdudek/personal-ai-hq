@@ -39,6 +39,8 @@ For each section (Top of mind, This week, Waiting, Inbox), tag each task: [Keep]
 - meetings
 - last week's plan vs actual, which shows how much room to leave for unplanned work
 
+Rank the proposals by Priority, then ICE (highest first). For every This week item and per initiative propose a MoSCoW (Must, Should, Could, Won't: scope within the week or the initiative; Won't = explicitly out this cycle) and show it next to the proposal. Score any open task that has no ICE yet (`routines/brief.md`, "ICE scoring"). The user's answers write MoSCoW to the task store; the rank inside a section stays theirs.
+
 ## 4. Meeting prep
 Run `routines/meeting-prep.md` for the next 7 days. Summarise it as:
 
@@ -65,7 +67,7 @@ As in `brief.md`, max 3 questions (including the new topic folder or document qu
 6. Needs me
 7. Context updates
 
-Then write `views/data/weekly-YYYY-Www.json` (schema: `views/CLAUDE.md`, "New optional fields", Weekly). It needs: `last_week` (summary, went_well, slipped, decided, stats, lever, from `meta/plan-vs-actual.md`), `capacity` (40 h minus meeting hours, goal free hours = last week's unplanned work), `proposals[]` with `effort_h` (one per open task in This week, Waiting and Inbox, kind keep | add | done | next week | remove), `top_of_mind[]` with `health` and `move`, `days[]` (meetings by day with prep level in `tag`), `linear` (project and ticket status), `insights`, `teamprs` (or `teamprs.failed` when the code host is unreachable), `sources[]`. Then render it with `python3 scripts/render_view.py`, and open `views/weekly.html`. After confirmation, apply the changes to the task store through the adapter.
+Then write `views/data/weekly-YYYY-Www.json` (schema: `views/CLAUDE.md`, "New optional fields", Weekly). It needs: `last_week` (summary, went_well, slipped, decided, stats, lever, from `meta/plan-vs-actual.md`), `capacity` (40 h minus meeting hours, goal free hours = last week's unplanned work), `proposals[]` (with `moscow` and `ice`) with `effort_h` (one per open task in This week, Waiting and Inbox, kind keep | add | done | next week | remove), `top_of_mind[]` with `health` and `move`, `days[]` (meetings by day with prep level in `tag`), `linear` (project and ticket status), `insights`, `teamprs` (or `teamprs.failed` when the code host is unreachable), `sources[]`. Then render it with `python3 scripts/render_view.py`, and open `views/weekly.html`. After confirmation, apply the changes to the task store through the adapter.
 
 ## 7. Close
 Build the indexes, append to `log.md`, commit.
