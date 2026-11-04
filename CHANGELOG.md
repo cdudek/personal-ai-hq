@@ -2,6 +2,10 @@
 
 Versions follow semver. Each release is a git tag `vX.Y.Z` with an entry here. `/hq:upgrade` shows the entries between your workspace version and the installed one.
 
+## 0.3.4 (2026-11-04)
+
+- Shown as "Personal AI HQ" in plugin lists; commands stay `/hq:...`.
+
 ## 0.3.3 (2026-11-04)
 
 - Task store, no schema edits. The standard connectors cannot create custom fields or add select options, so nothing that changes over time depends on one. Initiatives are containers, not a field: an Asana project `🤖 <Initiative>` (tasks multi-homed with `🤖 Board`), a page in a Notion Initiatives database, a Monday board, a Trello card, a GitHub milestone. Created and closed by Claude after your yes; the description holds outcome, end date, OKR, `Topic folder: <name>` and links. Top of mind has one task per open initiative linking to it.
