@@ -7,4 +7,4 @@ description: Lists everything that needs the user now (PRs, ticket mentions, mai
 
 Follow `${CLAUDE_PLUGIN_ROOT}/skills/_shared/version-check.md` first (if the variable is empty, `skills/_shared/version-check.md` in the plugin folder).
 
-Run `routines/radar.md`. Read only: change nothing in the workspace, send nothing.
+Run `routines/radar.md`. Every item shows what it is in a plain sentence, its state with dates, who waits since when and the effort, never only a name, number or link. Read only: change nothing in the workspace, send nothing.

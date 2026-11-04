@@ -39,7 +39,7 @@ For each section (Top of mind, This week, Waiting, Inbox), tag each task: [Keep]
 - meetings
 - last week's plan vs actual, which shows how much room to leave for unplanned work
 
-Rank the proposals by Priority, then ICE (highest first). For every This week item and per initiative propose a MoSCoW (Must, Should, Could, Won't: scope within the week or the initiative; Won't = explicitly out this cycle) and show it next to the proposal. Score any open task that has no ICE yet (`routines/brief.md`, "ICE scoring"). The user's answers write MoSCoW to the task store; the rank inside a section stays theirs.
+Rank the proposals by Priority, then ICE (highest first). For every This week item and per initiative propose a MoSCoW (Must, Should, Could, Won't: scope within the week or the initiative; Won't = explicitly out this cycle) and show it next to the proposal. Score any open task that has no ICE yet (`routines/brief.md`, "ICE scoring"). The user's answers write MoSCoW to the task store; the rank inside a section stays theirs. Each proposal shows the task's What sentence, State, who waits since when, effort and what happens if it is not done (its context card); a task without a card is completed from its source first. Every question that asks the user to choose (next task, which one to continue, triage, weekly proposals, anything under "Claude asks") shows, per option: the What sentence, the State, who waits since when, effort (XS-XL) and what happens if it waits. Then Claude's recommendation with one reason. Never offer bare names, ids, PR numbers or ticket numbers as choices. If a task has no context card, read its source and fix the task first.
 
 ## 4. Meeting prep
 Run `routines/meeting-prep.md` for the next 7 days. Summarise it as:

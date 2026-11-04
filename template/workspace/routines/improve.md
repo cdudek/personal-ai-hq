@@ -33,3 +33,6 @@ Compare the ICE Claude scored with what the user actually prioritised: tasks who
 
 ## People data (Friday, called by `review`)
 Close people with empty ids, ids without a `sources` entry, ids that no longer match (a bounced mail, a chat user that left), "Current" older than 35 days, and names that appeared in the week's items with no profile. Propose `routines/people.md` runs (Resolve, Refresh, New person) under "Claude asks". Never fix an id without the user's yes.
+
+## Context cards (Friday, called by `review`)
+List open tasks whose description has no `What:` or no `State:`, and tasks whose `State:` is older than their last change in the source. Propose a repair run (read the source, write the card) under "Claude asks", and log a friction line when a choice was offered without context. Never write a card the source cannot support.

@@ -41,6 +41,7 @@ The one place tasks live. Routines never name the tool: they say "the task store
 | Where from? | Source | {{SOURCE_VALUES}} (default: Slack, Mail, Meeting, Asana, Linear, GitHub, Jira, HubSpot, Google Drive, Miro, Figma, Notion, Confluence, LinkedIn, Data, Voice, Me; meanings in `routines/stores/README.md`) |
 | Waiting on whom? | Description line `Waiting on: <name>` | a person (the task tool's id from `context/people/` when known); only in section Waiting |
 | When is it closed? | Description line `Closed when: <scenario>` | the done scenario in words |
+| What is it, where does it stand? | Context card: description lines `What:`, `Why / who waits:`, `State:`, `Decision or next step:`, `Effort:`, `Links:` | written when the task is created or triaged, `State:` refreshed on every change |
 
 ## Field mapping
 

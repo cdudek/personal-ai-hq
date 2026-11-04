@@ -406,7 +406,11 @@
         "due": "2026-11-06",
         "area": "Delivery",
         "initiative": "Partner API",
-        "url": "https://app.asana.com/0/1200000000000000/1210000000000002"
+        "url": "https://app.asana.com/0/1200000000000000/1210000000000002",
+        "what": "Answer the partner's question whether the analytics endpoint can cache results",
+        "why": "The partner team cannot finish their dashboard until this is answered.",
+        "state": "Asked by Priya on 3 Nov; the cache layer exists but has no invalidation rule yet.",
+        "decision": "Decide: cache for 5 minutes now (small change), or wait for invalidation (a week)."
       },
       {
         "id": "1210000000000003",

@@ -691,6 +691,9 @@
             </li></template></ul></div>
         </div>
       </template>
+      <div class="block" x-show="panelKind === 'task' && panel.what && panel.what !== panel.title"><h4 class="eyebrow">What</h4><p class="strong" x-text="panel.what"></p></div>
+      <div class="block" x-show="panel.state"><h4 class="eyebrow">State</h4><p x-text="panel.state"></p></div>
+      <div class="block" x-show="panel.decision"><h4 class="eyebrow">Decision or next step</h4><p class="strong" x-text="panel.decision"></p></div>
       <div class="block" x-show="panelKind !== 'meeting' && panel.why"><h4 class="eyebrow">Why it matters</h4><p x-text="panel.why"></p></div>
       <div class="block" x-show="panel.context"><h4 class="eyebrow">Context</h4><blockquote class="quote full" x-text="panel.context"></blockquote></div>
       <div class="block" x-show="panel.action"><h4 class="eyebrow">Next step</h4><p class="strong" x-text="panel.action"></p></div>

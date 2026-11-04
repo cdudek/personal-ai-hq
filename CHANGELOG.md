@@ -2,6 +2,13 @@
 
 Versions follow semver. Each release is a git tag `vX.Y.Z` with an entry here. `/hq:upgrade` shows the entries between your workspace version and the installed one.
 
+## 0.3.10 (2026-11-04)
+
+- Every task carries a context card in its description: What, Why / who waits, State (with dates), Decision or next step, Effort, Links. It is written when a task is created or triaged and refreshed whenever Claude reads newer information. A task that is only a link is incomplete.
+- Every question that asks you to choose (next task, which to continue, triage, weekly proposals, Claude asks) shows per option the What sentence, the State, who waits since when, effort and what happens if it waits, then one recommendation. No more bare names, ids or ticket numbers as choices.
+- The task panel on the pages shows What, State and Decision or next step when the data has them. The Friday improve run lists tasks without a card.
+- `/hq:upgrade` offers to add context cards to your open tasks from their sources, after confirmation.
+
 ## 0.3.9 (2026-11-04)
 
 - People: emails come from calendar attendees and mail first, then chat. Relationships are inferred from titles, the engineering org table, ticket teams, calendar organisers, mail cc direction, CRM teams and contract rules, each proposal with likely / possible / unknown and its evidence; the user confirms.

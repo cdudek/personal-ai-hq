@@ -106,7 +106,7 @@ One list, sorted by urgency. Order: blockers first, then items older than 2 days
 
 Then a second list, "Waiting on others (N)", in the same format, from section 6.
 
-Each line names the source, who is waiting, what they need, a suggested next step and a link. Offer to draft the replies (with `context/writing-style.md`; every draft goes to `meta/drafts.md`).
+Each line names the source, who is waiting, what they need, a suggested next step and a link. Offer to draft the replies (with `context/writing-style.md`; every draft goes to `meta/drafts.md`). Each line also carries the What sentence, the State with dates, who waits since when and the effort (the task's context card when the item is a task). An item that arrives as a bare link is opened and read first, then written up; it is never listed as a name or number alone.
 
 ## Friction
 When the user corrects anything in this routine, append to `meta/friction.md`: `- YYYY-MM-DD radar: <what went wrong> -> <what they wanted>`.

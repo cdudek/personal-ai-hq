@@ -23,9 +23,10 @@ An initiative is a page in the Initiatives database (outcome, end date, OKR, `To
 
 ## Read
 Query the database for rows where Done is unchecked, sorted by Section then Rank. Comments since a date: page comments on each open row after that date (if the connector exposes comments; otherwise the user's input comes by chat and the adapter says so in the brief's Sources line).
+Context card: read `What:`, `Why / who waits:`, `State:`, `Decision or next step:`, `Effort:` and `Links:` from the description lines below `Closed when:` (view fields `what`, `why`, `state`, `decision`); a task without `What:` and `State:` is incomplete and gets fixed by the brief.
 
 ## Write
-- **Create:** a row with Name, Section, Initiative relation, AI checked, Rank after the last row of the section, and the property lines at the top of the page body (Closed when included).
+- **Create:** a row with Name, Section, Initiative relation, AI checked, Rank after the last row of the section, and the property lines at the top of the page body (Closed when included). Then the context card (`routines/stores/README.md`, "Context card"): `What:`, `Why / who waits:`, `State:` (with dates), `Decision or next step:`, `Effort:`, `Links:`, one line each, below the `Closed when:` line. Update `State:` (and the other lines) on every move, comment or change, and when newer information is read.
 - **Move:** set Section and Rank. **Set:** rewrite the body line. **Complete:** check Done.
 - **Comment:** add a page comment on the row.
 - **Create or close an initiative:** add a page to Initiatives, or set its Status to Closed (after the user's yes).

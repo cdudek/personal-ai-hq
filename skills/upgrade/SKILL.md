@@ -44,6 +44,15 @@ The `claude plugin` CLI is not available in Cowork's cloud session. Update the p
 8. Write `Y` to `<workspace>/.hq-version`, then `python3 scripts/build_index.py`, then commit in the workspace: `git add -A && git commit -m "upgrade: X -> Y"`. Never push.
 9. If `views/data/` has JSON from the old version, re-render the latest daily and weekly with `python3 scripts/render_view.py <file>` and report any LINK CHECK or LABEL CHECK lines.
 
+## Migration 0.3.9 -> 0.3.10: context cards on every task
+
+Runs when `X` is older than 0.3.10. The new routines, adapters and view code arrive with the sync in step 4. Nothing is written to the task tool before the user confirms.
+
+1. Explain in two lines: every task now carries a context card in its description (What, Why / who waits, State, Decision or next step, Effort, Links), and every question that asks the user to choose shows that context per option.
+2. List the open tasks (This week, Waiting, Inbox, Top of mind) that have no `What:` or no `State:` line. Show 3 as a sample: for each, read its source (the linked mail, chat thread, ticket, PR or document) through the connectors and draft the card from what the source says. Never invent a fact; a line the source cannot support says "unknown, ask" instead.
+3. Ask "Add context cards to all N open tasks like this? [yes]". On yes write the cards through the adapter, below the property, `Waiting on:` and `Closed when:` lines, and show a count. On no leave the tasks as they are; the brief completes the cards task by task when it reads their sources.
+4. Re-render the latest views (step 9); the task panel now shows What, State and Decision or next step when the data carries `what`, `state`, `decision`.
+
 ## Migration 0.3.5 -> 0.3.6: HQ fields MoSCoW and ICE, sizes XS-XL
 
 Runs when `X` is older than 0.3.6. The new `routines/`, view code and `routines/stores/asana-fields.md` arrive with the sync in step 4. Standard connector for everything except the optional token path.
