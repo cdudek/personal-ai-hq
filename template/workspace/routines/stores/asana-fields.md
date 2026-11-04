@@ -9,7 +9,7 @@ updated: {{SETUP_DATE}}
 
 One place for the field spec. Setup (`/hq:setup`, step "Create the task store"), the upgrade to 0.3.6 and the adapter's "Create the board" all point here. The eight fields below are a **prerequisite** for an Asana task store: HQ reads and writes them by id, and the pages sort on them. They are created **once per organisation** as shared library fields; every colleague's setup then only finds and reuses them through the standard Asana connector (no token).
 
-`Area` is not in this list: it stays per user (a local field on the user's own board if it exists, else a description line).
+`Area` is never a field: it follows from the task's initiative (its project description) or, without one, from the `Area:` description line.
 
 ## Check first
 

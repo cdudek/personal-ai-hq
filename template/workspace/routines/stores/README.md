@@ -43,7 +43,7 @@ An initiative is its own container in the tool, created by Claude through the co
 
 - **Rank:** the user drags; Claude never reorders a task the user moved.
 - **Input:** a comment on a task ("next week", "delegate to X", "P0") is an instruction; each brief reads all comments since its last run and acts on them. Dragging sets rank. Ticking off is done.
-- **New initiative:** proposed when tasks pass the initiative test (`context/areas/index.md`); created only after a yes: the container (see above), its Top of mind task, and its topic folder in `research/`.
+- **New initiative:** proposed when tasks pass the initiative test (`context/areas/index.md`); created only after a yes: the container (see above) with all HQ properties, Asana: i.e. add all eight `HQ ·` fields from `meta/task-store.md` to the new project (other tools: give the container the same properties as the board). its Top of mind task, and its topic folder in `research/`.
 - **Closing an initiative:** proposed when all its tasks are done or the end date passed; after a yes, complete the Top of mind task, close or archive the container (the adapter says how) and set the topic README status to `complete` (moving the folder to `research/_archive/` is a second yes).
 - **Documents:** a task's description or link holds the shared URL when one exists. The initiative container's description carries `Topic folder: <folder name>` (a name, not a path) plus shared links. Never write a local path into the task tool (`research/CLAUDE.md`, Shared versions).
 - **Tickets:** engineering work stays in the ticket tool. The task store holds only the user's own tasks and links to the tickets.

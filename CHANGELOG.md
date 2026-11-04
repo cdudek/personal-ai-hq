@@ -2,6 +2,11 @@
 
 Versions follow semver. Each release is a git tag `vX.Y.Z` with an entry here. `/hq:upgrade` shows the entries between your workspace version and the installed one.
 
+## 0.3.8 (2026-11-04)
+
+- New initiatives get all eight HQ fields everywhere they are created: setup, upgrade, the brief's new-initiative question and the adapter.
+- Area is no longer a column: it follows from the task's initiative, else the `Area:` description line.
+
 ## 0.3.7 (2026-11-04)
 
 - Asana: every new initiative project gets all eight HQ fields, so its tasks show and filter the same columns as the board.
