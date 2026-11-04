@@ -2,6 +2,10 @@
 
 Versions follow semver. Each release is a git tag `vX.Y.Z` with an entry here. `/hq:upgrade` shows the entries between your workspace version and the installed one.
 
+## 0.3.5 (2026-11-04)
+
+- Asana: setup prefers shared library fields `HQ · Priority`, `HQ · Size`, `HQ · Source`, so a team creates them once and every colleague's setup reuses them through the standard connector.
+
 ## 0.3.4 (2026-11-04)
 
 - Shown as "Personal AI HQ" in plugin lists; commands stay `/hq:...`.
