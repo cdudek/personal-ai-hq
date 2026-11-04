@@ -53,6 +53,6 @@ Your notes stay on your computer. Your tasks stay on a private board in your too
 
 ## More
 
-Details on fields, folders and updates: [docs/reference.md](docs/reference.md). Questions: open an issue or find me on LinkedIn (linkedin.com/in/calvindudek).
+Details on fields, folders and updates: [docs/reference.md](docs/reference.md). Questions: open an issue or find Calvin Dudek on LinkedIn.
 
 Inspired by Daniel Bloom (How I AI) and Andrej Karpathy's AI-kept wiki. MIT licence, Calvin Dudek.
