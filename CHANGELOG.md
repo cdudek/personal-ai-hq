@@ -2,6 +2,10 @@
 
 Versions follow semver. Each release is a git tag `vX.Y.Z` with an entry here. `/hq:upgrade` shows the entries between your workspace version and the installed one.
 
+## 0.4.1 (2026-11-05)
+
+- Weekly page: no summary headline; the capacity bar already shows the numbers.
+
 ## 0.4.0 (2026-11-04)
 
 Cleanup release. `/hq:upgrade` syncs the changed system files and runs the short 0.3.12 -> 0.4.0 migration (field spec check, `.gitignore`, owner id, DM permission, all after your yes), plus the Asana and Area migrations if you are older.

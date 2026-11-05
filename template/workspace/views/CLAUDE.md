@@ -82,7 +82,7 @@ Daily:
 - meetings: `decide[]` (`{title, note, state}`), `prep_items[]`, `last_time` (`{date, discussed[], decided[]}`), `between.name`
 
 Weekly (`kind: "weekly"`, `week` number, `sections[]` is ignored; the page renders these keys):
-- `headline` (`**bold**` allowed), `sources[]` (chips under the headline)
+- `headline` (`**bold**` allowed; daily and review only, the weekly page shows none), `sources[]` (chips under the headline)
 - `last_week`: `{range, summary, went_well[], slipped[], decided[], stats {planned, done, slipped, unplanned_h, meeting_h}, slipped_repeat, lever}`
 - `capacity`: `{available_h, meetings_h, goal_free_h, baseline_planned_h, next_move}` (a missing value takes the default, 0 is a real value; hours come from `meta/plan-vs-actual.md`, `unplanned_h` and `meeting_h`); planned hours and the bar follow the answers on the page
 - `start_here`: `{title, why}`
