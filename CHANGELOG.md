@@ -2,6 +2,11 @@
 
 Versions follow semver. Each release is a git tag `vX.Y.Z` with an entry here. `/hq:upgrade` shows the entries between your workspace version and the installed one.
 
+## 0.4.2 (2026-11-05)
+
+- Pages: no how-to paragraph on the review, no Sources box on the daily (a failed source shows in the tab bar, its note on hover), no "Built by" footers.
+- Board sections: space between the heading and the table.
+
 ## 0.4.1 (2026-11-05)
 
 - Weekly page: no summary headline; the capacity bar already shows the numbers.

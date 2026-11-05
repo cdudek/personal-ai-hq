@@ -193,6 +193,8 @@ a.ext:hover,.btn:hover .ext{color:var(--ink);text-decoration:underline;text-unde
 main section,.wk section{margin:28px 0 48px}
 .sh{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
 .sh .eyebrow{flex-basis:100%;margin-bottom:4px}
+.bsh{margin-bottom:14px}
+.bsh + .rule{margin-top:-8px}
 .empty{color:var(--ink-3);font-size:13.5px;padding:14px 16px}
 .more{display:flex;align-items:center;gap:10px;margin-top:10px;font-size:12.5px;color:var(--ink-3)}
 
@@ -296,10 +298,6 @@ table.board{width:100%;border-collapse:collapse;font-size:13.5px}
 .meet.past::before{background:var(--line-2)}
 .meet.now::before{background:var(--ink);border-color:var(--ink);box-shadow:0 0 0 3px var(--paper),0 0 0 4px var(--ink)}
 .meet.now .t{color:var(--ink);font-weight:700}
-.srcbox{margin-top:22px;border-top:1px solid var(--line);padding-top:16px}
-.srcrow{display:flex;justify-content:space-between;gap:14px;font-size:12.5px;color:var(--ink-2);margin-top:8px}
-.srcrow.fail{color:var(--amber);font-weight:700}
-.srcnote{font-size:12.5px;color:var(--ink-3);margin:2px 0 0}
 .legend{margin-top:22px;border-top:1px solid var(--line);padding-top:14px;font-size:12.5px;color:var(--ink-2)}
 .legend summary{cursor:pointer;font:500 11px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3);list-style:none}
 .legend summary::before{content:"+ "}
@@ -310,7 +308,6 @@ table.board{width:100%;border-collapse:collapse;font-size:13.5px}
 .legend .status{gap:0}
 .quote-demo{font-size:14px;color:var(--ink-2);border-left:2px solid var(--line-2);padding-left:8px}
 .claude-demo{display:inline-flex;width:24px;height:20px;border-radius:var(--r-sm);background:var(--claude-bg);color:var(--claude);align-items:center;justify-content:center}
-footer{font-size:12px;color:var(--ink-3);margin-top:16px}
 
 /* ---------- 9. Weekly ---------- */
 .wk{padding-bottom:120px}
@@ -599,9 +596,7 @@ footer{font-size:12px;color:var(--ink-3);margin-top:16px}
 .callnote:focus{outline:2px solid var(--claude);outline-offset:1px}
 .suggest .callstate,.callstate{margin:8px 0 0;font:500 11px/1.4 var(--mono);letter-spacing:.04em;color:var(--claude);text-align:right}
 
-/* Review: explainer, why link, evidence */
-.explain{font-size:14.5px;line-height:1.5;color:var(--ink-2);max-width:72ch;margin:12px 0 0}
-.explain b{color:var(--ink);font-weight:600}
+/* Review: why link, evidence */
 .rv-side{display:flex;flex-direction:column;align-items:flex-end;gap:6px}
 .callhint{margin:8px 0 0;font-size:12px;color:var(--ink-3);text-align:right}
 .callstate .linkbtn{margin-left:8px;color:var(--ink-2)}

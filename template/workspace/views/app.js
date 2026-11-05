@@ -252,11 +252,6 @@ document.addEventListener("alpine:init", () => {
       },
       joinLink(m) { const l = (m?.links || []).find(l => this.url(l.url) && (/join/i.test(l.label || "") || l.source === "meet")); return l ? this.url(l.url) : null; },
       get srcFailed() { return (d.sources || []).filter(s => s.ok === false); },
-      get srcGroups() {
-        const g = {};
-        for (const s of (d.sources || []).filter(s => s.ok !== false)) (g[s.read_at || ""] ||= []).push(s.name);
-        return Object.entries(g).map(([at, names]) => ({at, names: names.join(", ")}));
-      },
       get srcChips() { return (d.sources || []).map(s => ({name: s.name, ok: s.ok !== false, text: s.status || (s.ok === false ? "not reachable" : "read")})); },
 
       // ---------- board: effective value = original overlaid with staged edit ----------

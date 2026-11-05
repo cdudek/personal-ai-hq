@@ -18,7 +18,6 @@
       <h1 x-text="d.title"></h1>
       <p class="headline" x-show="d.headline && d.kind !== 'weekly'"><template x-for="r in rich(d.headline)"><span :class="r.b && 'bold'" x-text="r.t"></span></template></p>
       <p class="meta" x-show="d.last_review"><span x-text="'Last review: ' + d.last_review?.adopted + ' adopted, ' + d.last_review?.open + ' open'"></span> <a class="ext" x-show="reviewHref(d.last_review?.link)" :href="reviewHref(d.last_review?.link)">Open</a></p>
-      <p class="explain" x-show="review">Claude proposes changes to how it works for you. Pick <b>Adopt</b>, <b>Not now</b> or <b>Adjust</b> on each. Nothing changes until you press <b>Send to Claude</b> at the bottom: that copies one prompt with your decisions; paste it in Claude.</p>
       <div class="src-chips" x-show="!daily && srcChips.length">
         <template x-for="c in srcChips"><span class="chip" :class="!c.ok && 'fail'" x-text="c.name + ' · ' + c.text"></span></template>
       </div>
@@ -55,7 +54,7 @@
 <nav class="tabs" aria-label="Sections">
   <div class="wrap tabs-in">
     <template x-for="n in navLinks" :key="n.id"><a :href="'#' + n.id"><span x-text="n.label"></span><span class="num" :class="n.urgent && 'urgent'" x-show="n.n !== undefined" x-text="n.n"></span></a></template>
-    <span class="tab-status" x-show="daily && srcFailed.length" x-text="srcFailed.length + (srcFailed.length === 1 ? ' source failed' : ' sources failed')"></span>
+    <span class="tab-status" x-show="daily && srcFailed.length" :title="srcFailed.map(s => s.name + (s.note ? ': ' + s.note : '')).join('\n')" x-text="srcFailed.length + (srcFailed.length === 1 ? ' source failed' : ' sources failed')"></span>
   </div>
 </nav>
 
@@ -87,7 +86,7 @@
 
     <template x-if="b.s">
       <section :id="b.s.id">
-        <div class="sh">
+        <div class="sh bsh">
           <span class="eyebrow" x-text="eyebrow(b.s)"></span>
           <h2 x-text="b.s.title"></h2><span class="num" x-text="count(b.s)"></span>
           <div class="seg" x-show="b.s.id === 'replies'" style="margin-left:auto" role="group" aria-label="Filter">
@@ -277,13 +276,6 @@
     </ol>
   </section>
 
-  <div class="srcbox" x-show="(d.sources || []).length">
-    <div class="eyebrow">Sources</div>
-    <template x-for="g in srcGroups" :key="g.at"><div class="srcrow"><span x-text="g.names"></span><span class="mono" x-text="g.at"></span></div></template>
-    <template x-for="s in srcFailed" :key="s.name">
-      <div><div class="srcrow fail"><span x-text="s.name + ' failed'"></span><span class="mono" x-text="s.read_at"></span></div><p class="srcnote" x-show="s.note" x-text="s.note"></p></div>
-    </template>
-  </div>
 
   <details class="legend">
     <summary>How to read this page</summary>
@@ -298,7 +290,6 @@
       <dt><span class="claude-demo"></span></dt><dd>Indigo is Claude: copies a prompt or waits for Claude.</dd>
     </dl>
   </details>
-  <footer>Built by routines/brief.md. Click anything for details.</footer>
 </aside>
 </div>
 </template>
@@ -501,7 +492,6 @@
     <div class="card bullets" x-show="!d.teamprs.failed && (d.teamprs.notes || []).length"><ul><template x-for="n in d.teamprs.notes || []"><li x-text="n"></li></template></ul></div>
   </section>
   </template>
-  <footer>Built by routines/weekly.md. Click a meeting or initiative for details.</footer>
 </div>
 </template>
 
@@ -596,7 +586,6 @@
     <button class="btn btn-quiet" @click="resetAnswers()" x-show="answered">Undo all</button>
     <button class="btn btn-claude" :class="ansState === 'copied' && copied.review && 'is-copied'" :disabled="!answered" @click="applyReview()"><span x-text="ansState === 'updated' ? 'Copy again' : lbl('review', 'Send to Claude')"></span></button>
   </div>
-  <footer>Built by routines/review.md.</footer>
 </div>
 </template>
 

@@ -75,7 +75,7 @@ Tasks, Top of mind entries and cards may carry `docs: [{title, url?, path?, kind
 Daily:
 - `generated` ("7:31 AM"), `start_here`: `{title, why, minutes, until, key}` (key = `key` of the Needs attention item to mark "Start here"; without `start_here` the page uses the first urgent item, or says nothing needs you)
 - `next_meeting`: optional override `{title, start, tag, tag_kind, summary, links}`; default is the next meeting that needs prep
-- `sources[]`: `{name, ok, read_at, note}`; failed sources show "N source failed" and a note in the rail
+- `sources[]`: `{name, ok, read_at, note}`; failed sources show "N source failed" in the tab bar, the note on hover; the page lists no sources otherwise
 - items: `what` (+ `what_kind: warn`, the amber phrase in Waiting rows, e.g. "has no reply after 2 working days"), `kind` (reply | review, filter in Replies and reviews), `rec` (`{text, source}`, renders the "Claude suggests" block with Decide differently / Send decision to Claude), `key`
 - sections: `replies` (compact rows), `waiting` (rows with Drop + Ask Claude), `needs` (cards), `yesterday` (recap). Page order is fixed by the page, not by the data order. Limits: Needs attention 5 (urgent never hidden), Replies 8, Waiting 5, Inbox 5, Top of mind 3, then "Show N more"; `limit` on a section overrides
 - top_of_mind: `right` (one mono word on the right, e.g. "Planning Fri")
