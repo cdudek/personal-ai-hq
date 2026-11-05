@@ -7,20 +7,20 @@ updated: {{SETUP_DATE}}
 
 # Routine: people (map, resolve, refresh)
 
-Goal: Claude knows who the user's close team is, every person's identity in every tool, and what is running between the user and each of them, so briefs, 1:1 prep, Waiting on and the task store match people reliably. Profiles are `context/people/<slug>.md`; schema below.
+Goal: Claude knows who the user's close team is, every person's identity in every tool, and what is running between the user and each of them, so briefs, 1:1 prep, Waiting on and the task store match people reliably. Each person has a folder `context/people/<slug>/` with `profile.md` (schema below) and `records/` (see Records).
 
 ## Privacy rules (also in `CLAUDE.md`)
 
 - Only what the user can already see: their DMs, channels they are in, threads they are part of, repos and projects they have access to.
 - Never their private mail, never their DMs with other people.
 - Facts only. Claude writes no performance judgements, no opinions, no moods.
-- Personnel matters stay in the user's own words, in "How we work", never paraphrased by Claude.
+- Personnel matters and feedback are records in the user's own words (see Records), never paraphrased or inferred by Claude. They never appear on a page, in a draft, chat, tasks or any shared output.
 - Work content only. Nothing from `journal/` or private lists.
-- The workspace stays local: a profile never goes into chat, a ticket, a code review or a shared page.
+- The workspace stays local: a profile or record never goes into chat, a ticket, a code review or a shared page.
 
 ## Profile schema
 
-Frontmatter of `context/people/<slug>.md`:
+Frontmatter of `context/people/<slug>/profile.md`:
 
 ```yaml
 type: person
@@ -47,11 +47,35 @@ status: draft | current
 updated: YYYY-MM-DD
 ```
 
-Body sections:
+Body sections of `profile.md` (the one high-level file per person; it stays short):
 - **Role and what they own.**
-- **How we work:** the user's words only. Claude may propose a line under "Claude asks"; it is written only after the user says yes, in the user's wording.
+- **Personality and how they work:** the user's words only.
+- **How we work together:** the user's words only. Claude may propose a line under "Claude asks"; it is written only after the user says yes, in the user's wording.
+- **How I write to them:** learned recipient-specific style rules (greeting, language, length, tone, sign-off). Written only from the Friday review, after the user's Adopt (`routines/review.md` section 1). `routines/meeting-prep.md` and every drafting routine read it before drafting to this person.
+- **Current:** derived, close people only, fully rewritten on every refresh (see Mode 3). Never edited by hand, never kept across refreshes.
 - **Claude asks:** open questions (ambiguous ids, relation, close or not).
-- **Current:** derived, close people only, fully rewritten on every refresh (see Refresh). Never edited by hand, never kept across refreshes.
+
+## Records
+
+Everything that must not change lives in `context/people/<slug>/records/YYYY/MM/YYYY-MM-DD.md`: feedback the user gives staff, feedback they receive, personnel matters, what they discuss and decide with someone. One file per person per day, append-only. Entry format:
+
+```
+- HH:MM [type] text · source: <link or "the user">
+```
+
+Types: `feedback-given`, `feedback-received`, `1:1`, `decision`, `commitment`, `discussion`, `personnel`.
+
+Rules:
+- **Immutable.** A past day's file is never edited. A correction is a new entry today that names the earlier date ("corrects 2026-01-14 14:10: ..."). Within today's file only append.
+- **Own words only.** `personnel` and `feedback-*` entries are written only from the user's own words: they say or dictate them, or confirm a proposal. Claude never infers a judgement about a person. A proposal is shown as the exact line and written only after the user's yes.
+- **Never shared.** Records, and `[personnel]` entries above all, never appear on a page, in a draft, chat, tasks, tickets or any shared output, and never leave the workspace.
+- **No judgement in the other types.** `1:1`, `decision`, `commitment`, `discussion` hold facts: what was said, decided, promised, with the date.
+
+Who writes records:
+- **capture** ("feedback to X: ...", "note on X: ..."): writes the entry from the user's words (`routines/capture.md`).
+- **debrief and meeting-prep**, after a 1:1 or meeting: propose entries from the transcript or notes; write after the user confirms (`routines/debrief.md`, `routines/meeting-prep.md`).
+- **brief**: when it sees a decision or commitment with a person, it proposes an entry; written after a yes.
+- **refresh** (monthly): proposes updates to the profile summary (Role, Personality, How we work together) from the records; written after a yes. The records themselves are never touched.
 
 Rules: an empty id means not resolved yet. Never guess an id. Every id has a `sources` entry. Changing `close`, `relation`, `contract` or any id needs the user's yes (workspace rule 1); `updated` and `Current` are Claude's to rewrite.
 
@@ -106,7 +130,7 @@ Write the ids into the profile and one `sources` line per id: `slack_id: "chat u
 
 For close people. Monthly (inside `routines/refresh.md`) and before every 1:1 (`routines/meeting-prep.md` 3a). Read-only sources, so it needs no confirmation: it rewrites only the derived "Current" section and `updated`. Use ids from the frontmatter; never search by first name.
 
-Rewrite `## Current` completely, with the date, in this shape:
+Rewrite `## Current` in `profile.md` completely, with the date, in this shape:
 
 ```
 ## Current
@@ -123,7 +147,7 @@ Rules: last 30 days. Deep links as in `routines/radar.md`. Facts only, no judgem
 
 ## Mode 4: New person
 
-The brief's context gap class (b) (`routines/brief.md` step 4) finds someone unknown. Resolve their ids first (Mode 2 for that one person), then ask: "New person: [Name], [role], [evidence]. Add a profile?" On yes create `context/people/<slug>.md` from the schema with the resolved ids and sources, `close: false`, `status: draft`. Same-first-name slug: `firstname-lastname`, or `firstname-team` when the last name is unknown, and add an alias.
+The brief's context gap class (b) (`routines/brief.md` step 4) finds someone unknown. Resolve their ids first (Mode 2 for that one person), then ask: "New person: [Name], [role], [evidence]. Add a profile?" On yes create `context/people/<slug>/profile.md` from the schema with the resolved ids and sources, `close: false`, `status: draft`. Same-first-name slug: `firstname-lastname`, or `firstname-team` when the last name is unknown, and add an alias.
 
 ## Matching people elsewhere
 

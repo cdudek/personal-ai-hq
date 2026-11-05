@@ -31,18 +31,30 @@ tags: [example]
 
 # Jordan Rivera
 
-This is a fictional example of a profile. Delete it after setup (`/hq:setup` does this once your own close team is mapped).
+This is a fictional example of a profile. Delete the whole folder after setup (`/hq:setup` does this once your own close team is mapped). Dated records live next to it in `records/`.
 
 ## Role and what they own
 
 - **Role:** Engineering Manager, Platform at Acme
 - **Works with me on:** the platform roadmap, hiring for the platform team
 
-## How we work
+## Personality and how they work
 
 The user's words only. Claude never writes opinions here.
 
-- Weekly 1:1 on Tuesdays. Prefers a short written agenda the evening before.
+- Prefers a short written agenda the evening before.
+
+## How we work together
+
+The user's words only. Claude never writes opinions here.
+
+- Weekly 1:1 on Tuesdays.
+
+## How I write to them
+
+Learned from drafts versus what the user sent (`routines/review.md` section 1). Written only after the user adopts a rule.
+
+- None yet.
 
 ## Claude asks
 

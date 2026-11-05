@@ -33,7 +33,7 @@ The prompt starts "Apply these changes to the task store" and holds a `<<<CHANGE
 - `top_of_mind[]`: title (the initiative name), note (where it stands), status (Active this week | Waiting | Dormant), area, source, link, next (next milestone), updates[] (latest status lines with date), people[], tasks[] (task ids; an empty or missing list means unspecified: the panel then lists the open tasks whose `initiative` equals the title; on the weekly page the pool is the board plus the proposals). No fixed number: every initiative that is really active. Cards open the detail panel, the link sits inside it
 - `meetings[]` (right column; `meetings_title` defaults to "Today"):
   - start, end (`HH:MM`), title, source (calendar | meet | demodesk), where, tag, tag_kind, `status` (`on` default | `cancelled` | `declined` | `moved`; anything but `on` is never the "Next meeting") and `rolls_to` (the next occurrence, shown in the panel)
-  - who: list of `{name, note}`; note is one line from `context/people/` (role, what they want from the user)
+  - who: list of `{name, note}`; note is one line from the person's `context/people/<slug>/profile.md` (role, what they want from the user)
   - why (why it matters), prep (what to read or bring), open_points[] (from the last meeting with them)
   - action_items: `{mine: [{text, status}], others: [{who, text, status}]}` from the last occurrence; status is done | open | unclear
   - between (1:1s only): `{you_owe: [entry], they_owe: [entry], threads: [entry], agenda: [text]}`, entry = `{text, link, source}`
@@ -100,7 +100,7 @@ The prompt holds `<<<PLAN ... >>>`, one line per proposal: `- [keep|add|done|nex
 ## Review view (`kind: "review"`, Friday, `routines/review.md`)
 
 `data/review-YYYY-Www.json`, rendered to `views/review-<date>.html` and `views/review.html` (a `sample` date never replaces `review.html`). Keys: `title`, `week`, `generated`, `headline` (`**bold**` allowed; do not repeat "nothing is applied until you decide", the page says it), `sources[]`, `start_here {title, why, minutes}`, and one array per section, each item with `id` (required: it is how Claude resolves the decision, and the page will not stage an item without it) and `source` (where Claude saw it):
-- `style[]`: `channel`, `rule` (the proposal), `before` (what Claude drafted), `after` (what the user sent); all items also take `evidence[]`, `impact`, `change`
+- `style[]`: `channel`, `rule` (the proposal), `before` (what Claude drafted), `after` (what the user sent), `scope` (general | person: the person's slug; a person-scoped rule goes to that profile's "How I write to them"), `draft_id` (the `d-...` id from `meta/drafts/`); all items also take `evidence[]`, `impact`, `change`
 - `glossary[]`: `term`, `kind` (new | correct), `meaning`, `was` (for corrections)
 - `fixes[]`: `issue`, `cause`, `fix`, `file` (the file it changes)
 - `tips[]`: `tip`, `from`, `verdict` (adopt | backlog | discard), `why`, `file`

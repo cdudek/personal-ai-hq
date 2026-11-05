@@ -11,21 +11,24 @@ Proposals first, apply after a yes. Every change is logged in `log.md`.
 
 ## 1. Context refresh
 - Read the last 4 weeks of `daily/` and `weekly/` notes and the decisions.
-- Propose updates to `goals.md`, the initiative topic READMEs in `research/`, `people/` and the glossary: what changed, what is done, what is new.
+- Propose updates to `goals.md`, the initiative topic READMEs in `research/`, `people/` (profile summaries) and the glossary: what changed, what is done, what is new.
 - Move pages that have been in `draft` for 30+ days to `current` after the user confirms, or delete them.
 
 ## 1b. People
 Run `routines/people.md`: Refresh "Current" for every `close: true` profile, then Resolve identities for people with empty ids. Propose a new close team member when the Map evidence (recurring 1:1, DM frequency) shows one; `close` changes only after the user's yes.
 
+Profile summaries: read each close person's records of the last 4 weeks and propose updates to Role, Personality and How we work together in `profile.md` as exact lines; write after the user's yes. Records are never edited or summarised away. Personnel and feedback entries inform the proposal for the user only; the proposed wording is theirs to give.
+
 ## 2. Lint
 List:
 - contradictions between pages
-- people not updated in 90 days
+- people not updated in 90 days (profile `updated` and newest record)
 - close people with a missing id, an id without a `sources` entry, or a "Current" older than 35 days
 - orphan pages (no links in or out)
 - broken `[[links]]`
 - `sources/` items never compiled
 - files without `summary:`
+- a past day's record or drafts file changed after its day (check `git log`); only `outcome:` lines may be appended to old drafts
 
 ## 2b. Documents home lint
 For every topic folder in `research/` (not `_template`):

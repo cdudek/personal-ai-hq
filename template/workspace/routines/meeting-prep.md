@@ -36,12 +36,12 @@ The user's open items also go to the Inbox of the task store with `closed when:`
 ## 3a. 1:1s: what runs between you
 Only for meetings explicitly marked as a 1:1 in the title ("1:1", "1-1", "1on1", "One-on-One", "Name / <user>"). Not for any other small meeting.
 
-Match the attendee to a profile in `context/people/` by email or id (never by first name; two candidates means ask). Then:
-1. Read the profile's "Current" section first and use it as the starting point.
+Match the attendee to a profile in `context/people/<slug>/profile.md` by email or id (never by first name; two candidates means ask). Then:
+1. Read the profile ("Current" first, then "How we work together") and the last 3 files in `context/people/<slug>/records/` (newest first). Use them as the starting point; open commitments in the records count under you owe / they owe. Never put `[personnel]` or feedback entries into the prep output, the view data or any draft; use them only to inform the user's own thinking in the conversation.
 2. Refresh it (`routines/people.md`, mode Refresh) when it is older than 7 days or missing, then use the fresh one. No profile or no ids: resolve them first (mode Resolve), or say so in one line and use names.
 
 Look at the last 14 days between the user and that person:
-- chat DMs and threads where both wrote, mail threads with them, tickets and PRs where one waits for the other, earlier 1:1 notes, their page in `context/people/` (ids give exact matches in each tool).
+- chat DMs and threads where both wrote, mail threads with them, tickets and PRs where one waits for the other, earlier 1:1 notes, their profile in `context/people/<slug>/profile.md` (ids give exact matches in each tool).
 - **you owe:** unanswered messages from them, open promises from the last 1:1, PRs or tickets where they wait on the user.
 - **they owe:** their open promises, answers the user waits for.
 - **threads:** 3-5 running topics, one line each, each with its deep link.
@@ -61,7 +61,11 @@ If no topic can be matched, skip it; never guess one. Role adapters list typical
 - **No action:** broadcasts and all-hands.
 
 ## 5. Output into the view data
-Per meeting, in `meetings[]` (schema in `views/CLAUDE.md`). Always: `status` (`on` | `cancelled` | `declined` | `moved`; a meeting that is not `on` keeps its card but the page never offers it as the next meeting) and, when it is not `on`, `rolls_to` (the next occurrence with its date), who (with a one-line note from `context/people/`), why, prep, attachments[] (label, url, source, summary), action_items.mine[] and action_items.others[] (who, text, status), open_points[], links[], tag (prep category). For 1:1s also `between`, for topic meetings also `topic`.
+Per meeting, in `meetings[]` (schema in `views/CLAUDE.md`). Always: `status` (`on` | `cancelled` | `declined` | `moved`; a meeting that is not `on` keeps its card but the page never offers it as the next meeting) and, when it is not `on`, `rolls_to` (the next occurrence with its date), who (with a one-line note from the profile in `context/people/<slug>/profile.md`), why, prep, attachments[] (label, url, source, summary), action_items.mine[] and action_items.others[] (who, text, status), open_points[], links[], tag (prep category). For 1:1s also `between`, for topic meetings also `topic`.
+
+## 6. Records and follow-ups
+- After a 1:1 or meeting (when the transcript or notes exist): propose record entries (decision, commitment, discussion, 1:1) for each person involved, as exact lines (`routines/people.md`, "Records"); write them after the user confirms. `personnel` and feedback entries only from their own words.
+- A follow-up message drafted for the user is logged first (`CLAUDE.md` rule 6) and uses "How I write to them" from the profile.
 
 ## Friction
 When the user corrects the prep, log it to `meta/friction.md`.

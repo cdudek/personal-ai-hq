@@ -41,7 +41,7 @@ The one place tasks live. Routines never name the tool: they say "the task store
 | Is it in scope? | MoSCoW | Must, Should, Could, Won't: scope within an initiative or the week, set in the weekly plan; Won't = explicitly out this cycle |
 | How big? | Size | t-shirt XS, S, M, L, XL (rough effort) |
 | Where from? | Source | {{SOURCE_VALUES}} (default: the 17 values and meanings in `routines/stores/README.md`) |
-| Waiting on whom? | Description line `Waiting on: <name>` | a person (the task tool's id from `context/people/` when known); only in section Waiting |
+| Waiting on whom? | Description line `Waiting on: <name>` | a person (the task tool's id from `context/people/<slug>/profile.md` when known); only in section Waiting |
 | When is it closed? | Description line `Closed when: <scenario>` | the done scenario in words |
 | What is it, where does it stand? | Context card: description lines `What:`, `Why / who waits:`, `State:`, `Decision or next step:`, `Effort:`, `Links:` | written when the task is created or triaged, `State:` refreshed on every change |
 

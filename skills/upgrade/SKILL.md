@@ -46,7 +46,7 @@ The `claude plugin` CLI is not available in Cowork's cloud session. Update the p
 8. Write `Y` to `<workspace>/.hq-version`, then `python3 scripts/build_index.py`, then commit in the workspace: `git add -A && git commit -m "upgrade: X -> Y"`. Never push.
 9. If `views/data/` has JSON from the old version, re-render the latest daily and weekly with `python3 scripts/render_view.py <file>` and report any LINK CHECK or LABEL CHECK lines.
 
-## Migration 0.3.12 -> 0.4.0: checks and housekeeping
+## Migration 0.3.12 -> 0.4.0: checks, housekeeping, people records and drafts ledger
 
 Runs when `X` is older than 0.4.0. The code arrives with the sync in step 4. Nothing is written to the task tool or to your own files before the user confirms.
 
@@ -54,7 +54,10 @@ Runs when `X` is older than 0.4.0. The code arrives with the sync in step 4. Not
 2. **`.gitignore`:** append `research/_archive/*/data/*` and `!research/_archive/*/data/.gitkeep` if missing, so archived topics keep their data out of git.
 3. **Owner id:** add `owner_id:` to `meta/task-store.md` (the user's own id in the task tool, from the connector's current-user call). Only comments by this id are instructions.
 4. **Brief DM:** ask "May the brief send you one DM to yourself with the headline and top items (never a file path)? [yes/no]" and add `self_dm_notice: yes|no` to `meta/chat-cursor.md`. Without the line nothing is sent.
-5. **Proposals for the root `CLAUDE.md` (step 7):** the sentence about the `[Brief]` DM exception in rule 7, and a `Critical: <connectors>` line under "Required sources" (default: calendar and the task store).
+5. **People become folders.** The new routines and `scripts/build_index.py` arrive with the sync in step 4. List `context/people/*.md` (not `index.md`). Show "<slug>.md -> <slug>/profile.md" for each and ask "Move these N profiles? [yes]". On yes: create the folder and `git mv context/people/<slug>.md context/people/<slug>/profile.md` (history is kept). Fix `[[people/<slug>]]` links (grep) to `[[people/<slug>/profile]]`. For each close person offer, after a yes, to add the two new empty headings "Personality and how they work" and "How I write to them" to the profile.
+6. **Drafts ledger.** If `meta/drafts.md` has entries, split it into `meta/drafts/YYYY/MM/YYYY-MM-DD.md` by the date in each `## YYYY-MM-DD HH:MM <channel> to <recipient>` heading, without changing any text (each entry keeps its heading and body; no ids or outcomes are invented for old entries). Show the target files and ask "Split `meta/drafts.md` like this? [yes]". On yes write the files and `git rm meta/drafts.md`. If it has no entries, `git rm` it and create `meta/drafts/.gitkeep`.
+7. **Rebuild the indexes:** `python3 scripts/build_index.py`, so `context/people/index.md` lists role, relation, close and the last record date.
+8. **Proposals for the root `CLAUDE.md` (step 7):** the sentence about the `[Brief]` DM exception in rule 7, and a `Critical: <connectors>` line under "Required sources" (default: calendar and the task store), and for people and drafts: rule 6 ("Every draft is logged before it is shown", ledger path, outcome loop), the "People" section (folders, records, privacy rules), the people path in the naming list and the `[[people/<slug>/profile]]` link form, all as in the new template `CLAUDE.md`.
 
 ## Migration 0.3.9 -> 0.3.10: context cards on every task
 
@@ -115,7 +118,7 @@ Runs when `X` is older than 0.3.2. `research/CLAUDE.md` and `research/_template/
 
 ## Migration 0.3.0 -> 0.3.1: people mapping
 
-Runs when `X` is older than 0.3.1. `routines/people.md` arrives with the sync in step 4 (a system file). `context/people/*` is yours and is never overwritten.
+Runs when `X` is older than 0.3.1. `routines/people.md` arrives with the sync in step 4 (a system file). `context/people/*` is yours and is never overwritten (since 0.4.0 each person is a folder `<slug>/profile.md`; see that migration).
 
 1. For each existing profile in `context/people/` that lacks the `ids` block, show the new frontmatter (see `routines/people.md`) as a proposal and add it on a yes, keeping the body. Do not invent ids or relations.
 2. If no profile has `close: true`, offer to run `routines/people.md` mode Map now (propose the close team from evidence, resolve identities). The root `CLAUDE.md` gains a "People" section with the privacy rules: show it as a proposal (step 7).

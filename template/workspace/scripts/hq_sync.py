@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-"""Keep a workspace's system files in step with the plugin template. Never touches user data.
+"""Keep a workspace's system files in step with the plugin template. Never touches user data
+(context/people profiles and records, meta/drafts, and every other file outside the system list below).
 
   hq_sync.py manifest <workspace>                  record hashes of the system files as installed
   hq_sync.py plan <template> <workspace>           classify every system file
@@ -92,10 +93,13 @@ def selftest() -> None:
             (root / "routines").mkdir(parents=True)
             (root / "routines" / "a.md").write_text("one\n")
             (root / "routines" / "b.md").write_text("one\n")
+        for user_file in ("context/people/x/profile.md", "context/people/x/records/2026/01/2026-01-14.md", "meta/drafts/2026/01/2026-01-14.md"):
+            (tpl / user_file).parent.mkdir(parents=True, exist_ok=True)
+            (tpl / user_file).write_text("mine\n")
         (tpl / "routines" / "c.md").write_text("new\n")
         (ws / "routines" / "b.md").write_text("mine\n")  # edited by the user, no manifest yet
         st = dict((r, s) for s, r in plan(tpl, ws))
-        assert st == {"routines/a.md": "same", "routines/b.md": "edited", "routines/c.md": "new"}, st
+        assert st == {"routines/a.md": "same", "routines/b.md": "edited", "routines/c.md": "new"}, st  # records and drafts are user data: never listed
         apply(tpl, ws, ["safe"])
         (tpl / "routines" / "a.md").write_text("two\n")  # the plugin changes a file the user never touched
         st = dict((r, s) for s, r in plan(tpl, ws))

@@ -66,7 +66,7 @@ Claude needs to know who your close team is and who each person is in every tool
 2. Note the contract type where it matters for how you manage them (permanent, freelance); `unknown` otherwise.
 3. After step 3 (connectors tested): propose your close team from evidence. Read, do not write: recurring 1:1s on the calendar, chat DM frequency (30 days), ticket teams and projects you lead, frequent reviewers on your code, people who report to you (HR or warehouse people table if you have one). Show one line per person with the evidence and a relation guess (manager, report, skip-level, peer, stakeholder, freelancer, external). Ask: "Who is close? Who is missing? Use this? [yes]".
 4. Resolve identities for the confirmed people: chat user, ticket user, task tool user, code login, and the CRM owner only for sales and support colleagues. Match by email first, then full name; two people with the same first name or no clear match means ask, never guess. Record where each id came from.
-5. Show the result as a list (name, relation, ids found, ids missing). Write profiles after a yes (step 5 does the writing); `close: true` only for the people the user confirmed. Remove the sample profile `context/people/example-jordan-rivera.md` once the user's own profiles exist.
+5. Show the result as a list (name, relation, ids found, ids missing). Write profiles after a yes (step 5 does the writing); `close: true` only for the people the user confirmed. Remove the sample folder `context/people/example-jordan-rivera/` (`git rm -r`) once the user's own profiles exist.
 
 A tool that is not connected yet leaves its ids empty; the first `routines/people.md` run fills them later.
 
@@ -100,7 +100,7 @@ Default `~/ai-workspace`. Check the path: it must not be under `~/Library/Mobile
    - everywhere: `{{SETUP_DATE}}` = today.
    - Append a "Role adapter" block to `context/me.md` with the chosen adapter's routine emphasis and typical meeting types.
 3. If a tool has no row in the folder (for example no code tool), remove that source's mention only if the routine would otherwise fail; the routing "none" already makes routines skip it.
-4. People: for each mapped colleague write `context/people/<slug>.md` from the schema in `routines/people.md` (the confirmed relation, contract, team, areas, `close`, aliases, the ids resolved in step 2c and one `sources` line per id; `status: draft`). Everything the user did not confirm stays empty.
+4. People: for each mapped colleague write `context/people/<slug>/profile.md` from the schema in `routines/people.md`, with an empty `records/` next to it (the confirmed relation, contract, team, areas, `close`, aliases, the ids resolved in step 2c and one `sources` line per id; `status: draft`). Everything the user did not confirm stays empty.
 5. Areas: write `context/areas/index.md` from step 2b (`{{AREAS_TABLE}}` rows `| Area | definition | examples |`, `{{TIE_BREAK}}` as the numbered list) and one `context/areas/<slug>.md` per area (frontmatter `type: topic`, `summary`, `status: draft`; body: definition, examples, people, recurring meetings; each marked "to confirm" where you guessed).
 6. Re-run the grep: only `meta/task-store.md` may still hold `{{` (step 5b fills it).
 7. Create the drop folder if the user wants one, and write the config: `mkdir -p ~/.config/hq && printf '%s\n' "<workspace>" > ~/.config/hq/workspace`.

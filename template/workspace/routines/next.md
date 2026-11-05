@@ -17,7 +17,7 @@ updated: {{SETUP_DATE}}
    - Then the top task in This week by the user's rank, then the rest by the suggested order. Both are defined once in `routines/stores/README.md` ("Rank and suggested order"); a Won't (MoSCoW) task is not offered.
 4. Say what is next and the 2 after it, each with its context card, never a bare name, id or number: the What sentence, the State, who waits since when, effort and what happens if it waits. Then one recommendation with one reason. Every question that asks you to choose follows rule 10 in `CLAUDE.md` ("Context for every choice").
 5. Offer to do it now, one item at a time. The user confirms each step; Claude never sends anything without a yes. What "do it" means depends on the item:
-   - **A reply:** draft it with `context/writing-style.md`, log it to `meta/drafts.md`, and send after a yes.
+   - **A reply:** draft it with `context/writing-style.md`, log it first (`CLAUDE.md` rule 6), show it, and send after a yes.
    - **A PR:** open it, summarise the comments, propose fixes.
    - **Meeting prep:** gather the notes, the last meeting and open points into a one-page prep in `daily/`.
    - **A ticket answer:** draft the comment and post it after a yes.

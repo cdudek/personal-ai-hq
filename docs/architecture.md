@@ -15,7 +15,7 @@ graph LR
 ```
 
 - **System files** (the plugin may overwrite them, after a diff when you edited them): `routines/**`, `scripts/**`, `views/` code, `SYSTEM.md`, each top-level `*/CLAUDE.md`, `research/_template/**`. List and logic: `system_files()` in `scripts/hq_sync.py`.
-- **User data** (never touched): everything else, including the root `CLAUDE.md`, `context/`, `meta/`, `research/<topics>/`, `views/data/` and the rendered pages.
+- **User data** (never touched): everything else, including the root `CLAUDE.md`, `context/` (people profiles and records), `meta/` (drafts ledger), `research/<topics>/`, `views/data/` and the rendered pages.
 - The root `CLAUDE.md` of the workspace holds the rules every routine obeys (rule numbers are referenced from routines and views).
 
 ## Skill -> routine
@@ -50,14 +50,14 @@ Every skill starts with `skills/_shared/version-check.md` (workspace lookup, ver
 
 - Always: workspace `CLAUDE.md` (rules, tool routing, Required sources, Inbox mode), `index.md`.
 - `meta/task-store.md` -> names the store; `routines/stores/<store>.md` does every read and write; `routines/stores/README.md` is the shared model (properties, Area rule, Source values, context card, rank and suggested order); `asana-fields.md` only for Asana fields.
-- `context/areas/index.md`: brief, weekly, task (add), improve (drift). `context/people/*`: every routine that names a person (ids). `context/me.md`, `goals.md`, `glossary.md`: brief, weekly, review. `context/writing-style.md`: next, radar (drafts), review. `context/places.md`: setup, research rules.
-- `meta/`: `friction.md` (every routine appends, review reads), `drafts.md` (next, radar write; review reads), `tips.md` (brief, capture write; improve, review read), `learnings.md` (review, improve write), `plan-vs-actual.md` (debrief writes; weekly, review read), `chat-cursor.md` (brief, sync).
+- `context/areas/index.md`: brief, weekly, task (add), improve (drift). `context/people/<slug>/profile.md`: every routine that names a person (ids, "How I write to them"); `context/people/<slug>/records/YYYY/MM/YYYY-MM-DD.md`: append-only records (capture, debrief, meeting-prep, brief and refresh propose or write them; meeting-prep reads the last three; never shown on a page or in a draft). `context/me.md`, `goals.md`, `glossary.md`: brief, weekly, review. `context/writing-style.md`: next, radar (drafts), review. `context/places.md`: setup, research rules.
+- `meta/`: `friction.md` (every routine appends, review reads), `drafts/YYYY/MM/YYYY-MM-DD.md` (every drafting routine logs first, brief step 0b appends `outcome:` lines, review learns from edited and rewritten drafts, improve flags missing outcomes), `tips.md` (brief, capture write; improve, review read), `learnings.md` (review, improve write), `plan-vs-actual.md` (debrief writes; weekly, review read), `chat-cursor.md` (brief, sync).
 - `research/<topic>/README.md` and `output/`: brief (new folders), weekly 4b (documents per initiative), refresh 2b (lint), ingest, capture.
 
 ## Scripts
 
 - `render_view.py <data.json>`: `views/template.html` + `app.css` + `app.js` + `vendor/alpine` + fonts + `icons/` + data -> `views/<kind>-<date>.html` and `<kind>.html` (not for date `sample`). Prints `LABEL CHECK` (priority, area, id) and `LINK CHECK`; prints usage without a data file. The task tool's logo comes from `meta/task-store.md` (`store:`).
-- `build_index.py`: frontmatter `summary:` -> `index.md` per folder and root. Skips `scripts/`, `views/vendor|icons|data`; `research/` is not indexed inside, but `research/index.md` lists the topic folders and the root index links it. Weekly files group by year. Leaves a hand-written `index.md` (`context/areas/`) alone.
+- `build_index.py`: frontmatter `summary:` -> `index.md` per folder and root. Skips `scripts/`, `views/vendor|icons|data`; `research/` is not indexed inside, but `research/index.md` lists the topic folders and the root index links it. Weekly files group by year. Leaves a hand-written `index.md` (`context/areas/`) alone. `context/people/index.md` lists one row per profile (role, relation, close, last record date); records and `meta/drafts/` are never indexed.
 - `hq_sync.py manifest|plan|apply|selftest`: hashes of system files in `.hq-manifest.json` decide `new | safe | edited | same | obsolete`. Refuses in a workspace with `.hq-author`.
 - Plugin repo: `scripts/release.sh` (bump, stub, commit, tag), `check-version.sh` (four version places agree), `build-zip.sh` (Cowork upload), `scrub-check.sh` (no private terms; `.scrub-terms` is git-ignored).
 
@@ -79,7 +79,7 @@ Schema: `views/CLAUDE.md`. Page buttons only copy a prompt: `Refresh` -> `sync` 
   - `linear`, `teamprs`, `insights`: tickets, code, recurring inputs
   - `top_of_mind[].updates`: weekly 4b
 - **review** (`review.md` step 7)
-  - `style`: `meta/drafts.md`
+  - `style`: `meta/drafts/` (with `scope` and `draft_id`)
   - `glossary`: week's vocabulary
   - `fixes`: `meta/friction.md` plus the drift checks in `improve.md`
   - `tips`: `meta/tips.md`

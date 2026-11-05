@@ -31,6 +31,8 @@
     {
       "id": "st1",
       "channel": "Slack DM",
+      "scope": "general",
+      "draft_id": "d-20251103-0915-1",
       "rule": "Open with the answer, no greeting for people you talk to daily.",
       "before": "Hi Mia, hope you are well! I wanted to let you know that I can do Thursday at 2.",
       "after": "Thursday 2 PM works.",

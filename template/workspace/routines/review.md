@@ -11,14 +11,15 @@ Output: `weekly/YYYY-Www.md`, section "Review". Everything is a proposal. Apply 
 
 If the logs are empty, ask the user for 1-2 drafts they changed and their main pain points this week.
 
-## 1. Style and voice
-- For each draft in `meta/drafts.md` from this week, find what the user actually sent: mail "Sent", or their chat messages to the same person or thread within 48 hours.
-- Compare the two:
-  - what they removed (filler, framing)
-  - what they added (context, greeting, domain words, format)
-  - how the style shifted (length, bullets, tone)
-- Also learn from what the user wrote without a draft: read 10-20 of their sent mails and chat messages from this week. Note recurring patterns per channel and language: openings, closings, length, bullets, language mix, words they use and words they never use.
-- Propose rules per channel. On approval, append them to `context/writing-style.md` under "Learned", each with one before/after example.
+## 1. Style and voice (always runs; the draft feedback loop)
+Run this section every Friday, not only when logs look full.
+- **Drafts of the week:** read `meta/drafts/` for the last 7 days. The daily brief has already appended an `outcome:` to each entry (`routines/brief.md` step 0b); fill any that is missing now (mail Sent, chat messages from the user in that DM, channel or thread).
+- **Edited or rewritten:** for every draft with outcome `edited` or `rewritten`, compare draft and sent text and extract concrete differences: wording, length, tone, language, greeting, sign-off, what was cut, what was added, format (bullets or prose). Quote both in `evidence`.
+- **Where each rule goes:** a general rule to `context/writing-style.md` under "Learned" (with one before/after example); a recipient-specific rule to that person's `context/people/<slug>/profile.md`, section "How I write to them"; a new or differently used term to `context/glossary.md` (see 1b).
+- **Not sent:** for every draft with outcome `not sent`, note it and ask once whether the timing or the idea was wrong ("Wrong timing or wrong idea?"). Learn from the answer; never ask twice for the same draft.
+- **Written without a draft:** also read 10-20 of the user's sent mails and chat messages from this week. Note recurring patterns per channel and language: openings, closings, length, bullets, language mix, words they use and words they never use.
+- **Write after the page:** everything above is a proposal on the review page (section 7). Write a rule only after the user's Adopt, or their Adjust version. Not now stays in the queue.
+- Never quote draft or sent text outside the workspace; the evidence on the review page is local.
 
 ## 1b. Vocabulary
 - Collect terms from this week's meetings, chat and mail that are not in `context/glossary.md`, and terms the user used differently from the glossary.

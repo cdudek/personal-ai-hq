@@ -18,6 +18,7 @@ A short guided conversation: one question at a time.
    - a message to myself
 
    Write it to `journal/YYYY-MM-DD.md`. Never quote it anywhere else.
+3b. **Records:** for today's 1:1s and meetings with a person, propose record entries as exact lines (`routines/people.md`, "Records": decision, commitment, discussion, 1:1). Write them to `context/people/<slug>/records/YYYY/MM/YYYY-MM-DD.md` after the user confirms. Feedback and personnel entries only from their own words; never from the journal reflection, never inferred.
 4. **Clear the inbox:** every line in today's `inbox/` without `-> filed:` goes to the task store (Inbox), `ideas/`, `lists/`, `journal/`, or is dropped. Mark each line `-> filed: <destination>` (or `dropped`). A line that already says filed was routed by `capture` or `brief`: never route it again, and never create a second task for it.
 5. **Write:** today's `daily/` note, section "Debrief" (without the journal content).
 6. Build the indexes, append to `log.md`, commit.

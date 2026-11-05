@@ -75,7 +75,7 @@ Each line: who the user waits for, what they asked (short quote), since when, de
 
 ## People (every source)
 
-Resolve every person in a line through `context/people/` ids (`routines/people.md`, "Matching people elsewhere"): code reviewers and authors, chat authors and DM partners, ticket commenters, mail senders, task assignees. Name them as in the profile. No match: the name as the source shows it, never a guess, and it is a context-gap candidate for the brief.
+Resolve every person in a line through the `context/people/*/profile.md` ids (`routines/people.md`, "Matching people elsewhere"): code reviewers and authors, chat authors and DM partners, ticket commenters, mail senders, task assignees. Name them as in the profile. No match: the name as the source shows it, never a guess, and it is a context-gap candidate for the brief.
 
 ## Deep links (every line, every source)
 
@@ -107,7 +107,7 @@ One list, sorted by urgency. Order: blockers first, then items older than 2 days
 
 Then a second list, "Waiting on others (N)", in the same format, from section 6.
 
-Each line names the source, who is waiting, what they need, a suggested next step and a link. Offer to draft the replies (with `context/writing-style.md`; every draft goes to `meta/drafts.md`). Each line also carries the What sentence, the State with dates, who waits since when and the effort (the task's context card when the item is a task). An item that arrives as a bare link is opened and read first, then written up; it is never listed as a name or number alone.
+Each line names the source, who is waiting, what they need, a suggested next step and a link. Offer to draft the replies (with `context/writing-style.md`; every draft is logged first, `CLAUDE.md` rule 6). Each line also carries the What sentence, the State with dates, who waits since when and the effort (the task's context card when the item is a task). An item that arrives as a bare link is opened and read first, then written up; it is never listed as a name or number alone.
 
 ## Friction
 When the user corrects anything in this routine, append to `meta/friction.md`: `- YYYY-MM-DD radar: <what went wrong> -> <what they wanted>`.
