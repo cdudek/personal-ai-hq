@@ -18,11 +18,19 @@ Then read `<workspace>/CLAUDE.md` and `<workspace>/index.md`. Follow the rules t
 
 Compare as numbers per part (0.10.0 is newer than 0.9.0). Never run an upgrade yourself.
 
+## Sources check (the one preflight)
+
+Skills that read connectors (`brief`, `inbox`, `meeting`, `task` when it runs `next`) run "Required sources" in the workspace `CLAUDE.md` once, before any other output, unless the routine they run already starts with it. Routines point to that section and never restate it. A missing connector never stops a run, with one exception: a connector listed as `Critical:` there is flagged first and the run asks once whether to wait or go ahead.
+
+## Read-only runs (`inbox`)
+
+A read-only skill changes nothing in the workspace, sends nothing and commits nothing. Two metadata writes are permitted because they are not content: the `.hq-update-check` cache above, and one line in `meta/friction.md` when the user corrects the run. Nothing else: no inbox file, draft, cursor, log line or commit.
+
 ## Voice and ending (every skill)
 
 - Plain, short sentences. No jargon, no hype.
 - When the argument was left out, say in one line what you inferred and how to choose another, for example: "No argument: it's Monday morning, running the weekly brief. Use /hq:brief daily for the daily."
-- Errors are actionable: say what failed, why if you know, and the exact next step. A missing connector never stops a run: skip that source, list it under "Sources" with how to enable it (Claude Code: `/mcp`; Cowork: Settings > Connectors), and carry on.
+- Errors are actionable: say what failed, why if you know, and the exact next step. A missing connector never stops a run unless it is critical (see "Sources check"): skip that source, list it under "Sources" with how to enable it (Claude Code: `/mcp`; Cowork: Settings > Connectors), and carry on.
 - End every command with one short block of three lines, no more:
   - **Done:** what happened.
   - **Where:** the page you opened or the path of the result.

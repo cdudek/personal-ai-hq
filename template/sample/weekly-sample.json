@@ -71,7 +71,9 @@
       "effort_h": 1,
       "area": "Delivery",
       "initiative": "Partner API",
-      "url": "https://app.asana.com/0/1200000000000000/1210000000000002"
+      "url": "https://app.asana.com/0/1200000000000000/1210000000000002",
+      "state": "Slipped from last week; the reviewer asked on Tuesday, no answer sent",
+      "decision": "Answer the caching question in the PR thread"
     },
     {
       "id": "1210000000000009",
@@ -83,7 +85,9 @@
       "priority": "P1",
       "effort_h": 2,
       "area": "Company",
-      "url": "https://app.asana.com/0/1200000000000000/1210000000000009"
+      "url": "https://app.asana.com/0/1200000000000000/1210000000000009",
+      "state": "Two options written up, waiting on your call",
+      "decision": "Count partial submits or not"
     },
     {
       "id": "1210000000000004",

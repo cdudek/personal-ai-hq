@@ -37,10 +37,11 @@ Every skill starts with `skills/_shared/version-check.md` (workspace lookup, ver
 
 - `brief` -> `meeting-prep`, `radar`; matches people through `people.md`; scores ICE (its own "ICE scoring", referenced by `weekly`, `task`, `improve`)
 - `weekly` -> `radar`, `meeting-prep`; ICE and gap rules from `brief`; `people.md` for matching
-- `sync` -> `radar` (collect = `brief.md` step 1)
-- `next` -> `radar`
+- `sync` -> `radar`, `ingest` (collect = `brief.md` step 1)
+- `brief` also -> `ingest` (incoming sources)
+- `next` -> `radar`; shared sources check (`CLAUDE.md`, "Required sources") for every skill that reads connectors: `skills/_shared/version-check.md`
 - `meeting-prep` -> `people.md` (Refresh "Current" before a 1:1)
-- `review` -> `improve.md` (tips, Area drift, ICE drift, People data, Context cards)
+- `review` -> `improve.md` (tips, and always the four audits: Area drift, ICE drift, People data, Context cards)
 - `refresh` -> `people.md` (monthly), research lint
 - `capture` -> files into inbox, ideas, lists, journal, sources, `research/<topic>/working/`
 - `ingest` -> `sources/`, `research/<topic>/working/`, context pages (after a yes)
@@ -48,15 +49,15 @@ Every skill starts with `skills/_shared/version-check.md` (workspace lookup, ver
 ## Routine -> what it reads
 
 - Always: workspace `CLAUDE.md` (rules, tool routing, Required sources, Inbox mode), `index.md`.
-- `meta/task-store.md` -> names the store; `routines/stores/<store>.md` does every read and write; `routines/stores/README.md` is the shared model (properties, Source values, context card); `asana-fields.md` only for Asana fields.
+- `meta/task-store.md` -> names the store; `routines/stores/<store>.md` does every read and write; `routines/stores/README.md` is the shared model (properties, Area rule, Source values, context card, rank and suggested order); `asana-fields.md` only for Asana fields.
 - `context/areas/index.md`: brief, weekly, task (add), improve (drift). `context/people/*`: every routine that names a person (ids). `context/me.md`, `goals.md`, `glossary.md`: brief, weekly, review. `context/writing-style.md`: next, radar (drafts), review. `context/places.md`: setup, research rules.
 - `meta/`: `friction.md` (every routine appends, review reads), `drafts.md` (next, radar write; review reads), `tips.md` (brief, capture write; improve, review read), `learnings.md` (review, improve write), `plan-vs-actual.md` (debrief writes; weekly, review read), `chat-cursor.md` (brief, sync).
 - `research/<topic>/README.md` and `output/`: brief (new folders), weekly 4b (documents per initiative), refresh 2b (lint), ingest, capture.
 
 ## Scripts
 
-- `render_view.py <data.json>`: `views/template.html` + `app.css` + `app.js` + `vendor/alpine` + fonts + `icons/` + data -> `views/<kind>-<date>.html` and `<kind>.html` (not for date `sample`). Prints `LABEL CHECK` and `LINK CHECK`. The task tool's logo comes from `meta/task-store.md` (`store:`).
-- `build_index.py`: frontmatter `summary:` -> `index.md` per folder and root. Skips `research/`, `scripts/`, `views/vendor|icons|data`. Leaves a hand-written `index.md` (`context/areas/`) alone.
+- `render_view.py <data.json>`: `views/template.html` + `app.css` + `app.js` + `vendor/alpine` + fonts + `icons/` + data -> `views/<kind>-<date>.html` and `<kind>.html` (not for date `sample`). Prints `LABEL CHECK` (priority, area, id) and `LINK CHECK`; prints usage without a data file. The task tool's logo comes from `meta/task-store.md` (`store:`).
+- `build_index.py`: frontmatter `summary:` -> `index.md` per folder and root. Skips `scripts/`, `views/vendor|icons|data`; `research/` is not indexed inside, but `research/index.md` lists the topic folders and the root index links it. Weekly files group by year. Leaves a hand-written `index.md` (`context/areas/`) alone.
 - `hq_sync.py manifest|plan|apply|selftest`: hashes of system files in `.hq-manifest.json` decide `new | safe | edited | same | obsolete`. Refuses in a workspace with `.hq-author`.
 - Plugin repo: `scripts/release.sh` (bump, stub, commit, tag), `check-version.sh` (four version places agree), `build-zip.sh` (Cowork upload), `scrub-check.sh` (no private terms; `.scrub-terms` is git-ignored).
 

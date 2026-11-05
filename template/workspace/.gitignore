@@ -2,3 +2,5 @@
 .hq-update-check
 research/*/data/*
 !research/*/data/.gitkeep
+research/_archive/*/data/*
+!research/_archive/*/data/.gitkeep

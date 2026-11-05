@@ -15,7 +15,7 @@ Look and feel follow `DESIGN.md` (one shape per meaning, colour only for attenti
 ## What the user can do on the page
 
 - Click any card, board task or meeting: a side panel shows everything (context, notes, people, history, open points, links, next step).
-- Task tables (This week, Inbox; columns Task, Prio, MoSCoW, ICE, Size, Status, Area, Initiative, From): sort by column, change priority, tick done, move between This week and Inbox, drop. The page cannot write files, so edits are staged and a dock shows "N task store changes on this page" (then "Copied, not yet confirmed", then "Changes updated" when edited after copying); each changed row says "Changed here: ..." with its own Undo. That copies one prompt listing the changes and opens Claude. See "Task store changes from the page" below.
+- Task tables (This week, Inbox; columns Task, Prio, MoSCoW, ICE, Size, Status, Area, Initiative, From): the default order is the task store's own rank; the Prio column sorts by the suggested order (Priority, due, ICE, Size; `routines/stores/README.md`, "Rank and suggested order"); other columns sort by value; change priority, tick done, move between This week and Inbox, drop. The page cannot write files, so edits are staged and a dock shows "N task store changes on this page" (then "Copied, not yet confirmed", then "Changes updated" when edited after copying); each changed row says "Changed here: ..." with its own Undo. That copies one prompt listing the changes and opens Claude. See "Task store changes from the page" below.
 - Buttons only copy a prompt; the user pastes it into Claude (the HQ project in Cowork, or Claude Code in the workspace folder): "Refresh with Claude" (`routines/sync.md`, weekly: `routines/weekly.md`), "Ask Claude" (an item, via `next.md`), "Prep with Claude" (a meeting), "Send decision to Claude" / "Decide differently" (a Claude suggestion), "Drop" (a Waiting item, via `radar.md`), "Send plan to Claude" (weekly answers). After a click the button shows "Copied. Paste in Claude" (dashed indigo) for 4 s; if the browser refuses the clipboard the prompt is shown selected. "Dark" toggles the theme (browser storage only). Opening the app via `claude://` did not work and no link opens a Cowork project with a prompt, so the page does not try.
 - Staged edits survive a reload (browser storage) until applied or undone.
 
@@ -30,9 +30,9 @@ The prompt starts "Apply these changes to the task store" and holds a `<<<CHANGE
 ## Data: `data/<kind>-<date>.json`
 
 - `kind` (daily | weekly), `date` (`YYYY-MM-DD` or `YYYY-Www`), `title`, `generated`, `headline`
-- `top_of_mind[]`: title (the initiative name), note (where it stands), status (Active this week | Waiting | Dormant), area, source, link, next (next milestone), updates[] (latest status lines with date), people[], tasks[] (task ids; if empty, the panel lists open tasks whose `initiative` equals the title). No fixed number: every initiative that is really active. Cards open the detail panel, the link sits inside it
+- `top_of_mind[]`: title (the initiative name), note (where it stands), status (Active this week | Waiting | Dormant), area, source, link, next (next milestone), updates[] (latest status lines with date), people[], tasks[] (task ids; an empty or missing list means unspecified: the panel then lists the open tasks whose `initiative` equals the title; on the weekly page the pool is the board plus the proposals). No fixed number: every initiative that is really active. Cards open the detail panel, the link sits inside it
 - `meetings[]` (right column; `meetings_title` defaults to "Today"):
-  - start, end (`HH:MM`), title, source (calendar | meet | demodesk), where, tag, tag_kind
+  - start, end (`HH:MM`), title, source (calendar | meet | demodesk), where, tag, tag_kind, `status` (`on` default | `cancelled` | `declined` | `moved`; anything but `on` is never the "Next meeting") and `rolls_to` (the next occurrence, shown in the panel)
   - who: list of `{name, note}`; note is one line from `context/people/` (role, what they want from the user)
   - why (why it matters), prep (what to read or bring), open_points[] (from the last meeting with them)
   - action_items: `{mine: [{text, status}], others: [{who, text, status}]}` from the last occurrence; status is done | open | unclear
@@ -54,7 +54,7 @@ Rules for the data:
 - The renderer prints `LINK CHECK` lines for items without a specific deep link. When it does, fix the data and render again before opening the page.
 - **context is required for "Needs me":** the actual quote or the 1–2 sentences that explain why it matters.
 - Put the details into the data, not the card: cards stay short, the panel shows notes, people, history, open points.
-- source is a Source value of `routines/stores/README.md` (lower case works), or one of: calendar, meet, demodesk, wispr, posthog, gdocs, board, note. A source without a logo shows its first three letters.
+- source is a Source value of `routines/stores/README.md` (lower case works), or one of: calendar, meet, demodesk, wispr, posthog, gdocs, board, note. The store's spellings map to them: Mail = gmail, Meeting = meet, Google Drive = gdocs, Voice = wispr. A source without a logo shows its first three letters.
 - `sections[].note` is the one-line description under the heading (what the list is and its rule). tag_kind is one of: urgent, warn, ok.
 - Links only http(s). Never put `journal/` content into a view.
 
@@ -67,8 +67,8 @@ Tasks, Top of mind entries and cards may carry `docs: [{title, url?, path?, kind
 
 ## Section order
 
-- Daily: Top of mind (from `top_of_mind`, the initiatives), needs (cards: others wait for the user), waiting (cards: the user waits for others, from radar section 6 and the Waiting section of the task store; `who` = the person he waits for, `when` = since when, `action` = "Nudge <name>" or "Drop it"), week (tasks), inbox (tasks), yesterday (meeting recap cards, each with what landed on the user). Today's meetings go in `meetings`.
-- Weekly: insights (product insights post, marketing insights email), proposals (cards with [Keep]/[Add]/[Remove]/[Mark done]/[Rollover] tags), week (tasks), inbox (tasks), linear (initiatives and projects, health as tags), finished, teamprs, needs, drift (plan vs actual). The week's meetings with prep category go in `meetings` with `meetings_title: "This week"` and the day in `where`.
+- Daily (fixed by the page, `ORDER` in `app.js`, not by the data order): Start here and Next meeting, needs (cards: others wait for the user), week (tasks), replies (rows: `kind` reply or review), waiting (rows: the user waits for others, from radar section 6 and the Waiting section of the task store; `who` = the person waited for, `when` = since when, `action` = "Nudge <name>" or "Drop it"), proposals, inbox (tasks), any other section, Top of mind (from `top_of_mind`, the initiatives; shown as "Context"), yesterday and finished (recap, no container). Today's meetings go in `meetings`.
+- Weekly (the keys in "Weekly" below; `sections[]` is ignored): Last week, Capacity, Start here, Plan this week (`proposals[]`: one row each with the [Keep]/[Add]/[Remove]/[Mark done]/[Next week] tag, MoSCoW, ICE, State, Decision and a Details panel), Top of mind, Meetings (`days[]`), Linear, Product insights, Team PRs.
 
 ## New optional fields (design language VI; old files keep rendering)
 
@@ -84,9 +84,9 @@ Daily:
 Weekly (`kind: "weekly"`, `week` number, `sections[]` is ignored; the page renders these keys):
 - `headline` (`**bold**` allowed), `sources[]` (chips under the headline)
 - `last_week`: `{range, summary, went_well[], slipped[], decided[], stats {planned, done, slipped, unplanned_h, meeting_h}, slipped_repeat, lever}`
-- `capacity`: `{available_h, meetings_h, goal_free_h, baseline_planned_h, next_move}`; planned hours and the bar follow the answers on the page
+- `capacity`: `{available_h, meetings_h, goal_free_h, baseline_planned_h, next_move}` (a missing value takes the default, 0 is a real value; hours come from `meta/plan-vs-actual.md`, `unplanned_h` and `meeting_h`); planned hours and the bar follow the answers on the page
 - `start_here`: `{title, why}`
-- `proposals[]`: `{id (task id), url, kind (keep | add | done | next week | remove), title, why, priority, moscow, ice, area, initiative, effort_h}`; one per open task (This week, Waiting, Inbox)
+- `proposals[]`: `{id (task id, required), url, kind (keep | add | done | next week | remove), title, why, priority, moscow, ice, state, decision, area, initiative, effort_h}`; one per open task (This week, Waiting, Inbox). The row shows MoSCoW, ICE, State and Decision, and "Details" opens a panel with the context card and the links
 - `top_of_mind[]`: as daily plus `health` (On track | At risk | Off track | Starting | Paused) and `move` ("same", "new", "up from 3")
 - `days[]`: `{day, hours, meetings[]}` (meeting objects as in daily; `tag` = prep level)
 - `linear`: `{title, note, tiles[{v,l,n,t}], summary, finished[{title,meta,when}], projects[{name,meta,closed,open,health}], stale {title, note, items[{key,title,why,owner,idle_d,verdict (Nudge | In 1:1 | Leave),link}]}}`
@@ -99,7 +99,7 @@ The prompt holds `<<<PLAN ... >>>`, one line per proposal: `- [keep|add|done|nex
 
 ## Review view (`kind: "review"`, Friday, `routines/review.md`)
 
-`data/review-YYYY-Www.json`, rendered to `views/review-<date>.html` and `views/review.html` (a `sample` date never replaces `review.html`). Keys: `title`, `week`, `generated`, `headline` (`**bold**` allowed; do not repeat "nothing is applied until you decide", the page says it), `sources[]`, `start_here {title, why, minutes}`, and one array per section, each item with `id` (optional) and `source` (where Claude saw it):
+`data/review-YYYY-Www.json`, rendered to `views/review-<date>.html` and `views/review.html` (a `sample` date never replaces `review.html`). Keys: `title`, `week`, `generated`, `headline` (`**bold**` allowed; do not repeat "nothing is applied until you decide", the page says it), `sources[]`, `start_here {title, why, minutes}`, and one array per section, each item with `id` (required: it is how Claude resolves the decision, and the page will not stage an item without it) and `source` (where Claude saw it):
 - `style[]`: `channel`, `rule` (the proposal), `before` (what Claude drafted), `after` (what the user sent); all items also take `evidence[]`, `impact`, `change`
 - `glossary[]`: `term`, `kind` (new | correct), `meaning`, `was` (for corrections)
 - `fixes[]`: `issue`, `cause`, `fix`, `file` (the file it changes)
@@ -107,7 +107,7 @@ The prompt holds `<<<PLAN ... >>>`, one line per proposal: `- [keep|add|done|nex
 - `routines_new[]`: `title`, `trigger`, `inputs`, `output`, `why`
 - `plan_actual`: `{planned, done, slipped, planned_h, unplanned_h, note, sources[{label, h}]}`
 
-Every item shows "Claude suggests" plus Skip / Change / Accept. One "Send to Claude" copies only the decided lines (cycle: pending, copied not yet confirmed, decisions changed, copy again). Weekly data may carry `last_review: {adopted, open, link: "review.html"}`; the link is only rendered when it matches `review[-<week>].html`.
+Every item shows "Claude suggests" plus Not now / Adjust / Adopt. One "Send to Claude" copies only the decided lines (cycle: pending, copied not yet confirmed, decisions changed, copy again). Weekly data may carry `last_review: {adopted, open, link: "review.html"}`; the link is only rendered when it matches `review[-<week>].html`.
 
 ## Review decisions from the page
 

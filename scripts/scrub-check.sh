@@ -4,8 +4,10 @@ set -uo pipefail
 cd "$(dirname "$0")/.."
 self="scripts/scrub-check.sh"
 hits=0
-scan() { # $1 = grep flags, $2 = pattern
-  out=$(grep -rnE $1 --exclude-dir=.git --exclude-dir=dist --exclude="$(basename "$self")" --exclude=.scrub-terms -- "$2" . 2>/dev/null || true)
+scan() { # $1 = grep flags, $2 = pattern. grep exits 0 on a match, 1 on none, 2+ on an error (bad regex, unreadable file): an error must fail the check, not read as "0 hits"
+  local out rc=0
+  out=$(grep -rnE $1 --exclude-dir=.git --exclude-dir=dist --exclude="$(basename "$self")" --exclude=.scrub-terms -- "$2" . 2>&1) || rc=$?
+  if [ "$rc" -gt 1 ]; then echo "$out"; echo "scrub-check: grep failed (exit $rc), the check did not run"; exit 2; fi
   if [ -n "$out" ]; then echo "$out"; hits=$((hits+1)); fi
 }
 # generic leaks: local paths, email addresses, Slack user and channel ids

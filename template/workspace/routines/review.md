@@ -35,8 +35,8 @@ If the logs are empty, ask the user for 1-2 drafts they changed and their main p
 ## 3. Skill candidates
 Find sequences the user repeated by hand this week (from the `daily/` notes and the log). For each, propose a routine: trigger, inputs, output.
 
-## 3a. Area drift
-Run the "Area drift" part of `routines/improve.md`; its proposals join section 2's fixes.
+## 3a. Audits (every review, whether or not there are tips)
+Run all four audits in `routines/improve.md`: Area drift, ICE drift, People data, Context cards. Fix proposals join section 2's fixes as `fixes[]`; people and card repairs go under "Claude asks". An audit with nothing to report says so in one line.
 
 ## 4. Done patterns
 How did the user close tasks this week? Propose updates to the done signals in `inbox/CLAUDE.md`.
@@ -52,6 +52,6 @@ For each open line in `meta/tips.md`, run `routines/improve.md` and show the ver
 
 **Labels (required):** every item gets `priority` and `area`, and board items also `id` and `url` from the task store; the rules and the list of items are in `views/CLAUDE.md`, "Labels". The renderer prints `LABEL CHECK` for anything missing; fix it and render again.
 
-Write `views/data/review-YYYY-Www.json` (schema: `views/CLAUDE.md`, "Review view") with the proposals from sections 1 to 6: `style[]`, `glossary[]`, `fixes[]`, `tips[]`, `routines_new[]`, `plan_actual`, `start_here`, `sources[]`. Leave out any "nothing is applied until you decide" sentence from `headline`: the page says it. Every proposal must carry `evidence` (`[{quote, source, link, when}]`: draft vs sent pair, friction lines, the tip's original message, repeated steps with dates), `impact` (one line) and `change` (`{file, before, after}`, the exact text). Render it with `python3 scripts/render_view.py views/data/review-YYYY-Www.json` and `open views/review.html`. The user decides on the page and pastes the `<<<REVIEW ... >>>` block; apply `adopt` lines, apply the user's `your version` for `adjust` lines (ask for it if missing), and leave `park` lines in the queue for the next review. In the next weekly view, set `last_review` (`{adopted, open, link: "review.html"}`).
+Write `views/data/review-YYYY-Www.json` (schema: `views/CLAUDE.md`, "Review view") with the proposals from sections 1 to 6: `style[]`, `glossary[]`, `fixes[]`, `tips[]`, `routines_new[]`, `plan_actual`, `start_here`, `sources[]`. Leave out any "nothing is applied until you decide" sentence from `headline`: the page says it. Every proposal must carry a stable `id` (required: the page refuses to stage an item without one, and the renderer prints `LABEL CHECK` for it), `evidence` (`[{quote, source, link, when}]`: draft vs sent pair, friction lines, the tip's original message, repeated steps with dates), `impact` (one line) and `change` (`{file, before, after}`, the exact text). Render it with `python3 scripts/render_view.py views/data/review-YYYY-Www.json` and `open views/review.html`. The user decides on the page and pastes the `<<<REVIEW ... >>>` block; apply `adopt` lines, apply the user's `your version` for `adjust` lines (ask for it if missing), and leave `park` lines in the queue for the next review. In the next weekly view, set `last_review` (`{adopted, open, link: "review.html"}`).
 
 Close: build the indexes, append to `log.md`, commit.

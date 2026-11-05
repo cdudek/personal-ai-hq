@@ -6,3 +6,4 @@ updated: {{SETUP_DATE}}
 
 channel: {{PHONE_WORK_CHANNEL}}
 last_read: none
+self_dm_notice: {{SELF_DM}}

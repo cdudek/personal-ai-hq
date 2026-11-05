@@ -83,4 +83,8 @@ Every skill checks versions at the start and tells you in one line when your wor
 
 ## Uninstall
 
-`/plugin uninstall hq@cdudek` and `/plugin marketplace remove cdudek`. Delete the four scheduled tasks (Scheduled in the app), the workspace folder and `~/.config/hq/` by hand if you want everything gone. Your board stays in your task tool: archive or delete it there. The Asana `HQ · ` fields are shared with your organisation; leave them unless nobody uses them.
+Turn things off first, so nothing runs against a half-removed setup:
+
+1. Delete the four scheduled tasks (Cowork: Scheduled in the app; Claude Code: your cron or launchd entries).
+2. `/plugin uninstall hq@cdudek` and `/plugin marketplace remove cdudek`.
+3. Keep or remove, each on its own: the workspace folder (your notes and history; it is yours, nothing depends on it), `~/.config/hq/` and the old `~/.config/personal-ai-os/` (just the path pointer), the private drop folder on your phone or cloud drive, and your board and initiative projects in the task tool (archive or delete them there; the tool keeps them until you do). The Asana `HQ · ` fields are shared with your organisation; leave them unless nobody uses them.

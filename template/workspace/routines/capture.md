@@ -20,7 +20,7 @@ Sort each capture into one of these:
 | journal note | `journal/YYYY-MM-DD.md` |
 | fact about a person, project or term | propose a `context/` change and save only on yes |
 
-Also append one line to `inbox/YYYY-MM-DD.md`: `- HH:MM [voice] <text>`.
+Also append one line to `inbox/YYYY-MM-DD.md`, as soon as the item is routed: `- HH:MM [voice] <text> -> filed: <destination>` (the task id in the task store, or the path under `ideas/`, `lists/`, `meta/`, `sources/_incoming/`). A capture still waiting for an answer or a yes has no `-> filed:` part, so `debrief` routes it. **Journal notes are the exception:** write only a receipt, `- HH:MM [voice] journal note -> filed: journal/YYYY-MM-DD.md`, never the text. Journal content stays inside `journal/` (an inbox line would reach indexes, the brief and chat).
 
 Confirm in one line where each item went. If the type is unclear, ask one question.
 

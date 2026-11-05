@@ -367,7 +367,10 @@
       <template x-for="p in props" :key="p.pid">
         <div class="prow" :class="{out: !inPlan(p) && p.k !== 'done', answered: answers[p.pid]}">
           <span class="ptag" :class="'k-' + p.k" x-text="p.k === 'next' ? 'Next week' : p.k"></span>
-          <div class="pt"><div class="ptitle"><span x-text="p.title"></span> <span class="team" x-show="topicOf(p)" :data-t="topicOf(p)?.t"><b x-text="topicOf(p)?.t"></b><span x-text="topicOf(p)?.n"></span></span></div><div class="pwhy" x-text="p.why"></div></div>
+          <div class="pt"><div class="ptitle"><span x-text="p.title"></span> <span class="team" x-show="topicOf(p)" :data-t="topicOf(p)?.t"><b x-text="topicOf(p)?.t"></b><span x-text="topicOf(p)?.n"></span></span></div><div class="pwhy" x-text="p.why"></div>
+            <div class="pmeta"><span x-show="p.moscow" x-text="'MoSCoW ' + p.moscow"></span><span x-show="iceText(p)" x-text="'ICE ' + iceText(p)"></span><span x-show="p.state" x-text="'State: ' + p.state"></span></div>
+            <div class="pmeta" x-show="p.decision"><span x-text="'Decision: ' + p.decision"></span></div>
+            <button type="button" class="linkbtn" @click="openProp(p)" :aria-label="'Details: ' + p.title">Details ›</button></div>
           <span class="pprio"><span class="prio-demo" :class="'prio-' + p.priority" x-show="p.priority" x-text="p.priority"></span><span class="miss" x-show="!p.priority">none</span></span>
           <span class="pdom"><span class="domain" :data-d="dd(p.area)" x-show="p.area" x-text="p.area"></span><span class="miss" x-show="!p.area">no area</span></span>
           <span class="peffort"><span x-text="effort(p) ? cap.fmt(effort(p)) : '-'"></span><small x-text="inPlan(p) ? 'in plan' : p.k === 'done' ? 'done' : 'out'"></small></span>
@@ -598,8 +601,8 @@
 </template>
 
 <!-- ============ Detail panel ============ -->
-<div class="scrim" x-show="panel" x-transition.opacity @click="close()"></div>
-<aside class="panel" x-show="panel" x-transition role="dialog" aria-modal="true" :aria-label="panel ? panel.title : ''">
+<div class="scrim" x-show="panelOpen" x-transition.opacity @click="close()"></div>
+<aside class="panel" x-show="panelOpen" x-transition role="dialog" aria-modal="true" :aria-label="panel ? panel.title : ''">
   <template x-if="panel">
     <div class="pin">
       <div class="phead">
@@ -619,6 +622,7 @@
         <div>
           <dl class="facts">
             <dt>When</dt><dd class="mono" x-text="timeRange(panel)"></dd>
+            <template x-if="panel.status && panel.status !== 'on'"><dt>Status</dt></template><template x-if="panel.status && panel.status !== 'on'"><dd x-text="panel.status + (panel.rolls_to ? ', rolls to ' + panel.rolls_to : '')"></dd></template>
             <template x-if="panel.where"><dt>Where</dt></template><template x-if="panel.where"><dd x-text="panel.where"></dd></template>
             <template x-if="names(panel.who)"><dt>With</dt></template><template x-if="names(panel.who)"><dd x-text="names(panel.who)"></dd></template>
           </dl>
@@ -670,7 +674,7 @@
             <ul class="dash"><template x-for="u in panel.updates || []"><li x-text="u"></li></template></ul></div>
           <div class="block" x-show="related(panel).length"><h4 class="eyebrow">Open tasks in the task store</h4>
             <ul class="tom-tasks"><template x-for="t in related(panel)" :key="t.id">
-              <li><button type="button" class="linkish" @click="openPanel('task', t)">
+              <li><button type="button" class="linkish" @click="openTask(t)">
                 <span class="prio" :class="'prio-' + eff(t).priority" x-text="eff(t).priority"></span>
                 <span x-text="t.title"></span>
                 <span class="status" :class="statusClass(eff(t).status)" x-text="eff(t).status"></span></button></li>

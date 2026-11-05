@@ -26,7 +26,8 @@ Source: the code connector. Without it, fall back to the `gh` CLI. If neither wo
 With `gh`:
 ```bash
 gh search prs --author=@me --state=open --json url,title,repository,isDraft,updatedAt
-gh pr view <url> --json reviewDecision,mergeStateStatus,statusCheckRollup,reviewThreads
+gh pr view <url> --json reviewDecision,mergeStateStatus,statusCheckRollup,comments,latestReviews
+gh api graphql -f query='query($o:String!,$r:String!,$n:Int!){repository(owner:$o,name:$r){pullRequest(number:$n){reviewThreads(first:50){nodes{isResolved isOutdated comments(last:1){nodes{author{login} createdAt url}}}}}}}' -f o=<owner> -f r=<repo> -F n=<number>
 gh search prs --review-requested=@me --state=open --json url,title,repository,updatedAt
 ```
 

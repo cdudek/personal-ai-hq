@@ -102,20 +102,31 @@ GENERIC = [r"github\.com/pulls", r"/pulls\?", r"/issues\?", r"mail\.google\.com/
            r"calendar\.google\.com/?$", r"linear\.app/[^/]+/?$", r"linear\.app/[^/]+/(inbox|my-issues)"]
 
 
+# the task store writes Mail, Meeting, Google Drive; the checks use the lower-case names above
+SRC_ALIAS = {"mail": "gmail", "meeting": "meet", "google drive": "gdocs"}
+
+
 def link_problems(data: dict) -> list[str]:
     items = [i for s in data.get("sections", []) for i in s.get("items", [])]
     items += [t for lst in (data.get("board") or {}).values() for t in lst]
     items += data.get("meetings", []) + data.get("top_of_mind", [])
-    items += ((data.get("linear") or {}).get("stale") or {}).get("items", [])  # weekly: stale issues carry source linear
-    items = [dict(i, source=i.get("source", "linear")) for i in items]
+    items += [m for day in data.get("days", []) for m in day.get("meetings", [])]  # weekly: meetings are grouped by day
+    items += [dict(i, source=i.get("source", "linear")) for i in ((data.get("linear") or {}).get("stale") or {}).get("items", [])]  # stale issues are Linear
     out = []
     for it in items:
+        src = SRC_ALIAS.get(str(it.get("source") or "").lower(), str(it.get("source") or "").lower())
         link = it.get("link") or ""
-        if not link and it.get("source") in LINKED and it.get("source") not in ("calendar", "meet") or \
-                (it.get("source") in ("calendar", "meet") and not link and not it.get("links")):
-            out.append(f"no link: [{it.get('source')}] {it.get('title', '')[:70]}")
+        name = f"[{src}] {str(it.get('title', ''))[:70]}"
+        if link and not re.match(r"https?://", link, re.I):
+            out.append(f"not an http(s) link: {name} -> {link[:80]}")
+        elif not link and src in LINKED and src not in ("calendar", "meet") or \
+                (src in ("calendar", "meet") and not link and not it.get("links")):
+            out.append(f"no link: {name}")
         elif link and any(re.search(g, link) for g in GENERIC):
-            out.append(f"not a deep link: [{it.get('source')}] {it.get('title', '')[:70]} -> {link[:80]}")
+            out.append(f"not a deep link: {name} -> {link[:80]}")
+    for p in data.get("proposals", []):  # weekly: one per open task, each needs its task store link
+        if not re.match(r"https?://", str(p.get("url") or p.get("link") or ""), re.I):
+            out.append(f"proposal without a task url: {str(p.get('title', ''))[:70]}")
     return out
 
 
@@ -129,9 +140,11 @@ def label_problems(data: dict) -> list[str]:
     by_link = {k: t for t in board for k in (t.get("link"), t.get("url")) if k}
     out = []
 
-    def check(where: str, it: dict, need_priority: bool = True) -> None:
+    def check(where: str, it: dict, need_priority: bool = True, need_id: bool = False) -> None:
         t = by_link.get(it.get("link") or "") or {}  # an item on the board inherits its task's labels
         miss = [n for n, need in (("priority", need_priority), ("area", True)) if need and not (it.get(n) or t.get(n))]
+        if need_id and not (it.get("id") or it.get("ref")):  # the page stages answers by id; without one it refuses the item
+            miss.append("id")
         if miss:
             name = it.get("title") or it.get("term") or it.get("issue") or it.get("tip") or it.get("channel") or "?"
             out.append(f"{where}: {' and '.join(miss)} missing: {str(name)[:70]}")
@@ -144,12 +157,12 @@ def label_problems(data: dict) -> list[str]:
         for t in tasks:
             check("board " + lst, t)
     for p in data.get("proposals", []):
-        check("proposal", p)
+        check("proposal", p, need_id=True)
     for t in data.get("top_of_mind", []):
         check("top of mind", t, need_priority=False)
     for k in REVIEW_KEYS:
         for it in data.get(k, []):
-            check("review " + k, it)
+            check("review " + k, it, need_id=True)
     return out
 
 
@@ -165,7 +178,7 @@ def main(path: str) -> None:
         (OUT / f"{kind}.html").write_text(html, encoding="utf-8")
     print(dated)
     if lp := label_problems(data):
-        print(f"LABEL CHECK: {len(lp)} item(s) missing priority or area (the page shows a dashed placeholder). Fill them from the task store or the rules (views/CLAUDE.md, Labels) and render again:")
+        print(f"LABEL CHECK: {len(lp)} item(s) missing priority, area or id (the page shows a dashed placeholder; items without an id cannot be answered). Fill them from the task store or the rules (views/CLAUDE.md, Labels) and render again:")
         print("\n".join("  - " + p for p in lp))
     if problems := link_problems(data):
         print(f"LINK CHECK: {len(problems)} item(s) without a deep link to the specific thing. Fix the data and render again:")
@@ -185,5 +198,7 @@ def self_check() -> None:
 
 
 if __name__ == "__main__":
+    if len(sys.argv) != 2 or not Path(sys.argv[1]).is_file():
+        raise SystemExit("usage: python3 scripts/render_view.py views/data/<kind>-<date>.json  (the data file must exist)")
     self_check()
     main(sys.argv[1])

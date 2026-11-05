@@ -10,7 +10,8 @@ updated: {{SETUP_DATE}}
 Goal: for every meeting, the user sees why it matters, what is attached, and what was promised last time, by them and by the others. `brief.md` runs this for today's meetings, `weekly.md` for the next 7 days. On its own: "Follow routines/meeting-prep.md for <meeting>".
 
 ## 1. The event
-From the calendar (see tool routing): title, time, attendees, description, attachments, and whether it is recurring. If the calendar source does not return attachments, try another connector for that event, then the browser. Say in one line which source you used.
+Run on its own, start with the sources check (`CLAUDE.md`, "Required sources"); inside `brief` or `weekly` it has already run.
+From the calendar (see tool routing): title, time, attendees, description, attachments, status and whether it is recurring. The calendar route is the only connector for the event itself. If it returns no attachments, the one permitted fallback (read-only, for attachments only) is the connector for the attachment's own kind (the docs route for a document link), then the browser. Say in one line which source you used.
 
 ## 2. Read what is attached or linked
 For each attachment and each link in the description, read it with the right connector and write a 1-2 sentence summary of what matters for this meeting: documents and sheets (docs connector), task boards and tasks (tasks connector: open tasks, owners, due dates), tickets and projects (state, last update), whiteboards (whiteboard connector), anything else (browser).
@@ -60,7 +61,7 @@ If no topic can be matched, skip it; never guess one. Role adapters list typical
 - **No action:** broadcasts and all-hands.
 
 ## 5. Output into the view data
-Per meeting, in `meetings[]` (schema in `views/CLAUDE.md`). Always: who (with a one-line note from `context/people/`), why, prep, attachments[] (label, url, source, summary), action_items.mine[] and action_items.others[] (who, text, status), open_points[], links[], tag (prep category). For 1:1s also `between`, for topic meetings also `topic`.
+Per meeting, in `meetings[]` (schema in `views/CLAUDE.md`). Always: `status` (`on` | `cancelled` | `declined` | `moved`; a meeting that is not `on` keeps its card but the page never offers it as the next meeting) and, when it is not `on`, `rolls_to` (the next occurrence with its date), who (with a one-line note from `context/people/`), why, prep, attachments[] (label, url, source, summary), action_items.mine[] and action_items.others[] (who, text, status), open_points[], links[], tag (prep category). For 1:1s also `between`, for topic meetings also `topic`.
 
 ## Friction
 When the user corrects the prep, log it to `meta/friction.md`.

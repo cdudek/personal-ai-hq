@@ -43,7 +43,7 @@ Light and dark follow the system setting. Components use tokens only, never hex 
 | Atom | Shape | Means | Never for |
 |---|---|---|---|
 | Signal | coloured dot + caps text | why an item wants attention (Blocking, Decision, Due Thu, Deep prep) | status or category |
-| Status | circle glyph + text: hollow, half, dashed, green check, dotted | where a task stands (not started, in progress, waiting, done, unclear) | urgency |
+| Status | circle glyph + text: hollow, dashed, green check, dotted | where a task stands (open, waiting, done, unclear) | urgency |
 | Priority | mono badge, soft ladder: P0 red tint + outline, P1 grey fill, P2 outline, P3 plain | task priority | anything else |
 | Area | muted tint per area + square swatch (text colour, 10 % fill, 28 % border) | which responsibility it belongs to | status |
 | Initiative | plain text with a small diamond, no box | which initiative it belongs to | area, status |
@@ -73,7 +73,7 @@ Every section belongs to one zone. The zone sets the eyebrow and the look.
 | Time | Today, This week (meetings) | timeline in the right rail; current meeting has a filled dot |
 | Claude | Claude needs your answer | indigo tinted card |
 
-Unknown section ids fall back to Plan (boards) or Read (cards). New sections get a line in `ZONES` in `app.js`.
+Unknown section ids fall back to Plan (boards) or Read (cards). A new section gets an entry in `ORDER` (its place) and `EYEBROW` (its zone label) in `app.js`.
 
 ## Adding something new
 
@@ -95,6 +95,6 @@ Priority, area, initiative, topic, always in this order under the title of anyth
 - Failure states: source failed (amber line in the nav and rail), copy failed (prompt shown selected), pending edits (dock: pending, copied, updated).
 - No shadows except overlays (panel, dock, toast). Dark mode: system setting or the Dark button.
 
-Review page (Friday): zone Plan/Improve, eyebrow "IMPROVE". Each proposal is one card: facts in ink, the proposal itself in a "Claude suggests" block, then Skip / Change / Accept (pressed = ink fill; answered cards get an indigo tint, skipped ones fade). One "Send to Claude" sends only decided lines and follows the plan action cycle (pending, copied, decisions changed). Plan vs actual uses plain numbers and one mono bar per source of unplanned work.
+Review page (Friday): zone Plan/Improve, eyebrow "IMPROVE". Each proposal is one card: facts in ink, the proposal itself in a "Claude suggests" block, then Not now / Adjust / Adopt (pressed = ink fill; answered cards get an indigo tint, skipped ones fade). One "Send to Claude" sends only decided lines and follows the plan action cycle (pending, copied, decisions changed). Plan vs actual uses plain numbers and one mono bar per source of unplanned work.
 
 Not built from the PDF: the Linear team-colour charts (closed by team / by project bars, stale analysis cards), and the Product insights deal charts (pages 14 to 15 of the PDF).

@@ -14,8 +14,8 @@ The standard Notion connector only (Claude Code: `/mcp`; Cowork: Settings > Conn
 
 ## Create the board
 1. On a page only the user can see (private, not a teamspace page), create two databases in the create call, with their properties defined once: **Initiatives** (Name, Status select Open/Closed, Outcome, End date, OKR, Topic folder, Links as text) and the task database "<board_name>" with Name (title), Section (select: Top of mind, This week, Waiting, Inbox, Agent), Done (checkbox), Due (date), Rank (number), AI (checkbox) and Initiative (relation to Initiatives). Properties exist only so Notion can sort and filter; all of them are fixed at creation and never changed.
-2. Existing-field reuse: if the user already has a task database they want to use, take it and map its properties as in the README (Priority, Area, Size, Source, MoSCoW, Impact, Confidence, Ease, ICE if present; number properties are set as numbers); do not add or edit any property in it. Without a relation property, the initiative is a line `Initiative: <page link>`.
-3. Area, Size (XS-XL), Source, Priority, MoSCoW, ICE (Impact, Confidence, Ease and the score), Waiting on and Closed when are description lines in the page body (README, "Properties"), unless a mapped property exists.
+2. Existing-field reuse: if the user already has a task database they want to use, take it and map its properties as in the README (Priority, Size, Source, MoSCoW, Impact, Confidence, Ease, ICE if present; number properties are set as numbers); do not add or edit any property in it. Without a relation property, the initiative is a line `Initiative: <page link>`.
+3. Size (XS-XL), Source, Priority, MoSCoW, ICE (Impact, Confidence, Ease and the score), Waiting on and Closed when are description lines in the page body (README, "Properties"), unless a mapped property exists.
 4. If the connector cannot create databases at all, say so once and propose another tool; do not ask for manual steps.
 
 ## Initiatives

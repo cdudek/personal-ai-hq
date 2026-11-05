@@ -13,7 +13,7 @@ One place for the field spec. Setup (`/hq:setup`, step "Create the task store"),
 
 ## Check first
 
-List the workspace's shared custom fields through the connector and look for each name below (exact, including the `HQ · ` prefix with the middle dot). Found: add the field to the board project and record its id and option ids in `meta/task-store.md` (`fields`). Missing: the missing ones are created first (see "Create the missing fields"); setup does not go on until all eight exist and a second check finds them. Description lines instead of fields only when the user explicitly says to skip fields.
+List the workspace's shared custom fields through the connector and look for each name below (exact, including the `HQ · ` prefix with the middle dot). Found: **validate it against the spec below before using it**: single-select fields must have every listed option (names exact; extra options are allowed), number fields must be of type number with 0 decimal places. A field with the right name but the wrong type, or without all required options (for example `HQ · Source` still on the old shorter list, `HQ · Size` without XS or XL), is **invalid and counts as not found**: writes to it would fail or be dropped. A valid field: add it to the board project and record its id and option ids in `meta/task-store.md` (`fields`). Missing or invalid: fix them first (see "Create the missing fields" and "Repair an invalid field"); setup does not go on until all eight are valid and a second check finds them. Description lines instead of fields only when the user explicitly says to skip fields.
 
 ## The fields
 
@@ -73,6 +73,15 @@ Then tell Claude "done" and it checks the library again. Only an organisation me
 Only if the environment variable `ASANA_API_TOKEN` exists (check with `[ -n "$ASANA_API_TOKEN" ]`; never print it, never write it to a file, never pass it on a command line that is shown). Offer it as an option: "I can create the 8 fields for your whole organisation with your Asana token. Do that? [yes / I will do it by hand]". The token is never required.
 
 After a yes, for each missing field send one `POST https://app.asana.com/api/1.0/custom_fields` with the header `Authorization: Bearer $ASANA_API_TOKEN` (read from the environment inside the command), and a JSON `data` body holding: `workspace` (the workspace gid), `name` (exact), `resource_subtype` (`enum` or `number`), `description`, `is_global_to_workspace: true` (this is the library switch), for `enum` the `enum_options` (`[{"name": "P0"}, ...]` in the listed order), for `number` `precision: 0`. Read the created field gids from the response. Report the field names created, never the token. If a call fails (no permission to add library fields: say so; any other error: one line), fall back to "By hand".
+
+## Repair an invalid field
+
+For each invalid field say what is wrong in one line (field, what the spec needs, what it has), then offer, in this order:
+1. **Missing options (single-select):** a person who may edit the field adds them by hand (field > Edit > add option, names exactly as in the spec); or, in Claude Code with `ASANA_API_TOKEN` (never printed), one `POST https://app.asana.com/api/1.0/custom_fields/<field gid>/enum_options` with `{"data": {"name": "<option>"}}` per missing option, after a yes.
+2. **Wrong type:** the type cannot be changed. A person renames the old field (for example `HQ · Source (old)`), then the field is created fresh as above.
+3. **Skip:** only on the user's explicit yes. That one property becomes a description line, recorded in `meta/task-store.md` ("Field mapping": `<property> = description line`), and the other seven fields still go on the board.
+
+Then run the check again. Never write to an invalid field.
 
 ## After creation
 

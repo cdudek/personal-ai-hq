@@ -9,7 +9,12 @@ Goal: a working private workspace in about 20 minutes. Never push anything anywh
 
 ## 0. Check the basics
 
-- Is a workspace already configured? Read `~/.config/hq/workspace`, or the old `~/.config/personal-ai-os/workspace` if that is missing. If it exists and the folder has `CLAUDE.md`, ask: continue with that workspace (step 5b adds a missing task store, step 7 the scheduled tasks), or create a new one.
+- Is a workspace already configured? Read `~/.config/hq/workspace`, or the old `~/.config/personal-ai-os/workspace` if that is missing. If it exists and the folder has `CLAUDE.md`, ask: continue with that workspace, or create a new one. Continuing means **resuming at the first incomplete stage**, found by these checks (stop at the first that fails, say which one, and run from there):
+  1. Workspace filled: `grep -rn '{{' "<workspace>" --include='*.md'` finds nothing outside `meta/task-store.md` and `meta/chat-cursor.md` is filled. Failing: steps 1 to 5 (reuse answers found in `context/`).
+  2. Connectors: re-test each one named in the tool routing, and the task store's connector first (step 3). Failing connector: say which, do not go on to 5b.
+  3. Task store: `meta/task-store.md` has a `store`, a `board_url` and no `{{`, and one read through the adapter works. Failing: step 5b.
+  4. Git: `<workspace>/.git`, `.hq-version` and `.hq-manifest.json` exist. Failing: step 6.
+  5. Schedule: ask whether the four scheduled tasks exist; if not or unsure: step 7.
 - `python3 --version` and `git --version` must work. If not, tell the user what to install and stop.
 
 ## 1. Interview
@@ -33,7 +38,7 @@ The ten questions, in this order:
 5. **Your day to day** in two or three lines. Example: "Roadmap reviews, 1:1s with five people, customer calls, a weekly board update".
 6. **Goals this quarter,** 3 to 5, with a link to the source document if there is one. Example: "Ship the partner API by December; cut onboarding time in half".
 7. **Languages** for work and which one for which channel. [English everywhere]
-8. **Tools, one category at a time** (chat, mail, calendar, tasks and tickets, code, docs and files, CRM, notes and meetings, whiteboard): name the product or "none". Also: where do you share finished documents with colleagues (Google Drive, Notion, Confluence, none)? That answer is only about shared versions; your working documents always live in the workspace (`research/`). Also: is there a company data gateway? Optional. Then ask where captures come from (a DM to yourself in the work chat, a private drop folder, a voice notes app) and any fixed handling rules ("receipts go to finance"). [none]
+8. **Tools, one category at a time** (chat, mail, calendar, tasks and tickets, code, docs and files, CRM, notes and meetings, whiteboard): name the product or "none". Also: where do you share finished documents with colleagues (Google Drive, Notion, Confluence, none)? That answer is only about shared versions; your working documents always live in the workspace (`research/`). Also: is there a company data gateway? Optional. Then ask where captures come from (a DM to yourself in the work chat, a private drop folder, a voice notes app) and any fixed handling rules ("receipts go to finance"). [none] If a DM to yourself is used, ask: "The morning brief can send you one DM to yourself with the headline and your top items (never a file path). A DM to yourself that you set up here counts as authorised; nothing else is sent without your yes. Send it? [yes]"
 9. **Writing samples:** paste 2 or 3 messages you sent and like, or say where to find sent items and you will read 10. Anything confidential can be anonymised.
 10. **Where do your tasks live?** Your tasks go in one cloud task manager, not in a file on your computer, so you get comments, history and a phone app. Options: **Asana**, **Notion**, **Monday**, **Trello**, or **GitHub Projects (not recommended: no private personal-task semantics, tied to repositories)**. [the task tool named in question 8 if it is one of these, otherwise Asana]. A different tool: say so; HQ then has no adapter for it, and you pick one of the five.
 
@@ -74,7 +79,7 @@ For every tool named in step 1, say which connector to enable and how, one line 
 - Common ones: Slack, Gmail, Google Calendar, Google Drive and Docs, Linear, Asana, Monday, Trello, Jira and Confluence (Atlassian), GitHub (or the `gh` CLI), Notion, HubSpot, Miro, Granola, Fireflies. The connector for the task store chosen in question 10 is required for step 5b. If it is missing or fails its test, say which one to switch on and how, finish the other steps, and tell the user to run `/hq:setup` again once it works (step 0 then continues at 5b). There is no local task file.
 - No connector for a tool: mark it in the routing as "none" (or "browser" if the user explicitly wants Claude in Chrome for it); the task store never uses the browser.
 
-Test each enabled connector with one read (today's calendar, one mail, one ticket) and list what works and what is missing. A missing one is not a blocker: routing says "none" and routines skip it. Never claim a connector exists without checking that its tools are available in this session.
+Test each enabled connector with one read (today's calendar, one mail, one ticket) and list what works and what is missing. Ask which connectors the brief cannot run without (default: calendar and the task store) and write them as a line `Critical: <list>` under "Required sources" in `CLAUDE.md`. A missing non-critical one is not a blocker: routing says "none" and routines skip it; a missing critical one is flagged first, and the run asks once whether to wait or go ahead (`CLAUDE.md`, "Required sources"). Never claim a connector exists without checking that its tools are available in this session.
 
 ## 4. Choose the folder
 
@@ -91,7 +96,7 @@ Default `~/ai-workspace`. Check the path: it must not be under `~/Library/Mobile
    - `context/glossary.md`: the adapter's glossary seeds plus company terms the user mentioned, each marked "to confirm" until confirmed.
    - `context/writing-style.md`: `{{STYLE_RULES}}` from the writing samples: tone, length, greeting and closing, bullets, language per channel, words used and avoided, each rule with a short quote. Mark the file `status: draft` until the user confirms.
    - `context/places.md`: the workspace path, where code and other documents live, and `{{SHARED_DEST}}` = where shared versions go (Google Drive, Notion, Confluence, or "none, no shared destination yet").
-   - `meta/chat-cursor.md`: `{{PHONE_WORK_CHANNEL}}` (or "not used").
+   - `meta/chat-cursor.md`: `{{PHONE_WORK_CHANNEL}}` (or "not used") and `{{SELF_DM}}` (`yes` only when the user said yes to the brief DM to themselves, else `no`).
    - everywhere: `{{SETUP_DATE}}` = today.
    - Append a "Role adapter" block to `context/me.md` with the chosen adapter's routine emphasis and typical meeting types.
 3. If a tool has no row in the folder (for example no code tool), remove that source's mention only if the routine would otherwise fail; the routing "none" already makes routines skip it.
@@ -99,7 +104,7 @@ Default `~/ai-workspace`. Check the path: it must not be under `~/Library/Mobile
 5. Areas: write `context/areas/index.md` from step 2b (`{{AREAS_TABLE}}` rows `| Area | definition | examples |`, `{{TIE_BREAK}}` as the numbered list) and one `context/areas/<slug>.md` per area (frontmatter `type: topic`, `summary`, `status: draft`; body: definition, examples, people, recurring meetings; each marked "to confirm" where you guessed).
 6. Re-run the grep: only `meta/task-store.md` may still hold `{{` (step 5b fills it).
 7. Create the drop folder if the user wants one, and write the config: `mkdir -p ~/.config/hq && printf '%s\n' "<workspace>" > ~/.config/hq/workspace`.
-8. In Cowork, tell the user to create a project that points at the workspace folder and to put this project instruction in it: "Read CLAUDE.md first, then index.md. Follow the rules there. Routines live in routines/." Scheduled tasks must be created inside that project.
+8. **Cowork:** tell the user to create a project that points at the workspace folder and to put this project instruction in it: "Read CLAUDE.md first, then index.md. Follow the rules there. Routines live in routines/." Scheduled tasks must be created inside that project. **Claude Code:** nothing to create; the user starts Claude Code inside the workspace folder, which reads `CLAUDE.md` itself.
 
 ## 5a. Documents home (`research/`)
 
@@ -115,9 +120,9 @@ The template copy already created `<workspace>/research/` with `CLAUDE.md` (the 
 Read `routines/stores/<store>.md` (the adapter for the tool from question 10) and `routines/stores/README.md`.
 
 1. Test the connector with one read. Say which operations you could verify. Do not claim an operation works before you have used it.
-2. Create the board by the adapter's "Create the board": the five sections, the properties as the adapter says: Asana: the eight shared `HQ ·` fields are a prerequisite, so first run "Check first" in `routines/stores/asana-fields.md` (found: add them to the board and record the ids; any missing: stop, tell the user exactly which ones to create first and follow "Create the missing fields" there, then re-check; continue only when all eight exist; description lines instead only if the user explicitly says to skip the fields). Area is never a column: it follows from the task's initiative (its project description), else the `Area:` description line. Other tools: look for existing fields or columns that match Area, Priority, Size, MoSCoW, Impact, Confidence, Ease, ICE and Source (assume none and no value set), add and map those found, and make every other property a description line; never create a field or option. Create each confirmed initiative as the adapter's container (description: outcome, end date, OKR from the goals if any, `Topic folder: <name>` from step 5a, shared links; never a local path) plus its Top of mind task.
+2. Create the board by the adapter's "Create the board": the five sections, the properties as the adapter says: Asana: the eight shared `HQ ·` fields are a prerequisite, so first run "Check first" in `routines/stores/asana-fields.md` (found: add them to the board and record the ids; any missing: stop, tell the user exactly which ones to create first and follow "Create the missing fields" there, then re-check; continue only when all eight exist; description lines instead only if the user explicitly says to skip the fields). Area is never a column: it follows from the task's initiative (its project description), else the `Area:` description line. Other tools: look for existing fields or columns that match Priority, Size, MoSCoW, Impact, Confidence, Ease, ICE and Source (assume none and no value set), add and map those found, and make every other property a description line; never create a field or option. Create each confirmed initiative as the adapter's container (description: outcome, end date, OKR from the goals if any, `Topic folder: <name>` from step 5a, shared links; never a local path) plus its Top of mind task.
 3. Anything the connector cannot do: say so once, use the adapter's fallback (a description line or a link) and carry on. Apart from the Asana fields above, there is no manual step and nothing blocks.
-4. Fill `meta/task-store.md`: `store`, `board_name`, `board_url`, `board_id`, `fields` (for Asana the eight HQ fields with their ids and option ids; for other tools only the existing fields found) and `initiatives` (name to container id and url; each initiative container is created by the adapter's "Create an initiative project", which for Asana adds all eight `HQ ·` fields to it), `sections`, `{{FIELD_MAPPING}}` (value mapping of each existing field, or "none: every property is a description line"), `{{AREA_VALUES}}` and the other value lists, `{{SAVED_VIEWS}}` (the adapter's recipe, or "none"). Re-run the grep: no `{{` may remain anywhere.
+4. Fill `meta/task-store.md`: `store`, `board_name`, `board_url`, `board_id`, `owner_id` (the user's own id in the task tool, from the connector's current-user call; only comments by this id count as instructions later), `fields` (for Asana the eight HQ fields with their ids and option ids; for other tools only the existing fields found) and `initiatives` (name to container id and url; each initiative container is created by the adapter's "Create an initiative project", which for Asana adds all eight `HQ ·` fields to it), `sections`, `{{FIELD_MAPPING}}` (value mapping of each existing field, or "none: every property is a description line"), `{{AREA_VALUES}}` and the other value lists, `{{SAVED_VIEWS}}` (the adapter's recipe, or "none"). Re-run the grep: no `{{` may remain anywhere.
 5. Read the board back and show the user the link. Nothing is moved or created beyond this without a yes.
 
 ## 6. Git, indexes, first commit
@@ -147,7 +152,7 @@ Scheduled tasks are only prompts. Create these four tasks yourself, inside the u
 | Friday 15:57 | `Follow routines/review.md` |
 | First Monday of the month 7:57 | `Follow routines/refresh.md` |
 
-Use the scheduled-task tool available in this session. Odd minutes avoid the busy top of the hour. If creating a task fails or no such tool exists, print each one as a ready-to-paste block (time, then the prompt) and tell the user to add them under Scheduled > New task, inside their project. Say clearly that local tasks only run while the computer is awake and the app is open.
+Use the scheduled-task tool available in this session. Odd minutes avoid the busy top of the hour. If creating a task fails or no such tool exists, print each one as a ready-to-paste block (time, then the prompt). **Cowork:** the user adds them under Scheduled > New task, inside their project. **Claude Code:** a cron or launchd entry that runs `claude -p "Follow routines/<name>.md"` inside the workspace folder (a cloud routine cannot read a local workspace). Say clearly that local tasks only run while the computer is awake and, in Cowork, the app is open.
 
 ## 8. You're set
 
